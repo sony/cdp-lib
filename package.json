@@ -2,7 +2,7 @@
   "name": "cdp-lib",
   "version": "0.0.1",
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
-  "main": "cdp-lib.js",
+  "main": "dist/cdp-lib.js",
   "scripts": {
     "build": "node ./tasks/build-pre-proc.js && tsc && webpack && node ./tasks/build-post-proc.js",
     "test": "test"
