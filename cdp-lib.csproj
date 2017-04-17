@@ -68,17 +68,25 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>cd $(ProjectDir)/assets/lib/stylesheets
-call compass compile -c config.rb
-cd $(ProjectDir)/assets/stylesheets
-call compass compile -c config.rb
+    <PostBuildEvent>
 </PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="dist\cdp-lib.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="tasks\build-post-proc.js" />
+    <Content Include="tasks\build-pre-proc.js" />
+    <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="npm-install.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="dist\%40types\cdp-lib.d.ts" />
+    <TypeScriptCompile Include="lib\cdp-lib.ts" />
   </ItemGroup>
 </Project>

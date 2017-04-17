@@ -4,6 +4,7 @@
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
   "main": "cdp-lib.js",
   "scripts": {
+    "build": "node ./tasks/build-pre-proc.js && tsc && webpack && node ./tasks/build-post-proc.js",
     "test": "test"
   },
   "repository": {
@@ -22,13 +23,14 @@
   },
   "homepage": "https://github.com/CDP-Tokyo/cdp-lib#readme",
   "dependencies": {
-    "cdp-external-module-deployer": "git+ssh://git@github.com:CDP-Tokyo/cdp-external-module-deployer.git#FES2",
+    "cdp-external-module-deployer": "git+ssh://git@github.com:CDP-Tokyo/cdp-external-module-deployer.git#dev",
     "jquery": "^3.2.1",
     "jsdom": "^9.12.0"
   },
   "devDependencies": {
-    "convert-source-map": "^1.5.0",
-    "source-map": "^0.5.6",
+    "@types/fs-extra": "^2.0.0",
+    "@types/node": "^7.0.12",
+    "source-map-loader": "^0.2.1",
     "typescript": "^2.2.2",
     "webpack": "^2.4.1"
   }
