@@ -1,0 +1,35 @@
+{
+  "name": "cdp-lib",
+  "version": "0.0.1",
+  "description": "Contains npm modules used primarily by cdp boilerplate generator.",
+  "main": "cdp-lib.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CDP-Tokyo/cdp-lib.git"
+  },
+  "keywords": [
+    "CDP",
+    "cordova",
+    "electron"
+  ],
+  "author": "Shin Ogata",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/CDP-Tokyo/cdp-lib/issues"
+  },
+  "homepage": "https://github.com/CDP-Tokyo/cdp-lib#readme",
+  "dependencies": {
+    "cdp-external-module-deployer": "git+ssh://git@github.com:CDP-Tokyo/cdp-external-module-deployer.git#FES2",
+    "jquery": "^3.2.1",
+    "jsdom": "^9.12.0"
+  },
+  "devDependencies": {
+    "convert-source-map": "^1.5.0",
+    "source-map": "^0.5.6",
+    "typescript": "^2.2.2",
+    "webpack": "^2.4.1"
+  }
+}
