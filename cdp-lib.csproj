@@ -73,10 +73,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="dist\cdp-lib.js" />
+    <Content Include="npm-install.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tasks\build-post-proc.js" />
     <Content Include="tasks\build-pre-proc.js" />
+    <Content Include="tests\jasmine\cdp-lib.spec.js">
+      <DependentUpon>cdp-lib.spec.ts</DependentUpon>
+    </Content>
     <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
@@ -88,5 +92,17 @@
   <ItemGroup>
     <TypeScriptCompile Include="dist\%40types\cdp-lib.d.ts" />
     <TypeScriptCompile Include="lib\cdp-lib.ts" />
+    <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tests\tslint\tslint.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tests\jasmine\tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tests\jasmine\cdp-lib.spec.js.map">
+      <DependentUpon>cdp-lib.spec.ts</DependentUpon>
+    </Content>
   </ItemGroup>
 </Project>

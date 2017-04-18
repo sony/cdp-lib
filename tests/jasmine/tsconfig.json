@@ -1,14 +1,15 @@
 {
+    "allowJs": true,
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
-        "declaration": true,
+        "declaration": false,
         "noImplicitAny": false,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
         "strictNullChecks": true,
         "sourceMap": true,
-        "outDir": "built/"
+        "outDir": "./"
     },
     "formatCodeOptions": {
         "indentSize": 4,
@@ -16,7 +17,6 @@
     },
     "exclude": [
         "node_modules",
-        "built",
-        "tests"
+        "built"
     ]
 }

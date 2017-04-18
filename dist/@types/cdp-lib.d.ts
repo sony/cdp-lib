@@ -6,5 +6,5 @@ export declare class CDPLib {
     /**
      * main command
      */
-    execute(options: any): void;
+    static execute(options: any): void;
 }

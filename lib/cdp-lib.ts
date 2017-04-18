@@ -8,7 +8,7 @@ export class CDPLib {
     /**
      * main command
      */
-    public execute(options: any): void {
+    public static execute(options: any): void {
         if (fs.existsSync("package.json")) {
             console.log("ok");
         } else {
