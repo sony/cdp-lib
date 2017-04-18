@@ -1,0 +1,8 @@
+{
+    "name": "cdp-lib",
+    "main": "built/cdp-lib.d.ts",
+    "baseDir": "built",
+    "out": "../dist/@types/cdp-lib.d.ts",
+    "externals": false,
+    "verbose": false
+}

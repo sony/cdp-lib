@@ -4,12 +4,16 @@
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
   "main": "dist/cdp-lib.js",
   "scripts": {
-    "build": "node ./tasks/build-pre-proc.js && tsc && webpack && node ./tasks/build-post-proc.js",
+    "clean": "node ./tasks/clean.js",
+    "prebuild": "node ./tasks/build-pre-proc.js",
+    "build": "tsc && webpack && node ./tasks/build-post-proc.js",
+    "postbuild": "node ./tasks/build-post-proc.js",
     "pretest": "tsc -p ./tests/jasmine/tsconfig.json",
     "lint": "tslint --type-check -p ./tsconfig.json -c ./tests/tslint/tslint.json 'lib/**/*.ts'",
     "unit-test": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
     "test": "npm run lint && npm run unit-test",
-    "posttest": "cd coverage && remap-istanbul -i coverage.json -o html-report -t html"
+    "posttest": "cd coverage && remap-istanbul -i coverage.json -o html-report -t html",
+    "debug": "npm run pretest && node-debug ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/"
   },
   "repository": {
     "type": "git",
@@ -17,6 +21,7 @@
   },
   "keywords": [
     "CDP",
+    "TypeScript",
     "cordova",
     "electron"
   ],
@@ -28,18 +33,30 @@
   "homepage": "https://github.com/CDP-Tokyo/cdp-lib#readme",
   "dependencies": {
     "fs-extra": "^2.1.2",
+    "glob": "^7.1.1",
+    "hogan.js": "^3.0.2",
     "jquery": "^3.2.1",
-    "jsdom": "^9.12.0"
+    "jsdom": "^9.12.0",
+    "lodash": "^4.17.4",
+    "node-uuid": "^1.4.8",
+    "semver-regex": "^1.0.0",
+    "underscore.string": "^3.3.4",
+    "which": "^1.2.14",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "@types/fs-extra": "^2.0.0",
     "@types/jasmine": "^2.5.47",
+    "@types/jquery": "^2.0.41",
     "@types/node": "^7.0.12",
+    "@types/xmldom": "^0.1.29",
+    "dts-bundle": "^0.7.2",
     "jasmine-node": "^1.14.5",
     "remap-istanbul": "^0.9.5",
     "source-map-loader": "^0.2.1",
     "tslint": "^5.1.0",
     "typescript": "^2.2.2",
+    "typescript-formatter": "^5.1.3",
     "webpack": "^2.4.1"
   }
 }
