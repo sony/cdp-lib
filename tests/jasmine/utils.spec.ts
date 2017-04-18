@@ -1,7 +1,7 @@
 ﻿import {
     fs,
     $,
-} from "../../built/utils/utils";
+} from "../../built/utils";
 
 describe('check utils/libs instance', () => {
 

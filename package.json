@@ -13,7 +13,8 @@
     "unit-test": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
     "test": "npm run lint && npm run unit-test",
     "posttest": "cd coverage && remap-istanbul -i coverage.json -o html-report -t html",
-    "debug": "npm run pretest && node-debug ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/"
+    "debug": "npm run pretest && node-debug ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
+    "update": "node npm-install.js && npm run build && npm test"
   },
   "repository": {
     "type": "git",
@@ -38,9 +39,9 @@
     "jquery": "^3.2.1",
     "jsdom": "^9.12.0",
     "lodash": "^4.17.4",
-    "node-uuid": "^1.4.8",
     "semver-regex": "^1.0.0",
     "underscore.string": "^3.3.4",
+    "uuid": "^3.0.1",
     "which": "^1.2.14",
     "xmldom": "^0.1.27"
   },
@@ -48,7 +49,11 @@
     "@types/fs-extra": "^2.0.0",
     "@types/jasmine": "^2.5.47",
     "@types/jquery": "^2.0.41",
+    "@types/lodash": "^4.14.62",
     "@types/node": "^7.0.12",
+    "@types/underscore.string": "0.0.30",
+    "@types/uuid": "^2.0.29",
+    "@types/which": "^1.0.28",
     "@types/xmldom": "^0.1.29",
     "dts-bundle": "^0.7.2",
     "jasmine-node": "^1.14.5",

@@ -55,9 +55,9 @@ module.exports = {
             commonjs: 'lodash',
             commonjs2: 'lodash',
         },
-        'node-uuid': {
-            commonjs: 'node-uuid',
-            commonjs2: 'node-uuid',
+        'uuid': {
+            commonjs: 'uuid',
+            commonjs2: 'uuid',
         },
         'semver-regex': {
             commonjs: 'semver-regex',
