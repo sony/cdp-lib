@@ -95,9 +95,6 @@
     <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="npm-install.bat" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
