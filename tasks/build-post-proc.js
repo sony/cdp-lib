@@ -1,4 +1,5 @@
-﻿'use strict';
+﻿/* eslint-disable no-regex-spaces */
+'use strict';
 const fs = require('fs-extra');
 const path = require('path');
 const dts = require('dts-bundle');
@@ -8,7 +9,6 @@ const banner = require('./banner');
 const PACKAGE_NAME = require(path.join(process.cwd(), 'package.json')).name;
 
 const DIST_DIR      = './dist/';
-const BUILT_DIR     = './built/';
 const TYPES         = '@types/';
 const D_TS_SETTING  = 'dts-bundle.json';
 const LIBRARY_FILE  = DIST_DIR + PACKAGE_NAME + '.js';
@@ -30,7 +30,7 @@ function normalize_d_ts() {
 
     // format d.ts
     tsfmt.processStream(TYPE_DEF_FILE, fs.createReadStream(TYPE_DEF_FILE), {
-        tsfmt: tsfmt
+        tsfmt: tsfmt,
     })
     .then((content) => {
         let src = '\ufeff' + banner('.d.ts') + content.message

@@ -76,6 +76,9 @@
     <Content Include="built\utils.js" />
     <Content Include="built\utils\libs.js" />
     <Content Include="dist\cdp-lib.js" />
+    <Content Include="docs\reports\coverage\index.html" />
+    <Content Include="docs\reports\metrics\index.html" />
+    <Content Include="docs\typedoc\index.html" />
     <Content Include="npm-install.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -118,5 +121,13 @@
     <Content Include="BANNER" />
     <Content Include="LICENSE" />
     <Content Include="NOTICE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tests\eslint\eslintrc.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="docs\en\README.md" />
+    <Content Include="docs\images\.gitkeep" />
+    <Content Include="docs\ja\README.md" />
   </ItemGroup>
 </Project>
