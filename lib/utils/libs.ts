@@ -2,7 +2,7 @@
 
 let $: JQueryStatic = (() => {
     (<any>global).DOMParser = require("xmldom").DOMParser;
-    var jsdom = require("jsdom");
+    let jsdom = require("jsdom");
     return require("jquery")(jsdom.jsdom().defaultView);
 })();
 

@@ -2,18 +2,11 @@
     "allowJs": true,
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
+        "target": "es2015",
         "declaration": false,
-        "noImplicitAny": false,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
-        "strictNullChecks": true,
-        "sourceMap": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
         "outDir": "./"
-    },
-    "formatCodeOptions": {
-        "indentSize": 4,
-        "tabSize": 4
     },
     "exclude": [
         "node_modules",

@@ -1,18 +1,11 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
+        "target": "es2015",
         "declaration": true,
-        "noImplicitAny": false,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
-        "strictNullChecks": true,
         "sourceMap": true,
+        "inlineSources": true,
         "outDir": "built/"
-    },
-    "formatCodeOptions": {
-        "indentSize": 4,
-        "tabSize": 4
     },
     "exclude": [
         "node_modules",

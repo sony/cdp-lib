@@ -69,7 +69,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
-</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="built\cdp-lib.js" />
@@ -111,16 +111,6 @@
     <Content Include="tests\jasmine\tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="tests\jasmine\cdp-lib.spec.js.map">
-      <DependentUpon>cdp-lib.spec.ts</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="dts-bundle.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="tests\jasmine\utils.spec.js.map">
-      <DependentUpon>utils.spec.ts</DependentUpon>
-    </Content>
   </ItemGroup>
 </Project>

@@ -4,16 +4,16 @@
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
   "main": "dist/cdp-lib.js",
   "scripts": {
-    "clean": "node ./tasks/clean.js",
     "prebuild": "node ./tasks/build-pre-proc.js",
     "build": "tsc && webpack && node ./tasks/build-post-proc.js",
     "postbuild": "node ./tasks/build-post-proc.js",
     "pretest": "tsc -p ./tests/jasmine/tsconfig.json",
-    "lint": "tslint --type-check -p ./tsconfig.json -c ./tests/tslint/tslint.json 'lib/**/*.ts'",
-    "unit-test": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
     "test": "npm run lint && npm run unit-test",
     "posttest": "cd coverage && remap-istanbul -i coverage.json -o html-report -t html",
-    "debug": "npm run pretest && node-debug ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
+    "clean": "node ./tasks/clean.js",
+    "lint": "tslint --type-check -p ./tsconfig.json -c ./tests/tslint/tslint.json 'lib/**/*.ts'",
+    "unit-test": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
+    "debug": "npm run pretest && node --inspect --debug-brk ./node_modules/jasmine-node/bin/jasmine-node tests/jasmine/",
     "update": "node npm-install.js && npm run build && npm test"
   },
   "repository": {
