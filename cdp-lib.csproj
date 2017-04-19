@@ -102,9 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="dist\%40types\cdp-lib.d.ts" />
-    <TypeScriptCompile Include="lib\cdp-lib.ts" />
-    <TypeScriptCompile Include="lib\utils.ts" />
-    <TypeScriptCompile Include="lib\utils\libs.ts" />
+    <TypeScriptCompile Include="src\cdp-lib.ts" />
+    <TypeScriptCompile Include="src\utils.ts" />
+    <TypeScriptCompile Include="src\utils\libs.ts" />
     <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\jasmine\utils.spec.ts" />
   </ItemGroup>
@@ -129,5 +129,8 @@
     <Content Include="docs\en\README.md" />
     <Content Include="docs\images\.gitkeep" />
     <Content Include="docs\ja\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".npmignore" />
   </ItemGroup>
 </Project>
