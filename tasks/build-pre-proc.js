@@ -1,8 +1,8 @@
 ﻿'use strict';
-const fs = require("fs-extra");
+const fs = require('fs-extra');
 
-const DIST_DIR  = "./dist/";
-const BUILT_DIR = "./built/";
+const DIST_DIR  = './dist/';
+const BUILT_DIR = './built/';
 
 function clean() {
     fs.removeSync(DIST_DIR);

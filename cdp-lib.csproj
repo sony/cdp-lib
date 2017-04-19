@@ -75,17 +75,18 @@
     <Content Include="built\cdp-lib.js" />
     <Content Include="built\utils.js" />
     <Content Include="built\utils\libs.js" />
+    <Content Include="built\utils\tools.js" />
     <Content Include="dist\cdp-lib.js" />
     <Content Include="docs\reports\coverage\index.html" />
     <Content Include="docs\reports\metrics\index.html" />
     <Content Include="docs\typedoc\index.html" />
-    <Content Include="npm-install.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tasks\banner.js" />
     <Content Include="tasks\build-post-proc.js" />
     <Content Include="tasks\build-pre-proc.js" />
     <Content Include="tasks\clean.js" />
+    <Content Include="tasks\npm-install.js" />
     <Content Include="tests\jasmine\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>
@@ -98,10 +99,23 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="built\cdp-lib.d.ts">
+      <DependentUpon>cdp-lib.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\utils.d.ts">
+      <DependentUpon>utils.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\utils\libs.d.ts">
+      <DependentUpon>libs.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\utils\tools.d.ts">
+      <DependentUpon>tools.js</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="dist\%40types\cdp-lib.d.ts" />
     <TypeScriptCompile Include="src\cdp-lib.ts" />
     <TypeScriptCompile Include="src\utils.ts" />
     <TypeScriptCompile Include="src\utils\libs.ts" />
+    <TypeScriptCompile Include="src\utils\tools.ts" />
     <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\jasmine\utils.spec.ts" />
   </ItemGroup>
@@ -129,5 +143,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".npmignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="built\utils\libs.js.map">
+      <DependentUpon>libs.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="built\cdp-lib.js.map">
+      <DependentUpon>cdp-lib.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="built\utils.js.map">
+      <DependentUpon>utils.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="built\utils\tools.js.map">
+      <DependentUpon>tools.js</DependentUpon>
+    </Content>
   </ItemGroup>
 </Project>

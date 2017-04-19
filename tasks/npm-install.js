@@ -19,11 +19,11 @@ function npm(callback) {
     try {
         var npm = spawn(npmcmd, ['install'], { cwd: process.cwd(), stdio: 'inherit' });
     } catch (error) {
-        console.log('error: ' + error);
+        handleError('error: ' + error);
     }
 
-    npm.on('error', function (err) {
-        errorHandler(err);
+    npm.on('error', function (error) {
+        handleError('error: ' + error);
     });
     npm.on('close', function (code) {
         if (0 === code) {
@@ -32,11 +32,15 @@ function npm(callback) {
                 callback();
             }
         } else {
-            console.log('*** Faild npm install *** : error code = ' + code + '\n');
-            // Returned exit code = 1(Fail)
-            process.exit(1);
+            handleError('*** Faild npm install *** : error code = ' + code + '\n');
         }
     });
+}
+
+function handleError(msg) {
+    console.log(msg);
+    // Returned exit code = 1(Fail)
+    process.exit(1);
 }
 
 function main () {

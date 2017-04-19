@@ -5,11 +5,11 @@
     "node": true
   },
   "rules": {
-    "indent": [ "error", 4 ],
-    "semi": [ "error", "always" ],
+    "indent": "off",
+    "semi": ["error", "always"],
 
     "comma-dangle": "off",
-    "no-cond-assign": [ "error", "always" ],
+    "no-cond-assign": ["error", "always"],
     "no-unused-vars": ["error", {"args": "none"}],
     "no-console": "off"
   }

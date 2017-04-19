@@ -73,6 +73,14 @@ module.exports = {
             commonjs: 'which',
             commonjs2: 'which',
         },
+        'chalk': {
+            commonjs: 'chalk',
+            commonjs2: 'chalk',
+        },
+        'cli-spinner': {
+            commonjs: 'cli-spinner',
+            commonjs2: 'cli-spinner',
+        },
     },
     plugins: [
         new webpack.optimize.LimitChunkCountPlugin({
