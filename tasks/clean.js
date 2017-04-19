@@ -1,10 +1,11 @@
-﻿const fs    = require('fs-extra');
+﻿'use strict';
+const fs = require('fs-extra');
 const path  = require('path');
 const glob  = require('glob');
 
-const DIST_DIR  = "./dist/"
-const BUILT_DIR = "./built/"
-const TEST_DIR = "./tests/jasmine/"
+const DIST_DIR  = "./dist/";
+const BUILT_DIR = "./built/";
+const TEST_DIR  = "./tests/jasmine/";
 
 function main() {
     fs.removeSync(DIST_DIR);

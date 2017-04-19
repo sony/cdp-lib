@@ -79,6 +79,7 @@
     <Content Include="npm-install.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="tasks\banner.js" />
     <Content Include="tasks\build-post-proc.js" />
     <Content Include="tasks\build-pre-proc.js" />
     <Content Include="tasks\clean.js" />
@@ -112,5 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dts-bundle.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BANNER" />
+    <Content Include="LICENSE" />
+    <Content Include="NOTICE" />
   </ItemGroup>
 </Project>

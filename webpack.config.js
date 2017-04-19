@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var banner = require('./tasks/banner');
 
 module.exports = {
     target: 'node',
@@ -76,6 +77,11 @@ module.exports = {
     plugins: [
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
+        }),
+        new webpack.BannerPlugin({
+            banner: banner('.js'),
+            raw: true,
+            ntryOnly: true,
         }),
     ],
 };
