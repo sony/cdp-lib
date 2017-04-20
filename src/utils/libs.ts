@@ -4,6 +4,7 @@ import * as hogan from "hogan.js";
 import * as _l from "lodash";
 import * as _s from "underscore.string";
 import * as which from "which";
+import * as uuid from "uuid";
 import * as chalk from "chalk";
 import { Spinner } from "cli-spinner";
 
@@ -23,6 +24,7 @@ export {
     $,
     _m as _,
     which,
+    uuid,
     chalk,
     Spinner,
 };
