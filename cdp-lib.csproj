@@ -86,7 +86,7 @@
     <Content Include="tasks\build-post-proc.js" />
     <Content Include="tasks\build-pre-proc.js" />
     <Content Include="tasks\clean.js" />
-    <Content Include="tasks\npm-install.js" />
+    <Content Include="tasks\npm-manage.js" />
     <Content Include="tests\jasmine\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>

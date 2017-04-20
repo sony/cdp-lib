@@ -35,9 +35,9 @@ module.exports = {
         },
         'hogan.js': {
             root: 'Hogan',
-            commonjs: 'hogan',
-            commonjs2: 'hogan',
-            amd: 'hogan'
+            commonjs: 'hogan.js',
+            commonjs2: 'hogan.js',
+            amd: 'hogan.js'
         },
         'jsdom': {
             commonjs: 'jsdom',

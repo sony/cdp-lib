@@ -13,7 +13,6 @@ let $: JQueryStatic = (() => {
     return require("jquery")(jsdom.jsdom().defaultView);
 })();
 
-// @types/underscore.string の declare module 名の不具合回避
 export type MixinedUnderscoreStatic = typeof _s & typeof _l;
 let _m: MixinedUnderscoreStatic = <any>_l.mixin(<any>_s.exports());
 
