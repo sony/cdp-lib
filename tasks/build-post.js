@@ -48,8 +48,13 @@ function normalize_d_ts() {
     });
 }
 
+function reflesh_srcmap() {
+    // TODO:
+}
+
 function main() {
     normalize_src();
+    reflesh_srcmap();
     normalize_d_ts();
 }
 

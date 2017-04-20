@@ -83,10 +83,11 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tasks\banner.js" />
-    <Content Include="tasks\build-post-proc.js" />
-    <Content Include="tasks\build-pre-proc.js" />
+    <Content Include="tasks\build-post.js" />
+    <Content Include="tasks\build-pre.js" />
     <Content Include="tasks\clean.js" />
-    <Content Include="tasks\npm-manage.js" />
+    <Content Include="tasks\npm.js" />
+    <Content Include="tasks\srcmap.js" />
     <Content Include="tests\jasmine\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>
