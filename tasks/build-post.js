@@ -5,8 +5,13 @@ const path = require('path');
 const dts = require('dts-bundle');
 const tsfmt = require('typescript-formatter');
 const banner = require('./banner');
+const srcmap = require('./srcmap');
 
-const PACKAGE_NAME = require(path.join(process.cwd(), 'package.json')).name;
+const PACKAGE           = require(path.join(process.cwd(), 'package.json'));
+const PACKAGE_NAME      = PACKAGE.name;
+const PACKAGE_NAMESPACE = PACKAGE.namespace;
+
+const SOURCE_DIR_NAME = "src";
 
 const DIST_DIR      = './dist/';
 const TYPES         = '@types/';
@@ -48,13 +53,29 @@ function normalize_d_ts() {
     });
 }
 
-function reflesh_srcmap() {
-    // TODO:
+function update_srcmap_namespace() {
+    const namespace = (() => {
+        if (PACKAGE_NAMESPACE) {
+            return PACKAGE_NAMESPACE + ':///' + PACKAGE_NAME + '/';
+        } else {
+            return PACKAGE_NAME + ':///';
+        }
+    })();
+    let srcNode = srcmap.getSourceNodeFromInlineSourceMapFile(LIBRARY_FILE);
+    let script = srcmap.getScriptFromSourceNode(srcNode, (srcPath) => {
+        return srcPath
+            .replace('webpack:///' + SOURCE_DIR_NAME + '/', namespace)
+            .replace('webpack:/webpack', 'webpack:///webpack')
+            .replace('webpack:/external', 'webpack:///external/')
+            .replace('webpack:///~', 'webpack:///node_modules')
+        ;
+    });
+    fs.writeFileSync(LIBRARY_FILE, script, 'utf8');
 }
 
 function main() {
     normalize_src();
-    reflesh_srcmap();
+    update_srcmap_namespace();
     normalize_d_ts();
 }
 
