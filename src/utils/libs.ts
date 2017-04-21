@@ -8,14 +8,14 @@ import * as uuid from "uuid";
 import * as chalk from "chalk";
 import { Spinner } from "cli-spinner";
 
-let $: JQueryStatic = (() => {
+const $: JQueryStatic = (() => {
     (<any>global).DOMParser = require("xmldom").DOMParser;
-    let jsdom = require("jsdom");
+    const jsdom = require("jsdom");
     return require("jquery")(jsdom.jsdom().defaultView);
 })();
 
 export type MixinedUnderscoreStatic = typeof _s & typeof _l;
-let _m: MixinedUnderscoreStatic = <any>_l.mixin(<any>_s.exports());
+const _m: MixinedUnderscoreStatic = <any>_l.mixin(<any>_s.exports());
 
 export {
     fs,

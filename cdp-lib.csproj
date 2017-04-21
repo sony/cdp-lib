@@ -81,6 +81,7 @@
     <Content Include="docs\reports\metrics\index.html" />
     <Content Include="docs\typedoc\index.html" />
     <Content Include="package.json" />
+    <Content Include="project.config.js" />
     <Content Include="README.md" />
     <Content Include="tasks\banner.js" />
     <Content Include="tasks\build-post.js" />
@@ -125,9 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="tests\jasmine\tsconfig.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="dts-bundle.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="BANNER" />

@@ -16,6 +16,20 @@ import * as os from "os";
 // exports methods:
 
 /**
+ * Handle command line error and kill process.
+ * When the application received error from cli, please call this method.
+ *
+ * @param {String} error  error information.
+ */
+export function handleError(error: string): void {
+    console.error(chalk.red(error));
+    // returned exit code = 1 (fail)
+    process.exit(1);
+}
+
+//___________________________________________________________________________________________________________________//
+
+/**
  * Get spinner instance.
  * CLI helper.
  *
@@ -24,9 +38,9 @@ import * as os from "os";
  * @return {Spinner} cli-spinner instance.
  */
 export function getSpinner(format?: string, index?: number): { start: () => void; stop: (clean?: boolean) => void; } {
-    let fmt = format || "%s";
-    let spinner = new Spinner(fmt);
-    let idx = (null != index && 0 <= index && index < 10) ? index : Math.floor(Math.random() * 9); // random value of preset array[0-9]
+    const fmt = format || "%s";
+    const spinner = new Spinner(fmt);
+    const idx = (null != index && 0 <= index && index < 10) ? index : Math.floor(Math.random() * 9); // random value of preset array[0-9]
     spinner.setSpinnerString(Spinner.spinners[idx]);
     return spinner;
 }
@@ -47,12 +61,12 @@ export interface NormalizeTextOptions {
  * Normalize text line-feed.
  * for windows git user.
  *
- * @param  {String}               text    input text.
- * @param  {NormalizeTextOptions} [setBOM]  true: set BOM / false: remove BOM.
+ * @param  {String}               text      input text.
+ * @param  {NormalizeTextOptions} [options] option.
  * @return {String} normalized text.
  */
 export function normalizeText(text: string, options?: NormalizeTextOptions): string {
-    let opt: NormalizeTextOptions = $.extend({}, {
+    const opt: NormalizeTextOptions = $.extend({}, {
         eol: os.EOL,
         bom: true,
     }, options);
@@ -60,7 +74,7 @@ export function normalizeText(text: string, options?: NormalizeTextOptions): str
     text = text
         .replace(/^\ufeff/gm, "")   // remove bom
         .replace(/\r\n/gm, "\n")    // once '\n'
-        .replace(/\r/gm, "\n")      // once '\n'
+        .replace(/\r/gm, "\n")
     ;
 
     if (opt.bom) {
@@ -70,7 +84,7 @@ export function normalizeText(text: string, options?: NormalizeTextOptions): str
         text = text.replace(/\n/gm, opt.eol);
     }
     if (opt.tab) {
-        let spaces = (() => {
+        const spaces = (() => {
             let s = "";
             for (let i = 0; i < opt.tab; i++) {
                 s += " ";
@@ -106,8 +120,8 @@ export interface ExecCommandOptions extends SpawnOptions {
  * @returns {Number} error code
  */
 export function execCommand(command: string, args: string[], options?: ExecCommandOptions): JQueryPromise<number> {
-    let df = $.Deferred();
-    let opt: ExecCommandOptions = $.extend({}, {
+    const df = $.Deferred();
+    const opt: ExecCommandOptions = $.extend({}, {
         stdio: "inherit",
         spinner: { format: "%s" },
     }, options);
@@ -117,7 +131,7 @@ export function execCommand(command: string, args: string[], options?: ExecComma
             handleError(JSON.stringify(error));
         }
 
-        let spinner = opt.spinner ? getSpinner(opt.spinner.format, opt.spinner.index) : null;
+        const spinner = opt.spinner ? getSpinner(opt.spinner.format, opt.spinner.index) : null;
         if (spinner) {
             spinner.start();
         }
@@ -155,14 +169,14 @@ export interface CopyTemplateOptions extends NormalizeTextOptions {
  * @param {CopyTemplateOptions}  [options] options object.
  */
 export function copyTpl(src: string, dst: string, params: Object, options?: CopyTemplateOptions): void {
-    var opt = $.extend({}, {
+    const opt = $.extend({}, {
         eol: os.EOL,
         bom: true,
         delimiters: "{{ }}",
     }, options);
 
-    let jst = hogan.compile(normalizeText(fs.readFileSync(src).toString(), { eol: "\n", bom: false }), opt);
-    let output = normalizeText(jst.render(params), opt);
+    const jst = hogan.compile(normalizeText(fs.readFileSync(src).toString(), { eol: "\n", bom: false }), opt);
+    const output = normalizeText(jst.render(params), opt);
 
     fs.copySync(dst, output, "utf8");
 }
@@ -207,24 +221,24 @@ export interface FormatXmlOptions extends NormalizeTextOptions {
  * @return {String} formatted XML
  */
 export function formatXML(str: string, options?: FormatXmlOptions): string {
-    let xml = "";
-    let pad = 0;
-    let opt: FormatXmlOptions = $.extend({}, {
+    const opt: FormatXmlOptions = $.extend({}, {
         eol: os.EOL,
         bom: true,
         step: 2,
     }, options);
+    let xml = "";
+    let pad = 0;
     let indent: number;
     let node: string;
 
-    let strArr = normalizeText(str, { eol: "\n" })
+    const strArr = normalizeText(str, { eol: "\n" })
         .replace(/(>)(<)(\/*)/g, "$1\n$2$3") // insert LF to each node once.
         .split("\n");
 
-    let spaces = (len: number) => {
+    const spaces = (len: number) => {
         let s = "";
-        let indent = len * opt.step;
-        for (let i = 0; i < indent; i++) {
+        const _indent = len * opt.step;
+        for (let i = 0; i < _indent; i++) {
             s += " ";
         }
         return s;
@@ -251,19 +265,4 @@ export function formatXML(str: string, options?: FormatXmlOptions): string {
     xml = xml.replace(/\n\n/gm, "\n");
 
     return normalizeText(xml, opt);
-}
-
-///////////////////////////////////////////////////////////////////////
-// private methods:
-
-/**
- * Handle command line error and kill process.
- * When the application received error from cli, please call this method.
- *
- * @param {String} error  error information.
- */
-function handleError(error: string): void {
-    console.error(chalk.red(error));
-    // returned exit code = 1 (fail)
-    process.exit(1);
 }

@@ -1,19 +1,19 @@
 'use strict';
-const fs = require('fs-extra');
-const path = require('path');
-const convert = require('convert-source-map');
+const fs                = require('fs-extra');
+const path              = require('path');
+const convert           = require('convert-source-map');
 const SourceMapConsumer = require('source-map').SourceMapConsumer;
-const SourceNode = require('source-map').SourceNode;
+const SourceNode        = require('source-map').SourceNode;
 
 ///////////////////////////////////////////////////////////////////////
 // exports methods:
 
 // get sourceNode from inline-source-map file
-function getSourceNodeFromInlineSourceMapFile(src) {
-    if (fs.existsSync(src)) {
+function getNodeFromScriptFile(scriptfile) {
+    if (fs.existsSync(scriptfile)) {
         return SourceNode.fromStringWithSourceMap(
-            getSourceCodeFromFile(src),
-            new SourceMapConsumer(getSourceMapFromScript(src))
+            getScriptFromFile(scriptfile),
+            new SourceMapConsumer(getMapFromScriptFile(scriptfile))
         );
     } else {
         return new SourceNode();
@@ -21,11 +21,11 @@ function getSourceNodeFromInlineSourceMapFile(src) {
 }
 
 // get sourceNode from script and map files
-function getSourceNodeFromFiles(script, map) {
-    if (fs.existsSync(script) && fs.existsSync(map)) {
+function getNodeFromFiles(scriptFile, mapFile) {
+    if (fs.existsSync(scriptFile) && fs.existsSync(mapFile)) {
         return SourceNode.fromStringWithSourceMap(
-            getSourceCodeFromFile(script),
-            new SourceMapConsumer(getSourceMapFromFile(map))
+            getScriptFromFile(scriptFile),
+            new SourceMapConsumer(getMapFromMapFile(mapFile))
         );
     } else {
         return new SourceNode();
@@ -33,26 +33,26 @@ function getSourceNodeFromFiles(script, map) {
 }
 
 // get sourceNode from code
-function getSourceNodeFromCode(code) {
+function getNodeFromCode(code) {
     if (/^\/\/[@#]\s+sourceMappingURL=(.+)/gm.test(code)) {
         return SourceNode.fromStringWithSourceMap(
-            cleanCodeComment(code),
+            convertCode2Script(code),
             new SourceMapConsumer(convert.fromComment(code).toObject())
         );
     } else {
         let node = new SourceNode();
-        node.add(cleanCodeComment(code));
+        node.add(convertCode2Script(code));
         return node;
     }
 }
 
-// get source script from file SourceNode
-function getScriptFromSourceNode(node, renameSources) {
+// get code with inline-source-map from file SourceNode
+function getCodeFromNode(node, renameSources) {
     let code_map = getCodeMap(node);
     let rename = renameSources;
     let i, n;
-
     let objMap = code_map.map.toJSON();
+
     if (rename) {
         if ('string' === typeof rename) {
             for (i = 0, n = objMap.sources.length; i < n; i++) {
@@ -75,9 +75,9 @@ function getScriptFromSourceNode(node, renameSources) {
 }
 
 // separate source script and map from file
-function separateScriptAndMapFromFile(src, mapPath) {
-    let node = getSourceNodeFromInlineSourceMapFile(src);
-    mapPath = mapPath || path.basename(src, '.js') + '.map';
+function separateScriptAndMapFromScriptFile(scriptFile, mapPath) {
+    let node = getNodeFromScriptFile(scriptFile);
+    mapPath = mapPath || path.basename(scriptFile, '.js') + '.map';
     return {
         script: node.toString().replace(/\r\n/gm, '\n') + '//# sourceMappingURL=' + mapPath,
         map: JSON.stringify(getCodeMap(node).map.toJSON()),
@@ -87,25 +87,26 @@ function separateScriptAndMapFromFile(src, mapPath) {
 ///////////////////////////////////////////////////////////////////////
 // private methods:
 
-// get sourceMap object from script file
-function getSourceMapFromScript(src) {
-    let code = fs.readFileSync(src).toString();
+// // get sourceMap object from inline-source-map file
+function getMapFromScriptFile(scriptFile) {
+    let code = fs.readFileSync(scriptFile).toString();
     return convert.fromComment(code).toObject();
 }
 
-function getSourceMapFromFile(src) {
-    let json = fs.readFileSync(src).toString();
+function getMapFromMapFile(mapFile) {
+    let json = fs.readFileSync(mapFile).toString();
     return JSON.parse(json);
 }
 
-// get sourceMap json from file
-function getSourceCodeFromFile(src) {
-    let code = fs.readFileSync(src).toString();
-    return cleanCodeComment(code);
+// get code from file
+function getScriptFromFile(scriptFile) {
+    let code = fs.readFileSync(scriptFile).toString();
+    return convertCode2Script(code);
 }
 
-// clean source code comment
-function cleanCodeComment(code) {
+// convert to script (non including source-map)
+function convertCode2Script(code) {
+    // clean source code comment
     return code
         .replace(/\/\/\/ <reference path="[\s\S]*?>/gm, '')
         .replace(/^\/\/[@#]\s+sourceMappingURL=(.+)/gm, '');
@@ -126,9 +127,9 @@ function getCodeMap(node) {
 }
 
 module.exports = {
-    getSourceNodeFromInlineSourceMapFile: getSourceNodeFromInlineSourceMapFile,
-    getSourceNodeFromFiles: getSourceNodeFromFiles,
-    getSourceNodeFromCode: getSourceNodeFromCode,
-    getScriptFromSourceNode: getScriptFromSourceNode,
-    separateScriptAndMapFromFile: separateScriptAndMapFromFile,
+    getNodeFromScriptFile: getNodeFromScriptFile,
+    getNodeFromFiles: getNodeFromFiles,
+    getNodeFromCode: getNodeFromCode,
+    getCodeFromNode: getCodeFromNode,
+    separateScriptAndMapFromScriptFile: separateScriptAndMapFromScriptFile,
 };

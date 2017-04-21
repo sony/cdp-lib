@@ -1,37 +1,58 @@
 ﻿/* eslint-disable no-regex-spaces */
 'use strict';
-const fs = require('fs-extra');
-const path = require('path');
-const dts = require('dts-bundle');
-const tsfmt = require('typescript-formatter');
-const banner = require('./banner');
-const srcmap = require('./srcmap');
+const fs        = require('fs-extra');
+const path      = require('path');
+const dts       = require('dts-bundle');
+const tsfmt     = require('typescript-formatter');
+const banner    = require('./banner');
+const srcmap    = require('./srcmap');
+const config    = require('../project.config.js');
 
-const PACKAGE           = require(path.join(process.cwd(), 'package.json'));
-const PACKAGE_NAME      = PACKAGE.name;
-const PACKAGE_NAMESPACE = PACKAGE.namespace;
+const PACKAGE_NAME      = config.pkg.name;
+const PACKAGE_NAMESPACE = config.lib.namespace;
 
-const SOURCE_DIR_NAME = "src";
+const SOURCE_DIR_NAME = config.dir.src;
 
-const DIST_DIR      = './dist/';
-const TYPES         = '@types/';
-const D_TS_SETTING  = 'dts-bundle.json';
-const LIBRARY_FILE  = DIST_DIR + PACKAGE_NAME + '.js';
-const TYPE_DEF_FILE = DIST_DIR + TYPES + PACKAGE_NAME + '.d.ts';
+const D_TS_SETTING  = config.dts_bundle;
+const LIBRARY_FILE  = path.join(process.cwd(), config.dir.pkg, config.lib.script);
+const TYPE_DEF_FILE = path.join(process.cwd(), config.dir.pkg, config.dir.types, config.lib.d_ts);
+
+function update_srcmap_namespace(code) {
+    const namespace = (() => {
+        if (PACKAGE_NAMESPACE) {
+            return PACKAGE_NAMESPACE + ':///' + PACKAGE_NAME + '/';
+        } else {
+            return PACKAGE_NAME + ':///';
+        }
+    })();
+
+    let srcNode = srcmap.getNodeFromCode(code);
+
+    return srcmap.getCodeFromNode(srcNode, (srcPath) => {
+        return srcPath
+            .replace('webpack:///' + SOURCE_DIR_NAME + '/', namespace)
+            .replace('webpack:/webpack', 'webpack:///webpack')
+            .replace('webpack:/external', 'webpack:///external/')
+            .replace('webpack:///~', 'webpack:///node_modules')
+        ;
+    });
+}
 
 function normalize_src() {
     let src = fs.readFileSync(LIBRARY_FILE).toString();
-    src = '\ufeff' + src
+
+    src = '\ufeff' + update_srcmap_namespace(src)
         .replace(/^\ufeff/gm, '')    // remove bom
         .replace(/\t/gm, '    ')
         .replace(/\r\n/gm, '\n')
     ;
-    fs.writeFileSync(LIBRARY_FILE, src);
+
+    fs.writeFileSync(LIBRARY_FILE, src, 'utf8');
 }
 
 function normalize_d_ts() {
     // concat d.ts
-    dts.bundle(require(path.join(process.cwd(), D_TS_SETTING)));
+    dts.bundle(D_TS_SETTING);
 
     // format d.ts
     tsfmt.processStream(TYPE_DEF_FILE, fs.createReadStream(TYPE_DEF_FILE), {
@@ -45,6 +66,7 @@ function normalize_d_ts() {
             .replace(/^        \*/gm, '     *')
             .replace(/^            \*/gm, '         *')
             .replace(/^                \*/gm, '             *')
+            .replace(/'/gm, '"')
         ;
         fs.writeFileSync(TYPE_DEF_FILE, src);
     })
@@ -53,29 +75,8 @@ function normalize_d_ts() {
     });
 }
 
-function update_srcmap_namespace() {
-    const namespace = (() => {
-        if (PACKAGE_NAMESPACE) {
-            return PACKAGE_NAMESPACE + ':///' + PACKAGE_NAME + '/';
-        } else {
-            return PACKAGE_NAME + ':///';
-        }
-    })();
-    let srcNode = srcmap.getSourceNodeFromInlineSourceMapFile(LIBRARY_FILE);
-    let script = srcmap.getScriptFromSourceNode(srcNode, (srcPath) => {
-        return srcPath
-            .replace('webpack:///' + SOURCE_DIR_NAME + '/', namespace)
-            .replace('webpack:/webpack', 'webpack:///webpack')
-            .replace('webpack:/external', 'webpack:///external/')
-            .replace('webpack:///~', 'webpack:///node_modules')
-        ;
-    });
-    fs.writeFileSync(LIBRARY_FILE, script, 'utf8');
-}
-
 function main() {
     normalize_src();
-    update_srcmap_namespace();
     normalize_d_ts();
 }
 

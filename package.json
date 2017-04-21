@@ -4,7 +4,6 @@
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
   "main": "dist/cdp-lib.js",
   "types": "dist/@types/cdp-lib.d.ts",
-  "namespace": "cdp",
   "scripts": {
     "prebuild": "node ./tasks/build-pre.js",
     "build": "tsc && webpack",

@@ -9,6 +9,7 @@
     chalk,
     Spinner,
     ////
+    handleError,
     getSpinner,
     normalizeText,
     copyTpl,
@@ -69,6 +70,16 @@ describe("check utils/libs instance", () => {
 });
 
 describe("check utils/tools", () => {
+
+    it("handleError", () => {
+        expect(handleError).toBeDefined();
+        expect("function" === typeof handleError).toBeTruthy();
+        spyOn(process, "exit").and.callFake((value: number) => {
+            expect(value).toEqual(1);
+        });
+        handleError("TEST: Error Call");
+    });
+
     it("getSpinner", () => {
         expect(getSpinner).toBeDefined();
         expect("function" === typeof getSpinner).toBeTruthy();

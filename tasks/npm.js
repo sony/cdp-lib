@@ -11,7 +11,7 @@ function command(commandString, shouldEnd) {
     process.stdin.pipe(child.stdin);
 }
 
-// npm install
+// npm operation
 function npm(operation) {
     return new Promise((resolve, reject) => {
         console.log('*** Start npm ' + operation + ' ***');
@@ -51,7 +51,7 @@ function main () {
     }
 
     let operations = ['install'];
-    if (0 <= process.argv.slice(2/*node npm-manage.js*/).join(';').indexOf('--update')) {
+    if (0 <= process.argv.slice(2/*node npm.js*/).join(';').indexOf('--update')) {
         operations = ['update --save', 'update --save-dev'];
     }
 
