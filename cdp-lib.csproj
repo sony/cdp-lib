@@ -112,7 +112,7 @@
     <TypeScriptCompile Include="built\utils\tools.d.ts">
       <DependentUpon>tools.js</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dist\%40types\cdp-lib.d.ts" />
+    <TypeScriptCompile Include="dist\%40types\cdp-lib\index.d.ts" />
     <TypeScriptCompile Include="src\cdp-lib.ts" />
     <TypeScriptCompile Include="src\utils.ts" />
     <TypeScriptCompile Include="src\utils\libs.ts" />
