@@ -1,4 +1,5 @@
-﻿export * from "./utils";
+﻿import * as Utils from "./utils";
+export { Utils };
 
 /**
  * @interface IBoilerplateOptions
