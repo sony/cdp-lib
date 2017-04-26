@@ -16,7 +16,7 @@
     createGUID,
     str2XmlNode,
     formatXML,
-} from "../../built/utils";
+} from "../../built/utils/index";
 
 describe("check utils/libs instance", () => {
 

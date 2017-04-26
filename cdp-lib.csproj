@@ -73,7 +73,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="built\cdp-lib.js" />
-    <Content Include="built\utils.js" />
+    <Content Include="built\utils\index.js" />
     <Content Include="built\utils\libs.js" />
     <Content Include="built\utils\tools.js" />
     <Content Include="dist\cdp-lib.js" />
@@ -103,8 +103,8 @@
     <TypeScriptCompile Include="built\cdp-lib.d.ts">
       <DependentUpon>cdp-lib.js</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="built\utils.d.ts">
-      <DependentUpon>utils.js</DependentUpon>
+    <TypeScriptCompile Include="built\utils\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="built\utils\libs.d.ts">
       <DependentUpon>libs.js</DependentUpon>
@@ -114,7 +114,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="dist\%40types\cdp-lib\index.d.ts" />
     <TypeScriptCompile Include="src\cdp-lib.ts" />
-    <TypeScriptCompile Include="src\utils.ts" />
+    <TypeScriptCompile Include="src\utils\index.ts" />
     <TypeScriptCompile Include="src\utils\libs.ts" />
     <TypeScriptCompile Include="src\utils\tools.ts" />
     <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
@@ -153,13 +153,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="built\utils.js.map">
-      <DependentUpon>utils.js</DependentUpon>
+    <Content Include="built\utils\tools.js.map">
+      <DependentUpon>tools.js</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="built\utils\tools.js.map">
-      <DependentUpon>tools.js</DependentUpon>
+    <Content Include="built\utils\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
     </Content>
   </ItemGroup>
 </Project>

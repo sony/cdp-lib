@@ -1,4 +1,4 @@
-﻿import { fs } from "./utils";
+﻿export * from "./utils";
 
 /**
  * @interface IBoilerplateOptions
@@ -19,10 +19,6 @@ export class CDPLib {
      * main command
      */
     public static execute(options: IBoilerplateOptions): void {
-        if (fs.existsSync("package.json")) {
-            console.log("ok");
-        } else {
-            console.log("ng");
-        }
+        console.log("ok");
     }
 }
