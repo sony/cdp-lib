@@ -3,6 +3,7 @@
 /node_modules
 /obj
 /src
+/tasks
 /tests
 /BANNER
 /*.sln
