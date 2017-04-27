@@ -5,7 +5,7 @@
   "main": "dist/cdp-lib.js",
   "types": "dist/@types/cdp-lib.d.ts",
   "scripts": {
-    "build": "run-p -l build:*",
+    "build": "run-p build:*",
     "build:ts": "tsc && webpack",
     "prebuild:ts": "node ./tasks/build-pre.js",
     "postbuild:ts": "node ./tasks/build-post.js",
