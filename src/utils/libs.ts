@@ -10,8 +10,15 @@ import { Spinner } from "cli-spinner";
 
 const $: JQueryStatic = (() => {
     (<any>global).DOMParser = require("xmldom").DOMParser;
-    const jsdom = require("jsdom");
-    return require("jquery")(jsdom.jsdom().defaultView);
+    const _window = (() => {
+        const jsdom = require("jsdom");
+        if ("function" === typeof jsdom.JSDOM) {    // v10+
+            return new jsdom.JSDOM().window;
+        } else {                                    // v9.12.x
+            return jsdom.jsdom().defaultView;
+        }
+    })();
+    return require("jquery")(_window);
 })();
 
 export type MixinedUnderscoreStatic = typeof _s & typeof _l;
