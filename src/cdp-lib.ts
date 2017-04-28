@@ -18,12 +18,12 @@ export interface IProjectConfigration {
  */
 export interface ICompileConfigration {
     // TypeScript
-    tsTranspileTarget?: "es5" | "es2015";       // TypeScript の transpile target
-    moduleSystem?: "commonjs" | "amd" | "umd";  // JavaScript module system
+    tsTranspileTarget?: "es5" | "es2015";                   // TypeScript の transpile target
+    moduleSystem?: "none" | "commonjs" | "amd" | "umd";     // JavaScript module system
     // Webpack
-    webpackTarget?: string;                     // Webpack target configuration
+    webpackTarget?: string;                                 // Webpack target configuration
     // CSS
-    supportCSS?: boolean;                       // CSS を含める場合には true
+    supportCSS?: boolean;                                   // CSS を含める場合には true
 }
 
 /**
