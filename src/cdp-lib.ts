@@ -31,8 +31,8 @@ export interface ICompileConfigration {
  * @brief library module プロジェクトのコンフィギュレーション設定
  */
 export interface ILibraryConfigration extends IProjectConfigration, ICompileConfigration {
-    projectKind: "library";                       // プロジェクト種類 ex) library
-    webpackTarget?: "node" | "web" | "electron";  // Webpack target configuration
+    projectKind: "library";                                             // プロジェクト種類 ex) library
+    webpackTarget?: "node" | "web" | "electron" | "electron-renderer";  // Webpack target configuration
 }
 
 /**
