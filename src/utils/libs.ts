@@ -6,6 +6,7 @@ import * as _s from "underscore.string";
 import * as which from "which";
 import * as uuid from "uuid";
 import * as chalk from "chalk";
+import * as semverRegex from "semver-regex";
 import { Spinner } from "cli-spinner";
 
 const $: JQueryStatic = (() => {
@@ -33,5 +34,6 @@ export {
     which,
     uuid,
     chalk,
+    semverRegex,
     Spinner,
 };
