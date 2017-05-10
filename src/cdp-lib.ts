@@ -6,10 +6,11 @@ export { Utils };
  * @brief プロジェクト共通のコンフィギュレーション設定
  */
 export interface IProjectConfigration {
-    projectName: string;    // プロジェクト名 ex) cdp-lib
-    projectKind: string;    // プロジェクト種類 ex) library
-    version: string;        // バージョン ex) 1.0.0
-    license: string;        // ライセンス ex) Apache-2.0
+    projectName: string;            // プロジェクト名 ex) cdp-lib
+    projectKind: string;            // プロジェクト種類 ex) library
+    version: string;                // バージョン ex) 1.0.0
+    license: string;                // ライセンス ex) Apache-2.0
+    logOptions: Utils.ILogOptions;  // ログオプション
 }
 
 /**
@@ -71,11 +72,12 @@ export interface IWebAppConfigration extends IProjectConfigration, ICompileConfi
  * @class CDPLib
  * @brief CDP boilerplate 生成機能を提供するクラス
  */
-export class CDPLib {
+export default class CDPLib {
     /**
      * main command
      */
     public static execute(options: IProjectConfigration): void {
-        console.log("ok");
+        Utils.setOptions(options.logOptions);
+        console.log(JSON.stringify(options));
     }
 }

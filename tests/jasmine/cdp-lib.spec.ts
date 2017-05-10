@@ -1,3 +1,4 @@
-﻿import { CDPLib } from "../../built/cdp-lib";
+﻿/* tslint:disable:no-unused-variable no-unused-vars */
+/* eslint-disable no-unused-vars */
 
-CDPLib.execute(null);
+import CDPLib from "../../built/cdp-lib";
