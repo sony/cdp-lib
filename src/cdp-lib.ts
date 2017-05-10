@@ -6,11 +6,11 @@ export { Utils };
  * @brief プロジェクト共通のコンフィギュレーション設定
  */
 export interface IProjectConfigration {
-    projectName: string;            // プロジェクト名 ex) cdp-lib
-    projectKind: string;            // プロジェクト種類 ex) library
-    version: string;                // バージョン ex) 1.0.0
-    license: string;                // ライセンス ex) Apache-2.0
-    logOptions: Utils.ILogOptions;  // ログオプション
+    projectName: string;                // プロジェクト名 ex) cdp-lib
+    projectKind: string;                // プロジェクト種類 ex) library
+    version: string;                    // バージョン ex) 1.0.0
+    license: string;                    // ライセンス ex) Apache-2.0
+    settings: Utils.IGlobalSettings;    // ログオプション
 }
 
 /**
@@ -77,7 +77,7 @@ export default class CDPLib {
      * main command
      */
     public static execute(options: IProjectConfigration): void {
-        Utils.setOptions(options.logOptions);
+        Utils.setSettings(options.settings);
         console.log(JSON.stringify(options));
     }
 }

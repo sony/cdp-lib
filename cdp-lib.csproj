@@ -75,7 +75,7 @@
     <Content Include="built\cdp-lib.js" />
     <Content Include="built\utils\index.js" />
     <Content Include="built\utils\libs.js" />
-    <Content Include="built\utils\log.js" />
+    <Content Include="built\utils\settings.js" />
     <Content Include="built\utils\tools.js" />
     <Content Include="dist\cdp-lib.js" />
     <Content Include="docs\reports\coverage\index.html" />
@@ -110,8 +110,8 @@
     <TypeScriptCompile Include="built\utils\libs.d.ts">
       <DependentUpon>libs.js</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="built\utils\log.d.ts">
-      <DependentUpon>log.js</DependentUpon>
+    <TypeScriptCompile Include="built\utils\settings.d.ts">
+      <DependentUpon>settings.js</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="built\utils\tools.d.ts">
       <DependentUpon>tools.js</DependentUpon>
@@ -120,7 +120,7 @@
     <TypeScriptCompile Include="src\cdp-lib.ts" />
     <TypeScriptCompile Include="src\utils\index.ts" />
     <TypeScriptCompile Include="src\utils\libs.ts" />
-    <TypeScriptCompile Include="src\utils\log.ts" />
+    <TypeScriptCompile Include="src\utils\settings.ts" />
     <TypeScriptCompile Include="src\utils\tools.ts" />
     <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\jasmine\utils.spec.ts" />
@@ -168,8 +168,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="built\utils\log.js.map">
-      <DependentUpon>log.js</DependentUpon>
+    <Content Include="built\utils\settings.js.map">
+      <DependentUpon>settings.js</DependentUpon>
     </Content>
   </ItemGroup>
 </Project>

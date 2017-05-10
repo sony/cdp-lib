@@ -1,36 +1,64 @@
-﻿/**
- * @interface ILogOptions
- * @brief ログオプションインターフェイス
+﻿import * as path from "path";
+import { $ } from "./libs";
+
+/**
+ * @interface IGlobalSettings
+ * @brief グローバル設定インターフェイス
  */
-export interface ILogOptions {
-    force: boolean;     // エラー継続用
-    verbose: boolean;   // 詳細ログ
-    silent: boolean;    // silent mode
+export interface IGlobalSettings {
+    force?: boolean;     // エラー継続用
+    verbose?: boolean;   // 詳細ログ
+    silent?: boolean;    // silent mode
+    libPath?: string;    // cdp-lib 本体があるディレクトリ
 }
 
-let _settings: ILogOptions = {
+let _settings: IGlobalSettings = {
     force: false,
     verbose: false,
     silent: false,
+    libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
 };
 
+///////////////////////////////////////////////////////////////////////
+// exports methods:
+
 /**
- * オプション指定
+ * 設定取得
  *
- * @param {ILogOptions} options ログに使用するオプション
+ * @return {IGlobalSettings} options ログに使用するオプション
  */
-export function setOptions(options: ILogOptions): void {
-    if (options) {
-        _settings.force = options.force || _settings.force;
-        _settings.force = options.verbose || _settings.verbose;
-        _settings.force = options.silent || _settings.silent;
+export function getSettings(): IGlobalSettings {
+    return $.extend({}, _settings);
+}
+
+/**
+ * 設定指定
+ *
+ * @param {IGlobalSettings} options ログに使用するオプション
+ */
+export function setSettings(settings: IGlobalSettings): void {
+    if (settings) {
+        _settings.force     = settings.force    || _settings.force;
+        _settings.verbose   = settings.verbose  || _settings.verbose;
+        _settings.silent    = settings.silent   || _settings.silent;
+        _settings.libPath   = settings.libPath  || _settings.libPath;
     } else {
         _settings = {
             force: false,
             verbose: false,
             silent: false,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
         };
     }
+}
+
+/**
+ * "cdp-lib" が存在するパスを取得
+ *
+ * @return {String} cdp-lib への path
+ */
+export function getLibPath(): string {
+    return _settings.libPath;
 }
 
 /**

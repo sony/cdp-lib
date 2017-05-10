@@ -1,4 +1,6 @@
-﻿import {
+﻿import * as path from "path";
+
+import {
     fs,
     glob,
     hogan,
@@ -9,6 +11,13 @@
     chalk,
     Spinner,
     ////
+    getSettings,
+    setSettings,
+    getLibPath,
+    log,
+    debug,
+    assert,
+    ////
     handleError,
     getSpinner,
     normalizeText,
@@ -17,6 +26,20 @@
     str2XmlNode,
     formatXML,
 } from "../../built/utils/index";
+
+var org = {
+    force: false,
+    verbose: false,
+    silent: false,
+    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib'
+};
+
+var hoge = {
+    force: false,
+    verbose: false,
+    silent: false,
+    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib'
+};
 
 describe("check utils/libs instance", () => {
 
@@ -66,6 +89,154 @@ describe("check utils/libs instance", () => {
     it("cli-spinner", () => {
         expect(Spinner).toBeDefined();
         expect("function" === typeof Spinner).toBeTruthy();
+    });
+});
+
+describe("check utils/settings", () => {
+    afterEach(() => {
+        setSettings(null);
+    });
+
+    it("getSettings", () => {
+        expect(getSettings).toBeDefined();
+        let settings = getSettings();
+        expect(settings).toEqual({
+            force: false,
+            verbose: false,
+            silent: false,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+        });
+
+        settings.force = true;
+        settings.libPath = "hoge";
+
+        expect(getSettings()).not.toEqual({
+            force: true,
+            verbose: false,
+            silent: false,
+            libPath: "hoge",
+        });
+        expect(getSettings()).toEqual({
+            force: false,
+            verbose: false,
+            silent: false,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+        });
+    });
+
+    it("setSettings", () => {
+        expect(setSettings).toBeDefined();
+        setSettings({
+            force: true,
+        });
+        expect(getSettings()).toEqual({
+            force: true,
+            verbose: false,
+            silent: false,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+        });
+        setSettings({
+            verbose: true,
+        });
+        expect(getSettings()).toEqual({
+            force: true,
+            verbose: true,
+            silent: false,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+        });
+        setSettings({
+            silent: true,
+        });
+        expect(getSettings()).toEqual({
+            force: true,
+            verbose: true,
+            silent: true,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+        });
+        setSettings({
+            libPath: "hoge",
+        });
+        expect(getSettings()).toEqual({
+            force: true,
+            verbose: true,
+            silent: true,
+            libPath: "hoge",
+        });
+        setSettings(null);
+        expect(getSettings()).toEqual({
+            force: false,
+            verbose: false,
+            silent: false,
+            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+        });
+    });
+
+    it("getLibPath", () => {
+        expect(getLibPath).toBeDefined();
+        expect(getLibPath()).toEqual(path.join(process.cwd(), "node_modules", "cdp-lib"));
+        setSettings({
+            libPath: "hoge",
+        });
+        expect(getLibPath()).toEqual("hoge");
+    });
+
+    it("log", () => {
+        spyOn(console, "log").and.callFake((message: string, ...optionalParams: any[]) => {
+            expect(message).toEqual("TEST");
+            if (optionalParams && 0 < optionalParams.length) {
+                expect(optionalParams[0][0].hoge).toEqual("TEST");
+            }
+        });
+        expect(log).toBeDefined();
+        log("TEST");
+        log("TEST", { hoge: "TEST" });
+        setSettings({ silent: true });
+        log("Doesn't call");
+    });
+
+    it("debug", () => {
+        spyOn(console, "error").and.callFake((message: string, ...optionalParams: any[]) => {
+            expect(message).toEqual("DEBUG: TEST");
+            if (optionalParams && 0 < optionalParams.length) {
+                expect(optionalParams[0][0].hoge).toEqual("TEST");
+            }
+        });
+        expect(debug).toBeDefined();
+        debug("Doesn't call");
+        debug("Doesn't call", { hoge: "TEST" });
+        setSettings({ verbose: true });
+        debug("TEST");
+        debug("TEST", { hoge: "TEST" });
+        setSettings({ silent: true });
+        debug("Doesn't call");
+        debug("Doesn't call", { hoge: "TEST" });
+    });
+
+    it("assert", () => {
+        spyOn(console, "warn").and.callFake((message: string, ...optionalParams: any[]) => {
+            expect(message).toEqual("TEST(force)");
+            if (optionalParams && 0 < optionalParams.length) {
+                expect(optionalParams[0][0].hoge).toEqual("TEST");
+            }
+        });
+        spyOn(console, "error").and.callFake((message: string, ...optionalParams: any[]) => {
+            expect(message).toEqual("TEST(exit)");
+            if (optionalParams && 0 < optionalParams.length) {
+                expect(optionalParams[0][0].hoge).toEqual("TEST");
+            }
+        });
+        spyOn(process, "exit").and.stub();
+
+        expect(assert).toBeDefined();
+        assert(true, "Doesn't call");
+        assert(true, "Doesn't call", { hoge: "TEST" });
+
+        assert(false, "TEST(exit)");
+        assert(false, "TEST(exit)", { hoge: "TEST" });
+
+        setSettings({ force: true });
+        assert(false, "TEST(force)");
+        assert(false, "TEST(force)", { hoge: "TEST" });
     });
 });
 

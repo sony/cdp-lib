@@ -1,16 +1,20 @@
-﻿import {
+﻿import * as path from "path";
+import * as os from "os";
+import { spawn, SpawnOptions } from "child_process";
+
+import {
     fs,
     hogan,
     $,
     which,
     uuid,
-    chalk,
     Spinner,
 } from "./libs";
 
-import { spawn, SpawnOptions } from "child_process";
-
-import * as os from "os";
+import {
+    assert,
+    getLibPath,
+} from "./settings";
 
 ///////////////////////////////////////////////////////////////////////
 // exports methods:
@@ -22,9 +26,23 @@ import * as os from "os";
  * @param {String} error  error information.
  */
 export function handleError(error: string): void {
-    console.error(chalk.red(error));
-    // returned exit code = 1 (fail)
-    process.exit(1);
+    assert(false, error);
+}
+
+//___________________________________________________________________________________________________________________//
+
+/**
+ * "templates" ディレクトリからのパスを取得.
+ *
+ * @param  {String} target ターゲットを指定. null の場合は、templates を返却
+ * @return {String} templates/hogehoge
+ */
+export function templatePath(target: string): string {
+    if (null == target) {
+        return path.join(getLibPath(), "templates");
+    } else {
+        return path.join(getLibPath(), "templates", target);
+    }
 }
 
 //___________________________________________________________________________________________________________________//
@@ -73,7 +91,7 @@ export function normalizeText(text: string, options?: NormalizeTextOptions): str
 
     text = text
         .replace(/^\ufeff/gm, "")   // remove bom
-        .replace(/\r\n/gm, "\n")    // once '\n'
+        .replace(/\r\n/gm, "\n")    // once "\n"
         .replace(/\r/gm, "\n")
     ;
 
