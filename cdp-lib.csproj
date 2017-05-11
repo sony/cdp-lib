@@ -89,6 +89,11 @@
     <Content Include="tasks\build-pre.js" />
     <Content Include="tasks\clean.js" />
     <Content Include="tasks\srcmap.js" />
+    <Content Include="templates\library\structure\tasks\banner.js" />
+    <Content Include="templates\library\structure\tasks\build-post.js" />
+    <Content Include="templates\library\structure\tasks\build-pre.js" />
+    <Content Include="templates\library\structure\tasks\clean.js" />
+    <Content Include="templates\library\structure\tasks\srcmap.js" />
     <Content Include="tests\jasmine\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>
@@ -171,5 +176,33 @@
     <Content Include="built\utils\settings.js.map">
       <DependentUpon>settings.js</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="templates\common\structure\docs\en\README.md" />
+    <Content Include="templates\common\structure\docs\images\.gitkeep" />
+    <Content Include="templates\common\structure\docs\ja\README.md" />
+    <Content Include="templates\common\structure\tests\eslint\.gitkeep" />
+    <Content Include="templates\common\structure\tests\jasmine\.gitkeep" />
+    <Content Include="templates\common\structure\tests\tslint\tslint.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="templates\desktop\" />
+    <Folder Include="templates\library\structure\dist\" />
+    <Folder Include="templates\mobile\" />
+    <Folder Include="templates\web\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="templates\common\.gitkeep" />
+    <Content Include="templates\common\.npmignore" />
+    <Content Include="templates\common\_BANNER.tpl" />
+    <Content Include="templates\common\_LICENSE.tpl" />
+    <Content Include="templates\common\_NOTICE.tpl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="templates\library\_package.json.tpl" />
+    <Content Include="templates\library\_project.config.js.tpl" />
+    <Content Include="templates\library\_README.md.tpl" />
+    <Content Include="templates\library\_tsconfig.json.tpl" />
+    <Content Include="templates\library\_webpack.config.js.tpl" />
   </ItemGroup>
 </Project>

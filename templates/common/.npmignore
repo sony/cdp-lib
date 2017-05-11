@@ -1,0 +1,16 @@
+/bin
+/built
+/node_modules
+/obj
+/src
+/tasks
+/tests
+/BANNER
+/*.sln
+/*.csproj
+/*.csproj.user
+/*.suo
+/tsconfig.json
+/webpack.config.json
+/npm-install.*
+/.npmignore
