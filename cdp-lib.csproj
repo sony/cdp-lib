@@ -73,11 +73,30 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="built\cdp-lib.js" />
+    <Content Include="built\generators\base\generator-base.js" />
+    <Content Include="built\generators\base\index.js" />
+    <Content Include="built\generators\base\interfaces.js" />
+    <Content Include="built\generators\desktop\generator-electoron.js" />
+    <Content Include="built\generators\desktop\index.js" />
+    <Content Include="built\generators\desktop\interfaces.js" />
+    <Content Include="built\generators\index.js" />
+    <Content Include="built\generators\library\generator-module.js" />
+    <Content Include="built\generators\library\index.js" />
+    <Content Include="built\generators\library\interfaces.js" />
+    <Content Include="built\generators\mobile\generator-cordova.js" />
+    <Content Include="built\generators\mobile\index.js" />
+    <Content Include="built\generators\mobile\interfaces.js" />
+    <Content Include="built\generators\web\generator-browser.js" />
+    <Content Include="built\generators\web\index.js" />
+    <Content Include="built\generators\web\interfaces.js" />
     <Content Include="built\utils\index.js" />
     <Content Include="built\utils\libs.js" />
     <Content Include="built\utils\settings.js" />
     <Content Include="built\utils\tools.js" />
     <Content Include="dist\cdp-lib.js" />
+    <Content Include="dist\cdp-lib.min.js">
+      <DependentUpon>cdp-lib.js</DependentUpon>
+    </Content>
     <Content Include="docs\reports\coverage\index.html" />
     <Content Include="docs\reports\metrics\index.html" />
     <Content Include="docs\typedoc\index.html" />
@@ -109,6 +128,54 @@
     <TypeScriptCompile Include="built\cdp-lib.d.ts">
       <DependentUpon>cdp-lib.js</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\base\generator-base.d.ts">
+      <DependentUpon>generator-base.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\base\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\base\interfaces.d.ts">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\desktop\generator-electoron.d.ts">
+      <DependentUpon>generator-electoron.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\desktop\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\desktop\interfaces.d.ts">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\library\generator-module.d.ts">
+      <DependentUpon>generator-module.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\library\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\library\interfaces.d.ts">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\mobile\generator-cordova.d.ts">
+      <DependentUpon>generator-cordova.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\mobile\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\mobile\interfaces.d.ts">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\web\generator-browser.d.ts">
+      <DependentUpon>generator-browser.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\web\index.d.ts">
+      <DependentUpon>index.js</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="built\generators\web\interfaces.d.ts">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="built\utils\index.d.ts">
       <DependentUpon>index.js</DependentUpon>
     </TypeScriptCompile>
@@ -123,6 +190,22 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="dist\%40types\cdp-lib\index.d.ts" />
     <TypeScriptCompile Include="src\cdp-lib.ts" />
+    <TypeScriptCompile Include="src\generators\base\generator-base.ts" />
+    <TypeScriptCompile Include="src\generators\base\index.ts" />
+    <TypeScriptCompile Include="src\generators\base\interfaces.ts" />
+    <TypeScriptCompile Include="src\generators\desktop\generator-electoron.ts" />
+    <TypeScriptCompile Include="src\generators\desktop\index.ts" />
+    <TypeScriptCompile Include="src\generators\desktop\interfaces.ts" />
+    <TypeScriptCompile Include="src\generators\index.ts" />
+    <TypeScriptCompile Include="src\generators\library\generator-module.ts" />
+    <TypeScriptCompile Include="src\generators\library\index.ts" />
+    <TypeScriptCompile Include="src\generators\library\interfaces.ts" />
+    <TypeScriptCompile Include="src\generators\mobile\generator-cordova.ts" />
+    <TypeScriptCompile Include="src\generators\mobile\index.ts" />
+    <TypeScriptCompile Include="src\generators\mobile\interfaces.ts" />
+    <TypeScriptCompile Include="src\generators\web\generator-browser.ts" />
+    <TypeScriptCompile Include="src\generators\web\index.ts" />
+    <TypeScriptCompile Include="src\generators\web\interfaces.ts" />
     <TypeScriptCompile Include="src\utils\index.ts" />
     <TypeScriptCompile Include="src\utils\libs.ts" />
     <TypeScriptCompile Include="src\utils\settings.ts" />
@@ -178,12 +261,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="templates\common\structure\docs\en\README.md" />
-    <Content Include="templates\common\structure\docs\images\.gitkeep" />
-    <Content Include="templates\common\structure\docs\ja\README.md" />
-    <Content Include="templates\common\structure\tests\eslint\.gitkeep" />
-    <Content Include="templates\common\structure\tests\jasmine\.gitkeep" />
-    <Content Include="templates\common\structure\tests\tslint\tslint.json" />
+    <Content Include="templates\base\structure\docs\en\README.md" />
+    <Content Include="templates\base\structure\docs\images\.gitkeep" />
+    <Content Include="templates\base\structure\docs\ja\README.md" />
+    <Content Include="templates\base\structure\tests\eslint\.gitkeep" />
+    <Content Include="templates\base\structure\tests\jasmine\.gitkeep" />
+    <Content Include="templates\base\structure\tests\tslint\tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\desktop\" />
@@ -192,17 +275,68 @@
     <Folder Include="templates\web\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="templates\common\.gitkeep" />
-    <Content Include="templates\common\.npmignore" />
-    <Content Include="templates\common\_BANNER.tpl" />
-    <Content Include="templates\common\_LICENSE.tpl" />
-    <Content Include="templates\common\_NOTICE.tpl" />
+    <Content Include="templates\base\.gitkeep" />
+    <Content Include="templates\base\.npmignore" />
+    <Content Include="dist\cdp-lib.min.js.map">
+      <DependentUpon>cdp-lib.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\base\generator-base.js.map">
+      <DependentUpon>generator-base.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\base\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\base\interfaces.js.map">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\desktop\generator-electoron.js.map">
+      <DependentUpon>generator-electoron.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\desktop\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\desktop\interfaces.js.map">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\library\generator-module.js.map">
+      <DependentUpon>generator-module.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\library\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\library\interfaces.js.map">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\mobile\generator-cordova.js.map">
+      <DependentUpon>generator-cordova.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\mobile\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\mobile\interfaces.js.map">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\web\generator-browser.js.map">
+      <DependentUpon>generator-browser.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\web\index.js.map">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="built\generators\web\interfaces.js.map">
+      <DependentUpon>interfaces.js</DependentUpon>
+    </Content>
+    <None Include="templates\base\_BANNER" />
+    <None Include="templates\base\_LICENSE" />
+    <None Include="templates\base\_NOTICE" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="templates\library\_package.json.tpl" />
-    <Content Include="templates\library\_project.config.js.tpl" />
-    <Content Include="templates\library\_README.md.tpl" />
-    <Content Include="templates\library\_tsconfig.json.tpl" />
-    <Content Include="templates\library\_webpack.config.js.tpl" />
+    <None Include="templates\library\_package.json" />
+    <Content Include="templates\library\_project.config.js" />
+    <None Include="templates\library\_README.md" />
+    <None Include="templates\library\_tsconfig.json" />
+    <Content Include="templates\library\_webpack.config.js" />
   </ItemGroup>
 </Project>
