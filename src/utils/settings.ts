@@ -1,15 +1,16 @@
 ﻿import * as path from "path";
-import { $ } from "./libs";
+import { fs, $ } from "./libs";
 
 /**
  * @interface IGlobalSettings
  * @brief グローバル設定インターフェイス
  */
 export interface IGlobalSettings {
-    force?: boolean;     // エラー継続用
-    verbose?: boolean;   // 詳細ログ
-    silent?: boolean;    // silent mode
-    libPath?: string;    // cdp-lib 本体があるディレクトリ
+    force?: boolean;            // エラー継続用
+    verbose?: boolean;          // 詳細ログ
+    silent?: boolean;           // silent mode
+    libPath?: string;           // cdp-lib 本体があるディレクトリ
+    lang?: "en-US" | "ja-JP";
 }
 
 let _settings: IGlobalSettings = {
@@ -17,6 +18,7 @@ let _settings: IGlobalSettings = {
     verbose: false,
     silent: false,
     libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+    lang: "en-US",
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -42,12 +44,14 @@ export function setSettings(settings: IGlobalSettings): void {
         _settings.verbose   = settings.verbose  || _settings.verbose;
         _settings.silent    = settings.silent   || _settings.silent;
         _settings.libPath   = settings.libPath  || _settings.libPath;
+        _settings.lang      = settings.lang     || _settings.lang;
     } else {
         _settings = {
             force: false,
             verbose: false,
             silent: false,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         };
     }
 }
@@ -120,4 +124,33 @@ export function assert(test?: boolean, message?: string, ...optionalParams: any[
             process.exit(1);
         }
     }
+}
+
+let _lang: any;
+
+/**
+ * ローカライズ
+ *
+ * @param {String} key キー文字列
+ * @return 翻訳された文字列
+ */
+export function translate(key: string): string {
+    if (!_lang) {
+        _lang = JSON.parse(fs.readFileSync(
+            path.join(_settings.libPath, "res/locales", "messages." + _settings.lang + ".json"), "utf8").toString()
+        );
+    }
+
+    let resouce = $.extend({}, _lang);
+    const props = key.split(".");
+    while (0 < props.length) {
+        const prop = props.shift();
+        if (resouce[prop]) {
+            resouce = resouce[prop];
+        } else {
+            assert(false, "resouce not found. key: " + key);
+            return null;
+        }
+    }
+    return resouce;
 }

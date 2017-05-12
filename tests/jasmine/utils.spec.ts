@@ -31,14 +31,16 @@ var org = {
     force: false,
     verbose: false,
     silent: false,
-    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib'
+    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib',
+    lang: "en-US",
 };
 
 var hoge = {
     force: false,
     verbose: false,
     silent: false,
-    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib'
+    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib',
+    lang: "en-US",
 };
 
 describe("check utils/libs instance", () => {
@@ -105,6 +107,7 @@ describe("check utils/settings", () => {
             verbose: false,
             silent: false,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         });
 
         settings.force = true;
@@ -115,12 +118,14 @@ describe("check utils/settings", () => {
             verbose: false,
             silent: false,
             libPath: "hoge",
+            lang: "en-US",
         });
         expect(getSettings()).toEqual({
             force: false,
             verbose: false,
             silent: false,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         });
     });
 
@@ -134,6 +139,7 @@ describe("check utils/settings", () => {
             verbose: false,
             silent: false,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         });
         setSettings({
             verbose: true,
@@ -143,6 +149,7 @@ describe("check utils/settings", () => {
             verbose: true,
             silent: false,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         });
         setSettings({
             silent: true,
@@ -152,6 +159,7 @@ describe("check utils/settings", () => {
             verbose: true,
             silent: true,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         });
         setSettings({
             libPath: "hoge",
@@ -161,6 +169,7 @@ describe("check utils/settings", () => {
             verbose: true,
             silent: true,
             libPath: "hoge",
+            lang: "en-US",
         });
         setSettings(null);
         expect(getSettings()).toEqual({
@@ -168,6 +177,7 @@ describe("check utils/settings", () => {
             verbose: false,
             silent: false,
             libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
+            lang: "en-US",
         });
     });
 

@@ -33,6 +33,7 @@ export interface IBaseStructureConfigration {
 export interface IProjectConfigration {
     projectName: string;                            // プロジェクト名 ex) cdp-lib
     projectKind: string;                            // プロジェクト種類 ex) library
+    action: string;                                 // ex) create
     version: string;                                // バージョン ex) 1.0.0
     license: string;                                // ライセンス ex) Apache-2.0
     settings: Utils.IGlobalSettings;                // ログオプション

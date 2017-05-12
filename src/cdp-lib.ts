@@ -10,6 +10,8 @@ import {
     IMobileAppConfigration,
     IDesktopAppConfigration,
     IWebAppConfigration,
+    ////
+    newGenerator
 } from "./generators";
 
 export {
@@ -30,11 +32,16 @@ export {
  * @brief CDP boilerplate 生成機能を提供するクラス
  */
 export default class CDPLib {
+
+    ///////////////////////////////////////////////////////////////////////
+    // pubic methods:
+
     /**
      * main command
      */
-    public static execute(options: IProjectConfigration): void {
-        Utils.setSettings(options.settings);
-        console.log(JSON.stringify(options, null, 4));
+    public static execute(config: IProjectConfigration): Promise<void> {
+        Utils.setSettings(config.settings);
+        console.log(JSON.stringify(config, null, 4));
+        return newGenerator(config).run();
     }
 }

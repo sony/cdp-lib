@@ -328,6 +328,8 @@
     <Content Include="built\generators\web\interfaces.js.map">
       <DependentUpon>interfaces.js</DependentUpon>
     </Content>
+    <Content Include="res\locales\messages.en-US.json" />
+    <Content Include="res\locales\messages.ja-JP.json" />
     <None Include="templates\base\_BANNER" />
     <None Include="templates\base\_LICENSE" />
     <None Include="templates\base\_NOTICE" />
