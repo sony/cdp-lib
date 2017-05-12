@@ -137,34 +137,33 @@ export interface ExecCommandOptions extends SpawnOptions {
  * @param   {ExecCommandOptions}   [options]  cli-spinner"s options.
  * @returns {Number} error code
  */
-export function execCommand(command: string, args: string[], options?: ExecCommandOptions): JQueryPromise<number> {
-    const df = $.Deferred();
-    const opt: ExecCommandOptions = $.extend({}, {
-        stdio: "inherit",
-        spinner: { format: "%s" },
-    }, options);
+export function execCommand(command: string, args: string[], options?: ExecCommandOptions): Promise<number> {
+    return new Promise((resolve, reject) => {
+        const opt: ExecCommandOptions = $.extend({}, {
+            stdio: "inherit",
+            spinner: { format: "%s" },
+        }, options);
 
-    which(command, (error, resolvedCommand) => {
-        if (error) {
-            handleError(JSON.stringify(error));
-        }
+        which(command, (error, resolvedCommand) => {
+            if (error) {
+                handleError(JSON.stringify(error));
+            }
 
-        const spinner = opt.spinner ? getSpinner(opt.spinner.format, opt.spinner.index) : null;
-        if (spinner) {
-            spinner.start();
-        }
+            const spinner = opt.spinner ? getSpinner(opt.spinner.format, opt.spinner.index) : null;
+            if (spinner) {
+                spinner.start();
+            }
 
-        spawn(resolvedCommand, args, opt)
-            .on("error", handleError)
-            .on("close", (code) => {
-                if (spinner) {
-                    spinner.stop(true);
-                }
-                df.resolve(code);
-            });
+            spawn(resolvedCommand, args, opt)
+                .on("error", handleError)
+                .on("close", (code) => {
+                    if (spinner) {
+                        spinner.stop(true);
+                    }
+                    resolve(code);
+                });
+        });
     });
-
-    return df.promise();
 }
 
 //___________________________________________________________________________________________________________________//
@@ -196,7 +195,7 @@ export function copyTpl(src: string, dst: string, params: Object, options?: Copy
     const jst = hogan.compile(normalizeText(fs.readFileSync(src).toString(), { eol: "\n", bom: false }), opt);
     const output = normalizeText(jst.render(params), opt);
 
-    fs.copySync(dst, output, "utf8");
+    fs.writeFileSync(dst, output, "utf8");
 }
 
 //___________________________________________________________________________________________________________________//

@@ -16,13 +16,13 @@ export interface ISourceDirctoryConfigration {
  * @brief プロジェクトディレクトリのコンフィギュレーション設定
  */
 export interface IBaseStructureConfigration {
-    src: string;                                // ソースコードのルートディレクトリ名
-    pkg: string;                                // パッケージ先ディレクトリ名
-    built: string;                              // コンパイル先ディレクトリ名
-    doc: string;                                // ドキュメントディレクトリ名
-    task: string;                               // タスクディレクトリ名
-    test: string;                               // テストディレクトリ名
-    types: string;                              // TypeScript 型定義ディレクトリ名
+    src?: string;                               // ソースコードのルートディレクトリ名
+    pkg?: string;                               // パッケージ先ディレクトリ名
+    built?: string;                             // コンパイル先ディレクトリ名
+    doc?: string;                               // ドキュメントディレクトリ名
+    task?: string;                              // タスクディレクトリ名
+    test?: string;                              // テストディレクトリ名
+    types?: string;                             // TypeScript 型定義ディレクトリ名
     srcConfig?: ISourceDirctoryConfigration;    // ISourceDirctoryConfigration
 }
 
@@ -31,14 +31,15 @@ export interface IBaseStructureConfigration {
  * @brief プロジェクト共通のコンフィギュレーション設定
  */
 export interface IProjectConfigration {
-    projectName: string;                            // プロジェクト名 ex) cdp-lib
-    projectKind: string;                            // プロジェクト種類 ex) library
-    action: string;                                 // ex) create
-    version: string;                                // バージョン ex) 1.0.0
-    license: string;                                // ライセンス ex) Apache-2.0
+    projectName: string;                            // プロジェクト名 ex) "cdp-lib"
+    projectKind: string;                            // プロジェクト種類 ex) "library"
+    action: string;                                 // ex) "create"
+    version: string;                                // バージョン ex) "1.0.0"
+    license: string;                                // ライセンス ex) "Apache-2.0"
     settings: Utils.IGlobalSettings;                // ログオプション
     namespace?: string;                             // ルート名前空間
     structureConfig?: IBaseStructureConfigration;   // IBaseStructureConfigration
+    copyright?: string;                             // コピーライト文字列 ex) "Copyright (c) 2017 Sony Corporation"
 }
 
 /**

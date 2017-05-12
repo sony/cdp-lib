@@ -108,13 +108,28 @@
     <Content Include="tasks\build-pre.js" />
     <Content Include="tasks\clean.js" />
     <Content Include="tasks\srcmap.js" />
-    <Content Include="templates\library\structure\tasks\banner.js" />
-    <Content Include="templates\library\structure\tasks\build-post.js" />
-    <Content Include="templates\library\structure\tasks\build-pre.js" />
-    <Content Include="templates\library\structure\tasks\clean.js" />
-    <Content Include="templates\library\structure\tasks\srcmap.js" />
+    <Content Include="templates\library\structure\task\banner.js" />
+    <Content Include="templates\library\structure\task\build-post.js" />
+    <Content Include="templates\library\structure\task\build-pre.js" />
+    <Content Include="templates\library\structure\task\clean.js" />
+    <Content Include="templates\library\structure\task\srcmap.js" />
     <Content Include="tests\jasmine\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
+    </Content>
+    <Content Include="tests\jasmine\generators.base.spec.js">
+      <DependentUpon>generators.base.spec.ts</DependentUpon>
+    </Content>
+    <Content Include="tests\jasmine\generators.desktop.spec.js">
+      <DependentUpon>generators.desktop.spec.ts</DependentUpon>
+    </Content>
+    <Content Include="tests\jasmine\generators.library.spec.js">
+      <DependentUpon>generators.library.spec.ts</DependentUpon>
+    </Content>
+    <Content Include="tests\jasmine\generators.mobile.spec.js">
+      <DependentUpon>generators.mobile.spec.ts</DependentUpon>
+    </Content>
+    <Content Include="tests\jasmine\generators.web.spec.js">
+      <DependentUpon>generators.web.spec.ts</DependentUpon>
     </Content>
     <Content Include="tests\jasmine\utils.spec.js">
       <DependentUpon>utils.spec.ts</DependentUpon>
@@ -211,6 +226,11 @@
     <TypeScriptCompile Include="src\utils\settings.ts" />
     <TypeScriptCompile Include="src\utils\tools.ts" />
     <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
+    <TypeScriptCompile Include="tests\jasmine\generators.base.spec.ts" />
+    <TypeScriptCompile Include="tests\jasmine\generators.desktop.spec.ts" />
+    <TypeScriptCompile Include="tests\jasmine\generators.library.spec.ts" />
+    <TypeScriptCompile Include="tests\jasmine\generators.mobile.spec.ts" />
+    <TypeScriptCompile Include="tests\jasmine\generators.web.spec.ts" />
     <TypeScriptCompile Include="tests\jasmine\utils.spec.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -261,16 +281,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="templates\base\structure\docs\en\README.md" />
-    <Content Include="templates\base\structure\docs\images\.gitkeep" />
-    <Content Include="templates\base\structure\docs\ja\README.md" />
-    <Content Include="templates\base\structure\tests\eslint\.gitkeep" />
-    <Content Include="templates\base\structure\tests\jasmine\.gitkeep" />
-    <Content Include="templates\base\structure\tests\tslint\tslint.json" />
+    <Content Include="templates\base\structure\doc\en\README.md" />
+    <Content Include="templates\base\structure\doc\images\.gitkeep" />
+    <Content Include="templates\base\structure\doc\ja\README.md" />
+    <Content Include="templates\base\structure\test\eslint\.gitkeep" />
+    <Content Include="templates\base\structure\test\jasmine\.gitkeep" />
+    <Content Include="templates\base\structure\test\tslint\tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\desktop\" />
-    <Folder Include="templates\library\structure\dist\" />
+    <Folder Include="templates\library\structure\pkg\" />
     <Folder Include="templates\mobile\" />
     <Folder Include="templates\web\" />
   </ItemGroup>
@@ -331,7 +351,8 @@
     <Content Include="res\locales\messages.en-US.json" />
     <Content Include="res\locales\messages.ja-JP.json" />
     <None Include="templates\base\_BANNER" />
-    <None Include="templates\base\_LICENSE" />
+    <None Include="templates\base\_LICENSE.Apache-2.0" />
+    <Content Include="templates\base\_LICENSE.MIT" />
     <None Include="templates\base\_NOTICE" />
   </ItemGroup>
   <ItemGroup>

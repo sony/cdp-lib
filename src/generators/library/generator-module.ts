@@ -1,7 +1,7 @@
 ﻿/* tslint:disable:no-unused-variable no-unused-vars */
 /* eslint-disable no-unused-vars */
 
-import { GeneratorBase } from "../base";
+import { IBaseStructureConfigration, GeneratorBase } from "../base";
 import { ILibraryConfigration } from "./interfaces";
 
 /**
@@ -14,13 +14,26 @@ export class GeneratorModule extends GeneratorBase {
     // imprementes: GeneratorBase
 
     /**
+     * 既定の directory 構造を返却
+     */
+    defaultBaseStructure(): IBaseStructureConfigration {
+        return {
+            src: "src",
+            pkg: "dist",
+            built: "built",
+            doc: "docs",
+            task: "tasks",
+            test: "tests",
+            types: "@types",
+        };
+    }
+
+    /**
      * create action entry
      * @param {ILibraryConfigration} config コンフィグ設定
      */
-    create(config: ILibraryConfigration): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            // TODO:
-            reject("under construction.");
-        });
+    async create(config: ILibraryConfigration): Promise<void> {
+        // TODO:
+        console.log("check.");
     }
 }

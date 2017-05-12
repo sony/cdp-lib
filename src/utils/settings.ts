@@ -10,6 +10,7 @@ export interface IGlobalSettings {
     verbose?: boolean;          // 詳細ログ
     silent?: boolean;           // silent mode
     libPath?: string;           // cdp-lib 本体があるディレクトリ
+    targetDir?: string;         // 作業ディレクトリ
     lang?: "en-US" | "ja-JP";
 }
 
@@ -40,11 +41,12 @@ export function getSettings(): IGlobalSettings {
  */
 export function setSettings(settings: IGlobalSettings): void {
     if (settings) {
-        _settings.force     = settings.force    || _settings.force;
-        _settings.verbose   = settings.verbose  || _settings.verbose;
-        _settings.silent    = settings.silent   || _settings.silent;
-        _settings.libPath   = settings.libPath  || _settings.libPath;
-        _settings.lang      = settings.lang     || _settings.lang;
+        _settings.force     = settings.force        || _settings.force;
+        _settings.verbose   = settings.verbose      || _settings.verbose;
+        _settings.silent    = settings.silent       || _settings.silent;
+        _settings.libPath   = settings.libPath      || _settings.libPath;
+        _settings.targetDir = settings.targetDir    || _settings.targetDir;
+        _settings.lang      = settings.lang         || _settings.lang;
     } else {
         _settings = {
             force: false,
@@ -63,6 +65,15 @@ export function setSettings(settings: IGlobalSettings): void {
  */
 export function getLibPath(): string {
     return _settings.libPath;
+}
+
+/**
+ * 指定された targetDir を取得
+ *
+ * @return {String} targetDir への path
+ */
+export function getTargetDir(): string {
+    return _settings.targetDir;
 }
 
 /**

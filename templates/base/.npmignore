@@ -1,10 +1,10 @@
 /bin
-/built
 /node_modules
 /obj
-/src
-/tasks
-/tests
+/{{src}}
+/{{built}}
+/{{task}}
+/{{test}}
 /BANNER
 /*.sln
 /*.csproj
@@ -12,5 +12,4 @@
 /*.suo
 /tsconfig.json
 /webpack.config.json
-/npm-install.*
 /.npmignore
