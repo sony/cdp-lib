@@ -126,6 +126,8 @@ export interface ExecCommandOptions extends SpawnOptions {
         format?: string;    // ex) "%s"
         index?: number;     // 0 - 9 の数値を指定
     };
+    stdout?: (data: string) => void;
+    stderr?: (data: string) => void;
 }
 
 /**
@@ -142,6 +144,8 @@ export function execCommand(command: string, args: string[], options?: ExecComma
         const opt: ExecCommandOptions = $.extend({}, {
             stdio: "inherit",
             spinner: { format: "%s" },
+            stdout: (data: string): void => { /* noop */ },
+            stderr: (data: string): void => { /* noop */ },
         }, options);
 
         which(command, (error, resolvedCommand) => {
@@ -154,7 +158,7 @@ export function execCommand(command: string, args: string[], options?: ExecComma
                 spinner.start();
             }
 
-            spawn(resolvedCommand, args, opt)
+            const child = spawn(resolvedCommand, args, opt)
                 .on("error", handleError)
                 .on("close", (code) => {
                     if (spinner) {
@@ -162,6 +166,15 @@ export function execCommand(command: string, args: string[], options?: ExecComma
                     }
                     resolve(code);
                 });
+
+            if ("pipe" === opt.stdio) {
+                child.stdout.on("data", (data) => {
+                    opt.stdout(data.toString());
+                });
+                child.stderr.on("data", (data) => {
+                    opt.stderr(data.toString());
+                });
+            }
         });
     });
 }

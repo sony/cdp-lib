@@ -1,6 +1,6 @@
 ﻿/* eslint-disable no-regex-spaces */
 'use strict';
-const fs        = require('fs-extra');
+const fs        = require('fs');
 const path      = require('path');
 const dts       = require('dts-bundle');
 const tsfmt     = require('typescript-formatter');

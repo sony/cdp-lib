@@ -1,5 +1,5 @@
 'use strict';
-const fs                = require('fs-extra');
+const fs                = require('fs');
 const path              = require('path');
 const convert           = require('convert-source-map');
 const SourceMapConsumer = require('source-map').SourceMapConsumer;

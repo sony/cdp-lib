@@ -2,11 +2,17 @@
 import {
     fs,
     glob,
+    chalk,
+    _,
     $,
     ////
+    execCommand,
     getTargetDir,
     templatePath,
     copyTpl,
+    log,
+    debug,
+    translate,
 } from "../../utils";
 
 import {
@@ -32,6 +38,8 @@ export abstract class GeneratorBase {
             getTargetDir() :
             path.join(process.cwd(), this._config.projectName);
         this._config.structureConfig = $.extend({}, this.defaultBaseStructure(), this._config.structureConfig);
+
+        debug(JSON.stringify(this._config, null, 4));
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -68,7 +76,7 @@ export abstract class GeneratorBase {
      * @param {String} key ローカライズリソースキーを指定
      */
     protected progress(key: string): void {
-        // TODO:
+        log(chalk.green(translate(key)));
     }
 
     /**
@@ -117,6 +125,30 @@ export abstract class GeneratorBase {
                         .replace(/types/,   this._config.structureConfig.types)
                 );
                 fs.copySync(path.join(templatePath(target), file), dst);
+        });
+    }
+
+    /**
+     * project root directory の取得
+     *
+     * @param {String} directory target directory.
+     */
+    protected queryNodeModuleLatestVersion(name: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            let version: string;
+            execCommand("npm", ["info", name, "version"], {
+                stdio: "pipe",
+                spinner: null,
+                stdout: (data: string) => {
+                    version = _.trim(data);
+                },
+            })
+                .then(() => {
+                    resolve(version);
+                })
+                .catch((reason) => {
+                    reject(reason);
+                });
         });
     }
 

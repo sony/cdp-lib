@@ -41,7 +41,6 @@ export default class CDPLib {
      */
     public static execute(config: IProjectConfigration): Promise<void> {
         Utils.setSettings(config.settings);
-        console.log(JSON.stringify(config, null, 4));
         return newGenerator(config).run();
     }
 }
