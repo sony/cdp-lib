@@ -37,8 +37,31 @@ export class GeneratorElectron extends GeneratorBase {
      * create action entry
      * @param {IDesktopAppConfigration} config コンフィグ設定
      */
-    async create(config: IDesktopAppConfigration): Promise<void> {
+    async create(): Promise<void> {
         // TODO:
         return Promise.reject("under construction.");
+    }
+
+    /**
+     * 必要とする task script 一覧を返却. action: create のときに呼ばれる
+     */
+    get taskList(): string[] {
+        return [
+            "banner.js",
+            "clean.js",
+            "srcmap.js",
+            "build-ts-clean.js",
+            "build-ts-normalize.js",
+        ];
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    // private methods:
+
+    /**
+     * configration にアクセス
+     */
+    private get config(): IDesktopAppConfigration {
+        return <IDesktopAppConfigration>this._config;
     }
 }

@@ -32,8 +32,31 @@ export class GeneratorBrowser extends GeneratorBase {
      * create action entry
      * @param {ILibraryConfigration} config コンフィグ設定
      */
-    async create(config: IWebAppConfigration): Promise<void> {
+    async create(): Promise<void> {
         // TODO:
         return Promise.reject("under construction.");
+    }
+
+    /**
+     * 必要とする task script 一覧を返却. action: create のときに呼ばれる
+     */
+    get taskList(): string[] {
+        return [
+            "banner.js",
+            "clean.js",
+            "srcmap.js",
+            "build-ts-clean.js",
+            "build-ts-normalize.js",
+        ];
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    // private methods:
+
+    /**
+     * configration にアクセス
+     */
+    private get config(): IWebAppConfigration {
+        return <IWebAppConfigration>this._config;
     }
 }

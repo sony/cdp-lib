@@ -27,6 +27,16 @@ export interface IBaseStructureConfigration {
 }
 
 /**
+ * @interface IDevDependency
+ * @brief package.json に指定する devDependencies
+ */
+export interface IDevDependency {
+    name: string;           // module name ex) "typescript"
+    version?: string;       // 指定バージョン. 無指定の場合は最新バージョン
+    esTarget?: string[];    // 指定された ES version のときのみ有効にする
+}
+
+/**
  * @interface IProjectConfigration
  * @brief プロジェクト共通のコンフィギュレーション設定
  */
@@ -40,6 +50,7 @@ export interface IProjectConfigration {
     namespace?: string;                             // ルート名前空間
     structureConfig?: IBaseStructureConfigration;   // IBaseStructureConfigration
     copyright?: string;                             // コピーライト文字列 ex) "Copyright (c) 2017 Sony Corporation"
+    devDependencies?: IDevDependency[];             // 開発用依存モジュール情報
 }
 
 /**
@@ -48,7 +59,7 @@ export interface IProjectConfigration {
  */
 export interface ICompileConfigration {
     // TypeScript
-    tsTranspileTarget?: "es5" | "es2015";                   // TypeScript の transpile target
+    esTarget?: "es5" | "es2015";                            // TypeScript の transpile target
     moduleSystem?: "none" | "commonjs" | "amd" | "umd";     // JavaScript module system
     // Webpack
     webpackTarget?: string;                                 // Webpack target configuration

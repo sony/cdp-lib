@@ -1,14 +1,20 @@
 ﻿/* tslint:disable:no-unused-variable no-unused-vars */
 /* eslint-disable no-unused-vars */
 
+import * as path from "path";
 import {
     IBaseStructureConfigration,
+    IDevDependency,
     GeneratorBase,
     Utils,
 } from "../base";
 import { ILibraryConfigration } from "./interfaces";
 
-const debug = Utils.debug;
+const fs            = Utils.fs;
+const _             = Utils._;
+const debug         = Utils.debug;
+const templatePath  = Utils.templatePath;
+const copyTpl       = Utils.copyTpl;
 
 /**
  * @class GeneratorModule
@@ -38,14 +44,56 @@ export class GeneratorModule extends GeneratorBase {
      * create action entry
      * @param {ILibraryConfigration} config コンフィグ設定
      */
-    async create(config: ILibraryConfigration): Promise<void> {
-        const moduleName = this.ensureModuleName(config);
+    async create(): Promise<void> {
+        const moduleName = this.ensureModuleName();
         debug("moduleName: " + moduleName);
-        this.copyDirectoryStructure();
+        this.createDirectoryStructure();
+        await this.createPackageJSON();
+    }
+
+    /**
+     * 必要とする task script 一覧を返却. action: create のときに呼ばれる
+     */
+    get taskList(): string[] {
+        return [
+            "banner.js",
+            "clean.js",
+            "srcmap.js",
+            "build-ts-clean.js",
+            "build-ts-normalize.js",
+        ];
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    // protected methods:
+
+    /**
+     * 開発時の依存モジュールリストの取得
+     * 必要に応じてオーバーライド
+     *
+     * @return {IDevDependencies}
+     */
+    protected get devDependencies(): IDevDependency[] {
+        // TODO: Node/Browser で切り替え
+        const depends = super.devDependencies.concat([
+            { name: "jasmine-node", version: "^2.0.0",  },
+            { name: "webpack",      version: undefined, },
+        ]);
+
+        return _.sortBy(depends, (depend) => {
+            return depend.name;
+        });
     }
 
     ///////////////////////////////////////////////////////////////////////
     // private methods:
+
+    /**
+     * configration にアクセス
+     */
+    private get config(): ILibraryConfigration {
+        return <ILibraryConfigration>this._config;
+    }
 
     /**
      * module 名の保証
@@ -53,44 +101,36 @@ export class GeneratorModule extends GeneratorBase {
      * - 2: projectName が使用可能な場合はそれを使用する
      * - 3: projectName が使用不可の場合は、index.js を使用する
      */
-    private ensureModuleName(config: ILibraryConfigration): string {
-        if (null == config.moduleName) {
-            if (!/^.*[(\\|\b|/|:|\*|?|\"|<|>|\|)].*$/.test(config.projectName)) {
-                config.moduleName = config.projectName + ".js";
+    private ensureModuleName(): string {
+        if (null == this.config.moduleName) {
+            if (!/^.*[(\\|\s|/|:|\*|?|\"|<|>|\|)].*$/.test(this.config.projectName)) {
+                this.config.moduleName = this.config.projectName + ".js";
             } else {
-                config.moduleName = "index.js";
+                this.config.moduleName = "index.js";
             }
         }
-        return config.moduleName;
+        return this.config.moduleName;
     }
 
     /**
      * ディレクトリ構成情報のコピー
      */
-    private copyDirectoryStructure(): void {
+    private createDirectoryStructure(): void {
         this.copyTplDir("library/structure");
     }
 
     /**
-     * devDependencies 情報を生成
+     * package.json の作成
      */
-    //private async prepareDevDependenciesList(config: ILibraryConfigration): Promise<{ name: string; version: string }[]> {
-    //    const devDependencies = [
-    //        { name: "convert-source-map", version: undefined, es: "all", },
-    //        { name: "del ", version: undefined, es: "all", },
-    //        { name: "dts-bundle", version: undefined, es: "all", },
-    //        { name: "eslint", version: undefined, es: "all", },
-    //        { name: "jasmine-node", version: "^2.0.0", es: "all", },
-    //        { name: "npm-run-all", version: undefined, es: "all", },
-    //        { name: "plato", version: undefined, es: "all", },
-    //        { name: "remap-istanbul", version: undefined, es: "all", },
-    //        { name: "source-map", version: undefined, es: "all", },
-    //        { name: "source-map-loader", version: undefined, es: "all", },
-    //        { name: "tslint", version: undefined, es: "all", },
-    //        { name: "typedoc", version: undefined, es: "all", },
-    //        { name: "typescript", version: undefined, es: "all", },
-    //        { name: "typescript-formatter", version: undefined, es: "all", },
-    //        { name: "webpack", version: undefined, es: "all", },
-    //    ];
-    //}
+    private async createPackageJSON(): Promise<void> {
+        if (null == this.config.devDependencies) {
+            this.config.devDependencies = await this.queryDevDependenciesParam();
+        }
+        copyTpl(
+            path.join(templatePath("library"), "_package.json"),
+            path.join(this.rootDir, "package.json"),
+            this._config,
+            { delimiters: "<% %>" }
+        );
+    }
 }

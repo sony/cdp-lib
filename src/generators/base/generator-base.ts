@@ -7,6 +7,7 @@ import {
     $,
     ////
     execCommand,
+    getSpinner,
     getTargetDir,
     templatePath,
     copyTpl,
@@ -17,7 +18,9 @@ import {
 
 import {
     IBaseStructureConfigration,
+    IDevDependency,
     IProjectConfigration,
+    ICompileConfigration,
 } from "./interfaces";
 
 /**
@@ -33,7 +36,7 @@ export abstract class GeneratorBase {
      *
      * @param {IProjectConfigration} config コンフィグ
      */
-    constructor(private _config: IProjectConfigration) {
+    constructor(protected _config: IProjectConfigration) {
         this._projectRootDir = getTargetDir() ?
             getTargetDir() :
             path.join(process.cwd(), this._config.projectName);
@@ -52,7 +55,7 @@ export abstract class GeneratorBase {
     public run(): Promise<void> {
         switch (this._config.action) {
             case "create":
-                return this.runCreate(this._config);
+                return this.runCreate();
             default:
                 return Promise.reject("unknown action: " + this._config.action);
         }
@@ -65,7 +68,10 @@ export abstract class GeneratorBase {
     abstract defaultBaseStructure(): IBaseStructureConfigration;
 
     // action: create のときに呼ばれる
-    abstract async create(config: IProjectConfigration): Promise<void>;
+    abstract async create(): Promise<void>;
+
+    // 必要とする task script 一覧を返却. action: create のときに呼ばれる
+    abstract get taskList(): string[];
 
     ///////////////////////////////////////////////////////////////////////
     // protected methods:
@@ -116,7 +122,7 @@ export abstract class GeneratorBase {
             .forEach((file) => {
                 const dst = path.join(dstRoot,
                     file
-                        .replace(/src/, this._config.structureConfig.src)
+                        .replace(/src/,     this._config.structureConfig.src)
                         .replace(/pkg/,     this._config.structureConfig.pkg)
                         .replace(/built/,   this._config.structureConfig.built)
                         .replace(/doc/,     this._config.structureConfig.doc)
@@ -152,15 +158,76 @@ export abstract class GeneratorBase {
         });
     }
 
+    /**
+     * 開発時の依存モジュールリストの取得
+     * 必要に応じてオーバーライド
+     *
+     * @return {IDevDependencies}
+     */
+    protected get devDependencies(): IDevDependency[] {
+        return [
+            { name: "convert-source-map",   version: undefined,                         },
+            { name: "del ",                 version: undefined,                         },
+            { name: "dts-bundle",           version: undefined,                         },
+            { name: "eslint",               version: undefined,                         },
+            { name: "npm-run-all",          version: undefined,                         },
+            { name: "plato",                version: undefined,                         },
+            { name: "remap-istanbul",       version: undefined,                         },
+            { name: "source-map",           version: undefined,                         },
+            { name: "source-map-loader",    version: undefined,                         },
+            { name: "tslint",               version: undefined,                         },
+            { name: "typedoc",              version: undefined,                         },
+            { name: "typescript",           version: undefined,                         },
+            { name: "typescript-formatter", version: undefined,                         },
+            { name: "uglify-js",            version: undefined, esTarget: ["es5"],      },
+            { name: "uglify-es",            version: undefined, esTarget: ["es2015"],   },
+        ];
+    }
+
+    /**
+     * devDependencies の template paramaeter を取得
+     *
+     * @return {{ name: string; version: string }[]} テンプレートパラメータに指定する配列
+     */
+    protected async queryDevDependenciesParam(): Promise<{ name: string; version: string }[]> {
+        const spinner = this._config.settings.silent ? null : getSpinner();
+        if (spinner) {
+            spinner.start();
+        }
+
+        const depends = <{ name: string; version: string }[]>this.devDependencies
+            .filter((depend) => {
+                if (null == depend.esTarget) {
+                    return true;
+                } else {
+                    return !!depend.esTarget.find((esVersion) => {
+                        return (<ICompileConfigration>this._config).esTarget === esVersion;
+                    });
+                }
+            });
+
+        for (let i = 0, n = depends.length; i < n; i++) {
+            if (null == depends[i].version) {
+                depends[i].version = "^" + await this.queryNodeModuleLatestVersion(depends[i].name);
+            }
+        }
+
+        if (spinner) {
+            spinner.stop();
+        }
+
+        return depends;
+    }
+
     ///////////////////////////////////////////////////////////////////////
     // private methods:
 
     /**
      * create 処理のエントリ
      */
-    private async runCreate(config: IProjectConfigration): Promise<void> {
+    private async runCreate(): Promise<void> {
         await this.createBase();
-        await this.create(config);
+        await this.create();
     }
 
     //___________________________________________________________________________________________________________________//
@@ -172,6 +239,7 @@ export abstract class GeneratorBase {
         await this.createProjectDir();
         await this.copyBaseStructure();
         await this.copyCommonFiles();
+        await this.copyTaskScripts();
     }
 
     /**
@@ -233,5 +301,20 @@ export abstract class GeneratorBase {
             path.join(srcDir, "_NOTICE"),
             path.join(dstDir, "NOTICE"),
         );
+    }
+
+    /**
+     * task script のコピー
+     */
+    private copyTaskScripts(): void {
+        const srcDir = templatePath("base/task");
+        const dstDir = path.join(this.rootDir, this._config.structureConfig.task);
+
+        this.taskList.forEach((task) => {
+            fs.copySync(
+                path.join(srcDir, task),
+                path.join(dstDir, task),
+            );
+        });
     }
 }
