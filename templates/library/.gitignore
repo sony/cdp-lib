@@ -1,0 +1,23 @@
+# temp files
+.DS_Store
+Thumbs.db
+Desktop.ini
+npm-debug.log
+
+# project files
+*.csproj.user
+*.suo
+
+# project ignores
+!.gitkeep
+.vs/
+.sass-cache/
+.tscache/
+node_modules/
+bin/
+obj/
+temp/
+/{{structureConfig.built}}/**/*.js
+/{{structureConfig.built}}/**/*.map
+/{{structureConfig.built}}/**/*.d.ts
+/{{structureConfig.test}}/jasmine/**/*.js

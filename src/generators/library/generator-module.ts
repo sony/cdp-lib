@@ -47,7 +47,8 @@ export class GeneratorModule extends GeneratorBase {
     async create(): Promise<void> {
         await this.ensureModuleName();
         await this.createDirectoryStructure();
-        await this.createPackageJSON();
+        await this.createProjectSettings();
+        await this.createSourceTemplate();
     }
 
     /**
@@ -73,10 +74,10 @@ export class GeneratorModule extends GeneratorBase {
      * @return {IDevDependencies}
      */
     protected get devDependencies(): IDependency[] {
-        // TODO: Node/Browser で切り替え
         const depends = super.devDependencies.concat([
-            { name: "jasmine-node", version: "^2.0.0",  },
-            { name: "webpack",      version: undefined, },
+            { name: "@types/jasmine",   version: undefined, },
+            { name: "jasmine-node",     version: "^2.0.0",  },
+            { name: "webpack",          version: undefined, },
         ]);
 
         return _.sortBy(depends, (depend) => {
@@ -120,9 +121,69 @@ export class GeneratorModule extends GeneratorBase {
     }
 
     /**
-     * package.json の作成
+     * プロジェクト設定ファイルの作成
      */
-    private async createPackageJSON(): Promise<void> {
+    private async createProjectSettings(): Promise<void> {
+        // project.config.js
+        copyTpl(
+            path.join(templatePath("library"), "_project.config.js"),
+            path.join(this.rootDir, "project.config.js"),
+            this._config,
+            { delimiters: "<% %>" }
+        );
+
+        // webpack.config.js
+        if (null == this.config.webpackLibrary) {
+            this.config.webpackLibrary = this.queryWebpackLibraryTarget();
+        }
+        copyTpl(
+            path.join(templatePath("library"), "_webpack.config.js"),
+            path.join(this.rootDir, "webpack.config.js"),
+            this.config,
+            { delimiters: "<% %>" }
+        );
+
+        // main tsconfig.json
+        copyTpl(
+            path.join(templatePath("library"), "_tsconfig.json"),
+            path.join(this.rootDir, "tsconfig.json"),
+            this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
+
+        // test tsconfig.json
+        copyTpl(
+            path.join(templatePath("library"), "_tsconfig.test.json"),
+            path.join(this.rootDir, this._config.structureConfig.test, "jasmine", "tsconfig.json"),
+            this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
+
+        // eslintrc.json
+        copyTpl(
+            path.join(templatePath("library"), "_eslintrc.json"),
+            path.join(this.rootDir, this._config.structureConfig.test, "eslint", "eslintrc.json"),
+            this.queryEsLintEnvParam(),
+            { delimiters: "<% %>", bom: false, }
+        );
+
+        // .gitignore
+        copyTpl(
+            path.join(templatePath("library"), ".gitignore"),
+            path.join(this.rootDir, ".gitignore"),
+            this._config,
+            { bom: false, }
+        );
+
+        // README.md
+        copyTpl(
+            path.join(templatePath("library"), "_README.md"),
+            path.join(this.rootDir, "README.md"),
+            this._config,
+            { delimiters: "<% %>" }
+        );
+
+        // package.json
         if (null == this.config.devDependencies) {
             this.config.devDependencies = await this.queryDevDependenciesParam();
         }
@@ -130,6 +191,41 @@ export class GeneratorModule extends GeneratorBase {
             path.join(templatePath("library"), "_package.json"),
             path.join(this.rootDir, "package.json"),
             this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
+    }
+
+    /**
+     * ソースの雛形作成
+     */
+    private async createSourceTemplate(): Promise<void> {
+        const _module = path.basename(this._config.moduleName, ".js");
+        const param = {
+            sampleClass: _.classify(_module),
+            sampleModule: _module,
+            built: this._config.structureConfig.built,
+        };
+
+        const script = (() => {
+            if (this._config.structureConfig.srcConfig) {
+                return this._config.structureConfig.srcConfig.script || "";
+            }
+            return "";
+        })();
+
+        // index.ts
+        copyTpl(
+            path.join(templatePath("library"), "src", "_index.ts"),
+            path.join(this.rootDir, this._config.structureConfig.src, script, _module + ".ts"),
+            param,
+            { delimiters: "<% %>" }
+        );
+
+        // index.spec.ts
+        copyTpl(
+            path.join(templatePath("library"), "src", "_index.spec.ts"),
+            path.join(this.rootDir, this._config.structureConfig.test, "jasmine", _module + "spec.ts"),
+            param,
             { delimiters: "<% %>" }
         );
     }

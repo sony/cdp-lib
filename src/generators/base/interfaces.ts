@@ -47,6 +47,7 @@ export interface IProjectConfigration {
     version: string;                                // バージョン ex) "1.0.0"
     license: string;                                // ライセンス ex) "Apache-2.0"
     settings: Utils.IGlobalSettings;                // ログオプション
+    moduleName?: string;                            // メインファイル名
     namespace?: string;                             // ルート名前空間
     structureConfig?: IBaseStructureConfigration;   // IBaseStructureConfigration
     copyright?: string;                             // コピーライト文字列 ex) "Copyright (c) 2017 Sony Corporation"
@@ -63,6 +64,7 @@ export interface ICompileConfigration {
     moduleSystem?: "none" | "commonjs" | "amd" | "umd";     // JavaScript module system
     // Webpack
     webpackTarget?: string;                                 // Webpack target configuration
+    webpackLibrary?: string;                                // Webpack libraryTarget configuration
     // CSS
     supportCSS?: boolean;                                   // CSS を含める場合には true
 }

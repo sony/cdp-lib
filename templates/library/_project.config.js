@@ -4,19 +4,21 @@ const path  = require('path');
 const pkg   = require('./package.json');
 
 const dir = {
-    src: 'src',
-    pkg: 'dist',
-    built: 'built',
-    doc: 'docs',
-    task: 'tasks',
-    test: 'tests',
-    types: '@types',
+    src: '<% structureConfig.src %>',
+    pkg: '<% structureConfig.pkg %>',
+    built: '<% structureConfig.built %>',
+    doc: '<% structureConfig.doc %>',
+    task: '<% structureConfig.task %>',
+    test: '<% structureConfig.test %>',
+    types: '<% structureConfig.types %>',
 };
 
 const lib = {
-    namespace: 'cdp',
-    script: pkg.name + '.js',
-    d_ts: pkg.name + '.d.ts',
+    <%# namespace %>
+    namespace: '<% namespace %>',
+    <%/ namespace %>
+    script: path.basename(pkg.main),
+    d_ts: path.basename(pkg.main, '.js') + '.d.ts',
     bundle_d_ts: 'index.d.ts',
 };
 

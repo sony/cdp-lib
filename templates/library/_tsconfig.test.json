@@ -2,15 +2,14 @@
   "compilerOptions": {
     "module": "<% moduleSystem %>",
     "target": "<% esTarget %>",
-    "declaration": true,
+    "allowJs": true,
+    "declaration": false,
     "emitBOM": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "inlineSources": true,
-    "outDir": "built/"
+    "outDir": "./"
   },
   "exclude": [
-    "node_modules",
-    "<% structureConfig.built %>",
-    "<% structureConfig.test %>"
+    "node_modules"
   ]
 }

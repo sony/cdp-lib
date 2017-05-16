@@ -3,7 +3,7 @@
   "base": {
     "create": {
       "foundation": "Creating project's foundation settings...",
-      "queryVersion": "Resolving dependency module's version...",
+      "queryVersion": "Resolving dependency module's versions...",
       "error": {
         "alreadyExist": "Project directory already exist."
       }

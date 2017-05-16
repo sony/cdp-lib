@@ -224,6 +224,7 @@ export function copyTpl(src: string, dst: string, params: Object, options?: Copy
     const jst = hogan.compile(normalizeText(fs.readFileSync(src).toString(), { eol: "\n", bom: false }), opt);
     const output = normalizeText(jst.render(params), opt);
 
+    fs.ensureFileSync(dst);
     fs.writeFileSync(dst, output, "utf8");
 }
 

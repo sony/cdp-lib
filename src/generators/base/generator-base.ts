@@ -135,9 +135,9 @@ export abstract class GeneratorBase {
     }
 
     /**
-     * project root directory の取得
+     * node module の version 取得
      *
-     * @param {String} directory target directory.
+     * @param {Promise<string>} version text
      */
     protected queryNodeModuleLatestVersion(name: string): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -185,7 +185,7 @@ export abstract class GeneratorBase {
     }
 
     /**
-     * devDependencies の template paramaeter を取得
+     * dependencies の template paramaeter を取得
      *
      * @return {{ name: string; version: string; last?: boolean; }[]} テンプレートパラメータに指定する配列
      */
@@ -225,6 +225,37 @@ export abstract class GeneratorBase {
         }
 
         return depends;
+    }
+
+    /**
+     * webpack.config.js の template paramaeter を取得
+     *
+     * @return {String} libraryTarget に指定する文字列
+     */
+    protected queryWebpackLibraryTarget(): string {
+        switch ((<ICompileConfigration>this._config).moduleSystem) {
+            case "commonjs":
+                return "commonjs2";
+            case "amd":
+                return "amd";
+            case "umd":
+                return "umd";
+            default:
+                return undefined;
+        }
+    }
+
+    /**
+     * eslintrc の env に指定する template paramaeter を取得
+     *
+     * @return {Object} env に指定するテンプレートパラメータオブジェクト
+     */
+    protected queryEsLintEnvParam(): any {
+        const compileSetting = <ICompileConfigration>this._config;
+        return {
+            es6: "es5" !== compileSetting.esTarget,
+            node: "web" !== compileSetting.webpackTarget,
+        };
     }
 
     ///////////////////////////////////////////////////////////////////////

@@ -113,6 +113,7 @@
     <Content Include="templates\base\task\build-ts-normalize.js" />
     <Content Include="templates\base\task\clean.js" />
     <Content Include="templates\base\task\srcmap.js" />
+    <Content Include="templates\library\.gitignore" />
     <Content Include="tests\jasmine\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>
@@ -225,6 +226,8 @@
     <TypeScriptCompile Include="src\utils\libs.ts" />
     <TypeScriptCompile Include="src\utils\settings.ts" />
     <TypeScriptCompile Include="src\utils\tools.ts" />
+    <TypeScriptCompile Include="templates\library\src\_index.spec.ts" />
+    <TypeScriptCompile Include="templates\library\src\_index.ts" />
     <TypeScriptCompile Include="tests\jasmine\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\jasmine\generators.base.spec.ts" />
     <TypeScriptCompile Include="tests\jasmine\generators.desktop.spec.ts" />
@@ -284,13 +287,10 @@
     <Content Include="templates\base\structure\doc\en\README.md" />
     <Content Include="templates\base\structure\doc\images\.gitkeep" />
     <Content Include="templates\base\structure\doc\ja\README.md" />
-    <Content Include="templates\base\structure\test\eslint\.gitkeep" />
-    <Content Include="templates\base\structure\test\jasmine\.gitkeep" />
     <Content Include="templates\base\structure\test\tslint\tslint.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\desktop\" />
-    <Folder Include="templates\library\structure\pkg\" />
     <Folder Include="templates\mobile\" />
     <Folder Include="templates\web\" />
   </ItemGroup>
@@ -354,8 +354,11 @@
     <None Include="templates\base\_LICENSE.Apache-2.0" />
     <Content Include="templates\base\_LICENSE.MIT" />
     <None Include="templates\base\_NOTICE" />
+    <Content Include="templates\library\_tsconfig.test.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="templates\library\_eslintrc.json" />
+    <Content Include="templates\library\structure\pkg\.gitkeep" />
     <None Include="templates\library\_package.json" />
     <Content Include="templates\library\_project.config.js" />
     <None Include="templates\library\_README.md" />
