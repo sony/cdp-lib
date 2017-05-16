@@ -18,7 +18,7 @@ import {
 
 import {
     IBaseStructureConfigration,
-    IDevDependency,
+    IDependency,
     IProjectConfigration,
     ICompileConfigration,
 } from "./interfaces";
@@ -82,7 +82,7 @@ export abstract class GeneratorBase {
      * @param {String} key ローカライズリソースキーを指定
      */
     protected progress(key: string): void {
-        log(chalk.green(translate(key)));
+        log(chalk.cyan(translate(key)));
     }
 
     /**
@@ -164,10 +164,10 @@ export abstract class GeneratorBase {
      *
      * @return {IDevDependencies}
      */
-    protected get devDependencies(): IDevDependency[] {
+    protected get devDependencies(): IDependency[] {
         return [
             { name: "convert-source-map",   version: undefined,                         },
-            { name: "del ",                 version: undefined,                         },
+            { name: "del",                  version: undefined,                         },
             { name: "dts-bundle",           version: undefined,                         },
             { name: "eslint",               version: undefined,                         },
             { name: "npm-run-all",          version: undefined,                         },
@@ -187,15 +187,12 @@ export abstract class GeneratorBase {
     /**
      * devDependencies の template paramaeter を取得
      *
-     * @return {{ name: string; version: string }[]} テンプレートパラメータに指定する配列
+     * @return {{ name: string; version: string; last?: boolean; }[]} テンプレートパラメータに指定する配列
      */
-    protected async queryDevDependenciesParam(): Promise<{ name: string; version: string }[]> {
-        const spinner = this._config.settings.silent ? null : getSpinner();
-        if (spinner) {
-            spinner.start();
-        }
+    protected async queryDevDependenciesParam(): Promise<{ name: string; version: string; last?: boolean }[]> {
+        this.progress("base.create.queryVersion");
 
-        const depends = <{ name: string; version: string }[]>this.devDependencies
+        const depends = <{ name: string; version: string; last?: boolean; }[]>this.devDependencies
             .filter((depend) => {
                 if (null == depend.esTarget) {
                     return true;
@@ -206,14 +203,25 @@ export abstract class GeneratorBase {
                 }
             });
 
+        const progress = (context: any): any => {
+            if ("string" === typeof context && !this._config.settings.silent) {
+                const spinner = getSpinner(chalk.yellow(context), 5);
+                spinner.start();
+                return spinner;
+            } else if (context) {
+                context.stop(true);
+            }
+        };
+
         for (let i = 0, n = depends.length; i < n; i++) {
             if (null == depends[i].version) {
+                const spinner = progress(depends[i].name);
                 depends[i].version = "^" + await this.queryNodeModuleLatestVersion(depends[i].name);
+                progress(spinner);
             }
-        }
-
-        if (spinner) {
-            spinner.stop();
+            if (i === n - 1) {
+                depends[i].last = true;
+            }
         }
 
         return depends;
@@ -236,6 +244,7 @@ export abstract class GeneratorBase {
      * 共通の create 処理
      */
     private async createBase(): Promise<void> {
+        this.progress("base.create.foundation");
         await this.createProjectDir();
         await this.copyBaseStructure();
         await this.copyCommonFiles();
@@ -246,6 +255,9 @@ export abstract class GeneratorBase {
      * プロジェクトディレクトリの作成
      */
     private createProjectDir(): void {
+        if (fs.existsSync(this.rootDir)) {
+            throw Error(translate("base.create.error.alreadyExist"));
+        }
         fs.mkdirsSync(this.rootDir);
     }
 

@@ -1,4 +1,13 @@
 {
   "type": "en-US",
+  "base": {
+    "create": {
+      "foundation": "Creating project's foundation settings...",
+      "queryVersion": "Resolving dependency module's version...",
+      "error": {
+        "alreadyExist": "Project directory already exist."
+      }
+    }
+  },
   "EOF": "EOF"
 }

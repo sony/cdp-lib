@@ -4,7 +4,7 @@
 import * as path from "path";
 import {
     IBaseStructureConfigration,
-    IDevDependency,
+    IDependency,
     GeneratorBase,
     Utils,
 } from "../base";
@@ -45,9 +45,8 @@ export class GeneratorModule extends GeneratorBase {
      * @param {ILibraryConfigration} config コンフィグ設定
      */
     async create(): Promise<void> {
-        const moduleName = this.ensureModuleName();
-        debug("moduleName: " + moduleName);
-        this.createDirectoryStructure();
+        await this.ensureModuleName();
+        await this.createDirectoryStructure();
         await this.createPackageJSON();
     }
 
@@ -73,7 +72,7 @@ export class GeneratorModule extends GeneratorBase {
      *
      * @return {IDevDependencies}
      */
-    protected get devDependencies(): IDevDependency[] {
+    protected get devDependencies(): IDependency[] {
         // TODO: Node/Browser で切り替え
         const depends = super.devDependencies.concat([
             { name: "jasmine-node", version: "^2.0.0",  },
@@ -109,6 +108,7 @@ export class GeneratorModule extends GeneratorBase {
                 this.config.moduleName = "index.js";
             }
         }
+        debug("moduleName: " + this.config.moduleName);
         return this.config.moduleName;
     }
 

@@ -1,6 +1,8 @@
 {
   "name": "<% projectName %>",
   "version": "<% version %>",
+  "description": "",
+  "author": "",
   "main": "<% structureConfig.pkg %>/<% moduleName %>",
   "types": "<% structureConfig.pkg %>/<% structureConfig.types %>/<% projectName %>/index.d.ts",
   "scripts": {
@@ -28,13 +30,13 @@
     "update": "npm update --save-dev && npm update --save && npm run deploy"
   },
   <%# license %>
-  "license": "<%license%>",
+  "license": "<% license %>",
   <%/ license %>
   "dependencies": {
   },
   "devDependencies": {
     <%# devDependencies %>
-    "<% name %>": "<% version %>",
+    "<% name %>": "<% version %>"<%^ last %>,<%/ last %>
     <%/ devDependencies %>
   }
 }

@@ -27,10 +27,10 @@ export interface IBaseStructureConfigration {
 }
 
 /**
- * @interface IDevDependency
- * @brief package.json に指定する devDependencies
+ * @interface IDependency
+ * @brief package.json に指定する dependencies 情報を格納するインターフェイス
  */
-export interface IDevDependency {
+export interface IDependency {
     name: string;           // module name ex) "typescript"
     version?: string;       // 指定バージョン. 無指定の場合は最新バージョン
     esTarget?: string[];    // 指定された ES version のときのみ有効にする
@@ -50,7 +50,7 @@ export interface IProjectConfigration {
     namespace?: string;                             // ルート名前空間
     structureConfig?: IBaseStructureConfigration;   // IBaseStructureConfigration
     copyright?: string;                             // コピーライト文字列 ex) "Copyright (c) 2017 Sony Corporation"
-    devDependencies?: IDevDependency[];             // 開発用依存モジュール情報
+    devDependencies?: IDependency[];                // 開発用依存モジュール情報
 }
 
 /**

@@ -1,4 +1,13 @@
 {
   "type": "ja-JP",
+  "base": {
+    "create": {
+      "foundation": "プロジェクトの基本構成を作成しています...",
+      "queryVersion": "依存モジュールのバージョンを確認しています...",
+      "error": {
+        "alreadyExist": "プロジェクトディレクトリはすでに存在しています。"
+      }
+    }
+  },
   "EOF": "EOF"
 }

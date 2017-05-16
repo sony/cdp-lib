@@ -52,14 +52,30 @@ export function templatePath(target: string): string {
  * CLI helper.
  *
  * @param  {String}  [format]  spinner format string.
- * @param  {Number}  [index]   spinner index defined by cli-spinner. (default: random [0-9])
+ * @param  {Number}  [index]   spinner index defined by cli-spinner. (default: random [0-29])
  * @return {Spinner} cli-spinner instance.
  */
 export function getSpinner(format?: string, index?: number): { start: () => void; stop: (clean?: boolean) => void; } {
+    const spinners = [
+        "|/-\\",
+        "┤┘┴└├┌┬┐",
+        "◢◣◤◥",
+        "▌▀▐▄",
+        "▉▊▋▌▍▎▏▎▍▌▋▊▉",
+        "▁▃▄▅▆▇█▇▆▅▄▃",
+        "☱☲☴",
+        ".oO@*",
+        "◐◓◑◒",
+        ////
+        "◡◡ ⊙⊙ ◠◠",
+        "■□▪▫",
+        "←↖↑↗→↘↓↙",
+        ".oO°Oo.",
+    ];
     const fmt = format || "%s";
     const spinner = new Spinner(fmt);
-    const idx = (null != index && 0 <= index && index < 10) ? index : Math.floor(Math.random() * 9); // random value of preset array[0-9]
-    spinner.setSpinnerString(Spinner.spinners[idx]);
+    const idx = (null != index && 0 <= index && index < 14) ? index : Math.floor(Math.random() * 10);
+    spinner.setSpinnerString(spinners[idx]);
     return spinner;
 }
 

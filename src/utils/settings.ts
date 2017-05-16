@@ -147,9 +147,13 @@ let _lang: any;
  */
 export function translate(key: string): string {
     if (!_lang) {
-        _lang = JSON.parse(fs.readFileSync(
-            path.join(_settings.libPath, "res/locales", "messages." + _settings.lang + ".json"), "utf8").toString()
-        );
+        try {
+            _lang = JSON.parse(fs.readFileSync(
+                path.join(_settings.libPath, "res/locales", "messages." + _settings.lang + ".json"), "utf8").toString()
+            );
+        } catch (error) {
+            throw Error("Language resource JSON parse error" + error.message);
+        }
     }
 
     let resouce = $.extend({}, _lang);
