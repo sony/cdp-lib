@@ -4,6 +4,12 @@
     "es6": <% es6 %>,
     "node": <% node %>
   },
+  "globals": {
+      "module": true,
+      "require": true,
+      "define": true,
+      "exports": true
+  },
   "rules": {
     "indent": "off",
     "semi": ["error", "always"],

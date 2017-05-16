@@ -1,4 +1,5 @@
-﻿/* eslint-disable no-regex-spaces */
+﻿/* eslint-env node, es6 */
+/* eslint-disable no-regex-spaces */
 'use strict';
 const fs        = require('fs');
 const path      = require('path');

@@ -325,13 +325,13 @@ export abstract class GeneratorBase {
             case "Apache-2.0":
                 fs.copySync(
                     path.join(srcDir, "_LICENSE.Apache-2.0"),
-                    path.join(dstDir, ".LICENSE"),
+                    path.join(dstDir, "LICENSE"),
                 );
                 break;
             case "MIT":
                 copyTpl(
                     path.join(srcDir, "_LICENSE.MIT"),
-                    path.join(dstDir, ".LICENSE"),
+                    path.join(dstDir, "LICENSE"),
                     this._config.copyright
                 );
                 break;

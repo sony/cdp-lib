@@ -253,6 +253,18 @@ export function str2XmlNode(str: string): JQuery {
 }
 
 /**
+ * Create XML string from DOM node.
+ *
+ * @param  {String} str  string xml format. ex) '<preference name="DisallowOverscroll" value="true"/>'
+ * @return {jQuery} XML Node instance
+ */
+export function xmlNode2Str($xml: JQuery): string {
+    /* eslint-disable no-undef */
+    return new XMLSerializer().serializeToString($xml[0]);
+    /* eslint-enable no-undef */
+}
+
+/**
  * @interface FormatXmlOptions
  * @brief formatXML() に指定するオプション
  */

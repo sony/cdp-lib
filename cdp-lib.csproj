@@ -50,6 +50,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties package_1json__JSONSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -350,6 +351,10 @@
     </Content>
     <Content Include="res\locales\messages.en-US.json" />
     <Content Include="res\locales\messages.ja-JP.json" />
+    <Content Include="templates\base\visual.studio\_ts.item.group.tpl" />
+    <Content Include="templates\base\visual.studio\_js.item.group.tpl" />
+    <Content Include="templates\base\visual.studio\_project.csproj.tpl" />
+    <Content Include="templates\base\visual.studio\_solution.sln.tpl" />
     <None Include="templates\base\_BANNER" />
     <None Include="templates\base\_LICENSE.Apache-2.0" />
     <Content Include="templates\base\_LICENSE.MIT" />

@@ -68,3 +68,24 @@ export interface ICompileConfigration {
     // CSS
     supportCSS?: boolean;                                   // CSS を含める場合には true
 }
+
+/**
+ * @interface IVisualStudioConfigration
+ * @brief Visual Studio 用コンフィギュレーション設定
+ */
+export interface IVisualStudioConfigration extends IBaseStructureConfigration {
+    projectName: string;    // プロジェクト名 ex) "cdp-lib"
+    projectGUID: string;    // プロジェクト GUID ex) {51B41359-8D2C-42DF-8414-E85B02993238}
+    moduleName: string;     // モジュール名 ex) "cdp-lib" / index
+    tsGroup: {
+        relativePath: string;   // "hogehoge\"
+        fileName: string;       // "cdp-lib"
+        map: boolean;           // .map ファイルがある場合 true
+    }[];
+    jsGroup: {
+        relativePath: string;   // "hogehoge\"
+        fileName: string;       // "cdp-lib"
+        d_ts: boolean;          // .d.ts ファイルがある場合 true
+        map: boolean;           // .map ファイルがある場合 true
+    }[];
+}

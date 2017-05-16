@@ -2,15 +2,18 @@
 /* eslint-disable no-unused-vars */
 
 import * as path from "path";
+import * as os from "os";
 import {
     IBaseStructureConfigration,
     IDependency,
+    IVisualStudioConfigration,
     GeneratorBase,
     Utils,
 } from "../base";
 import { ILibraryConfigration } from "./interfaces";
 
 const fs            = Utils.fs;
+const $             = Utils.$;
 const _             = Utils._;
 const debug         = Utils.debug;
 const templatePath  = Utils.templatePath;
@@ -49,6 +52,7 @@ export class GeneratorModule extends GeneratorBase {
         await this.createDirectoryStructure();
         await this.createProjectSettings();
         await this.createSourceTemplate();
+        await this.createVisualStudioSolution();
     }
 
     /**
@@ -224,9 +228,95 @@ export class GeneratorModule extends GeneratorBase {
         // index.spec.ts
         copyTpl(
             path.join(templatePath("library"), "src", "_index.spec.ts"),
-            path.join(this.rootDir, this._config.structureConfig.test, "jasmine", _module + "spec.ts"),
+            path.join(this.rootDir, this._config.structureConfig.test, "jasmine", _module + ".spec.ts"),
             param,
             { delimiters: "<% %>" }
         );
+    }
+
+    /**
+     * Visual Studio のソリューションファイル作成
+     */
+    private async createVisualStudioSolution(): Promise<void> {
+        const vsParam = (() => {
+            const createGUID = Utils.createGUID;
+
+            const param: IVisualStudioConfigration = $.extend({}, this._config.structureConfig);
+
+            param.projectName = this._config.projectName;
+            param.projectGUID = createGUID();
+            param.types = param.types.replace("@", "%40"); // escape "@" to "%40"
+            param.moduleName = path.basename(this._config.moduleName, ".js");
+
+            // setup bult js group
+            param.jsGroup = [
+                {
+                    relativePath: param.built + "\\",
+                    fileName: param.moduleName,
+                    d_ts: true,
+                    map: true,
+                },
+            ];
+
+            // setup test js group
+            param.tsGroup = [
+                {
+                    relativePath: param.test + "\\jasmine\\",
+                    fileName: param.moduleName + ".spec",
+                    map: false,
+                },
+            ];
+
+            return param;
+        })();
+
+        // .sln
+        copyTpl(
+            path.join(templatePath("base/visual.studio"), "_solution.sln.tpl"),
+            path.join(this.rootDir, vsParam.projectName + ".sln"),
+            vsParam,
+            { delimiters: "<% %>" }
+        );
+
+        // .csproj
+        const createProj = (() => {
+            const toXmlString = (file: string) => {
+                const hogan = Utils.hogan;
+                const normalizeText = Utils.normalizeText;
+                const options = {
+                    eol: os.EOL,
+                    bom: true,
+                    delimiters: "{{ }}",
+                };
+
+                const tpl = path.join(templatePath("base/visual.studio"), file);
+                const jst = hogan.compile(normalizeText(fs.readFileSync(tpl).toString(), { eol: "\n", bom: false }), options);
+                return jst.render(vsParam);
+            };
+
+            const toXmlDOM = (file: string) => {
+                return $($.parseXML(toXmlString(file)));
+            };
+
+            const toXmlNode = (file: string) => {
+                return Utils.str2XmlNode(toXmlString(file));
+            };
+
+            const $proj = toXmlDOM("_project.csproj.tpl");
+            const $gpTS = toXmlNode("_ts.item.group.tpl");
+            const $gpJS = toXmlNode("_js.item.group.tpl");
+
+            $proj
+                .find("ItemGroup")
+                .last()
+                .after($gpTS)
+                .after($gpJS)
+                ;
+
+            const formatXML = Utils.formatXML;
+            const dstPath = path.join(this.rootDir, vsParam.projectName + ".csproj");
+            debug(Utils.xmlNode2Str($proj));
+            fs.writeFileSync(dstPath, formatXML(Utils.xmlNode2Str($proj)));
+        })();
     }
 }

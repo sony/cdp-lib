@@ -1,4 +1,5 @@
-﻿'use strict';
+﻿/* eslint-env node, es6 */
+'use strict';
 const del       = require('del');
 const path      = require('path');
 const config    = require('../project.config.js');
