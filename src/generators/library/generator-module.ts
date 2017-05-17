@@ -48,7 +48,7 @@ export class GeneratorModule extends GeneratorBase {
      * @param {ILibraryConfigration} config コンフィグ設定
      */
     async create(): Promise<void> {
-        await this.ensureModuleName();
+        await this.ensureModuleProps();
         await this.createDirectoryStructure();
         await this.createProjectSettings();
         await this.createSourceTemplate();
@@ -75,10 +75,10 @@ export class GeneratorModule extends GeneratorBase {
      * 開発時の依存モジュールリストの取得
      * 必要に応じてオーバーライド
      *
-     * @return {IDevDependencies}
+     * @return {IDependency}
      */
-    protected get devDependencies(): IDependency[] {
-        const depends = super.devDependencies.concat([
+    protected get defaultDevDependencies(): IDependency[] {
+        const depends = super.defaultDevDependencies.concat([
             { name: "@types/jasmine",   version: undefined, },
             { name: "jasmine-node",     version: "^2.0.0",  },
             { name: "webpack",          version: undefined, },
@@ -100,21 +100,27 @@ export class GeneratorModule extends GeneratorBase {
     }
 
     /**
-     * module 名の保証
+     * module 名, main ファイル名の保証
      * - 1: moduleName が指定されている場合は使用する
      * - 2: projectName が使用可能な場合はそれを使用する
-     * - 3: projectName が使用不可の場合は、index.js を使用する
+     * - 3: projectName が使用不可の場合は、"-" つなぎ文字列を生成する
      */
-    private ensureModuleName(): string {
+    private ensureModuleProps(): void {
+        // module name
         if (null == this.config.moduleName) {
             if (!/^.*[(\\|\s|/|:|\*|?|\"|<|>|\|)].*$/.test(this.config.projectName)) {
-                this.config.moduleName = this.config.projectName + ".js";
+                this.config.moduleName = this.config.projectName;
             } else {
-                this.config.moduleName = "index.js";
+                this.config.moduleName = _.trim(_.dasherize(this.config.projectName), "-");
             }
         }
         debug("moduleName: " + this.config.moduleName);
-        return this.config.moduleName;
+
+        // main file name
+        if (null == this.config.mainFileName) {
+            this.config.mainFileName = this.config.moduleName + ".js";
+        }
+        debug("mainFileName: " + this.config.mainFileName);
     }
 
     /**
@@ -188,9 +194,7 @@ export class GeneratorModule extends GeneratorBase {
         );
 
         // package.json
-        if (null == this.config.devDependencies) {
-            this.config.devDependencies = await this.queryDevDependenciesParam();
-        }
+        this.config.devDependencies = await this.queryDependenciesParam(this.config.devDependencies || this.defaultDevDependencies);
         copyTpl(
             path.join(templatePath("library"), "_package.json"),
             path.join(this.rootDir, "package.json"),
@@ -243,26 +247,43 @@ export class GeneratorModule extends GeneratorBase {
 
             const param: IVisualStudioConfigration = $.extend({}, this._config.structureConfig);
 
-            param.projectName = this._config.projectName;
-            param.projectGUID = createGUID();
-            param.types = param.types.replace("@", "%40"); // escape "@" to "%40"
-            param.moduleName = path.basename(this._config.moduleName, ".js");
+            param.projectName       = this._config.projectName;
+            param.projectGUID       = createGUID();
+            param.types             = param.types.replace("@", "%40"); // escape "@" to "%40"
+            param.mainFileBaseName  = path.basename(this._config.mainFileName, ".js");
+            param.license           = "NONE" !== this._config.license;
 
-            // setup bult js group
+            // setup built js group
             param.jsGroup = [
                 {
                     relativePath: param.built + "\\",
-                    fileName: param.moduleName,
+                    fileName: param.mainFileBaseName,
+                    dependee: true,
                     d_ts: true,
                     map: true,
+                    min_map: false,
                 },
             ];
+
+            // minify
+            if (this.config.minify) {
+                // setup pkg group
+                param.jsGroup.push({
+                    relativePath: param.pkg + "\\",
+                    fileName: param.mainFileBaseName,
+                    dependee: false,
+                    d_ts: false,
+                    map: false,
+                    min_map: true,
+                });
+            }
 
             // setup test js group
             param.tsGroup = [
                 {
                     relativePath: param.test + "\\jasmine\\",
-                    fileName: param.moduleName + ".spec",
+                    fileName: param.mainFileBaseName + ".spec",
+                    dependee: true,
                     map: false,
                 },
             ];

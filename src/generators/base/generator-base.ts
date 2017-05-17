@@ -159,40 +159,45 @@ export abstract class GeneratorBase {
     }
 
     /**
-     * 開発時の依存モジュールリストの取得
+     * 既定の開発時の依存モジュールリストの取得
      * 必要に応じてオーバーライド
      *
-     * @return {IDevDependencies}
+     * @return {IDependency}
      */
-    protected get devDependencies(): IDependency[] {
-        return [
-            { name: "convert-source-map",   version: undefined,                         },
-            { name: "del",                  version: undefined,                         },
-            { name: "dts-bundle",           version: undefined,                         },
-            { name: "eslint",               version: undefined,                         },
-            { name: "npm-run-all",          version: undefined,                         },
-            { name: "plato",                version: undefined,                         },
-            { name: "remap-istanbul",       version: undefined,                         },
-            { name: "source-map",           version: undefined,                         },
-            { name: "source-map-loader",    version: undefined,                         },
-            { name: "tslint",               version: undefined,                         },
-            { name: "typedoc",              version: undefined,                         },
-            { name: "typescript",           version: undefined,                         },
-            { name: "typescript-formatter", version: undefined,                         },
+    protected get defaultDevDependencies(): IDependency[] {
+        const base = [
+            { name: "convert-source-map",   version: undefined, },
+            { name: "del",                  version: undefined, },
+            { name: "dts-bundle",           version: undefined, },
+            { name: "eslint",               version: undefined, },
+            { name: "npm-run-all",          version: undefined, },
+            { name: "plato",                version: undefined, },
+            { name: "remap-istanbul",       version: undefined, },
+            { name: "source-map",           version: undefined, },
+            { name: "source-map-loader",    version: undefined, },
+            { name: "tslint",               version: undefined, },
+            { name: "typedoc",              version: undefined, },
+            { name: "typescript",           version: undefined, },
+            { name: "typescript-formatter", version: undefined, },
+        ];
+        const minify = [
             { name: "uglify-js",            version: undefined, esTarget: ["es5"],      },
             { name: "uglify-es",            version: undefined, esTarget: ["es2015"],   },
         ];
+
+        return (<ICompileConfigration>this._config).minify ? base.concat(minify) : base;
     }
 
     /**
      * dependencies の template paramaeter を取得
      *
+     * @param  {IDependency[]} dependencies 依存関係リスト
      * @return {{ name: string; version: string; last?: boolean; }[]} テンプレートパラメータに指定する配列
      */
-    protected async queryDevDependenciesParam(): Promise<{ name: string; version: string; last?: boolean }[]> {
+    protected async queryDependenciesParam(dependencies: IDependency[]): Promise<{ name: string; version: string; last?: boolean }[]> {
         this.progress("base.create.queryVersion");
 
-        const depends = <{ name: string; version: string; last?: boolean; }[]>this.devDependencies
+        const depends = <{ name: string; version: string; last?: boolean; }[]>dependencies
             .filter((depend) => {
                 if (null == depend.esTarget) {
                     return true;

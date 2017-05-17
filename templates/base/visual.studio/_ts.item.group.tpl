@@ -1,6 +1,8 @@
   <ItemGroup>
     {{#tsGroup}}
+    {{#dependee}}
     <TypeScriptCompile Include="{{relativePath}}{{fileName}}.ts" />
+    {{/dependee}}
     <Content Include="{{relativePath}}{{fileName}}.js">
       <DependentUpon>{{fileName}}.ts</DependentUpon>
     </Content>

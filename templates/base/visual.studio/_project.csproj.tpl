@@ -75,7 +75,9 @@
     <Content Include=".gitignore" />
     <Content Include=".npmignore" />
     <Content Include="BANNER" />
+    {{#license}}
     <Content Include="LICENSE" />
+    {{/license}}
     <Content Include="NOTICE" />
     <Content Include="package.json" />
     <Content Include="project.config.js" />
@@ -84,7 +86,7 @@
     <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="{{pkg}}\{{moduleName}}.js" />
+    <Content Include="{{pkg}}\{{mainFileBaseName}}.js" />
     <TypeScriptCompile Include="{{pkg}}\{{types}}\{{projectName}}\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +100,7 @@
     <Content Include="{{doc}}\typedoc\index.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="{{src}}\{{moduleName}}.ts" />
+    <TypeScriptCompile Include="{{src}}\{{mainFileBaseName}}.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="{{task}}\banner.js" />

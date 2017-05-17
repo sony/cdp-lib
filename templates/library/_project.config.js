@@ -3,6 +3,17 @@
 const path  = require('path');
 const pkg   = require('./package.json');
 
+const type = {
+    kind: '<% projectKind %>',
+    es: '<% esTarget %>',
+    <%# moduleSystem %>
+    module: '<% moduleSystem %>',
+    <%/ moduleSystem %>
+    <%# webpackTarget %>
+    env: '<% webpackTarget %>',
+    <%/ webpackTarget %>
+};
+
 const dir = {
     src: '<% structureConfig.src %>',
     pkg: '<% structureConfig.pkg %>',
@@ -17,14 +28,13 @@ const lib = {
     <%# namespace %>
     namespace: '<% namespace %>',
     <%/ namespace %>
-    script: path.basename(pkg.main),
-    d_ts: path.basename(pkg.main, '.js') + '.d.ts',
+    main: path.basename('<% mainFileName %>', '.js'),
     bundle_d_ts: 'index.d.ts',
 };
 
 const d_ts_bundle = {
     name: pkg.name,
-    main: path.join(dir.built, lib.d_ts),
+    main: path.join(dir.built, lib.main + '.d.ts'),
     baseDir: dir.built,
     out: path.join('..', dir.pkg, dir.types, pkg.name, lib.bundle_d_ts),
     externals: false,

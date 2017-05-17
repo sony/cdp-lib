@@ -47,7 +47,8 @@ export interface IProjectConfigration {
     version: string;                                // バージョン ex) "1.0.0"
     license: string;                                // ライセンス ex) "Apache-2.0"
     settings: Utils.IGlobalSettings;                // ログオプション
-    moduleName?: string;                            // メインファイル名
+    moduleName?: string;                            // import に指定する モジュール名 ex) "cdp-lib"
+    mainFileName?: string;                          // メインファイル名 ex) "cdp-lib.js" / "index.js"
     namespace?: string;                             // ルート名前空間
     structureConfig?: IBaseStructureConfigration;   // IBaseStructureConfigration
     copyright?: string;                             // コピーライト文字列 ex) "Copyright (c) 2017 Sony Corporation"
@@ -65,8 +66,10 @@ export interface ICompileConfigration {
     // Webpack
     webpackTarget?: string;                                 // Webpack target configuration
     webpackLibrary?: string;                                // Webpack libraryTarget configuration
+    // minify
+    minify?: boolean;                                       // リリース時に minify する場合は true
     // CSS
-    supportCSS?: boolean;                                   // CSS を含める場合には true
+    supportCSS?: boolean;                                   // [TBD] CSS を含める場合には true
 }
 
 /**
@@ -74,18 +77,22 @@ export interface ICompileConfigration {
  * @brief Visual Studio 用コンフィギュレーション設定
  */
 export interface IVisualStudioConfigration extends IBaseStructureConfigration {
-    projectName: string;    // プロジェクト名 ex) "cdp-lib"
-    projectGUID: string;    // プロジェクト GUID ex) {51B41359-8D2C-42DF-8414-E85B02993238}
-    moduleName: string;     // モジュール名 ex) "cdp-lib" / index
+    projectName: string;        // プロジェクト名 ex) "cdp-lib"
+    projectGUID: string;        // プロジェクト GUID ex) {51B41359-8D2C-42DF-8414-E85B02993238}
+    mainFileBaseName: string;   // メインファイル名 ex) "cdp-lib" / index
+    license: boolean;           // LICENSE を追加する場合は true
     tsGroup: {
         relativePath: string;   // "hogehoge\"
         fileName: string;       // "cdp-lib"
+        dependee: boolean;      // 依存先を追加する場合 true
         map: boolean;           // .map ファイルがある場合 true
     }[];
     jsGroup: {
         relativePath: string;   // "hogehoge\"
         fileName: string;       // "cdp-lib"
+        dependee: boolean;      // 依存先を追加する場合 true
         d_ts: boolean;          // .d.ts ファイルがある場合 true
         map: boolean;           // .map ファイルがある場合 true
+        min_map: boolean;       // .min .map ファイルがある場合 true
     }[];
 }

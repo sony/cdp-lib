@@ -6,11 +6,11 @@ module.exports = {
     target: '<% webpackTarget %>',
     <%/ webpackTarget %>
     entry: [
-      './<% structureConfig.built %>/<% moduleName %>'
+      './<% structureConfig.built %>/<% mainFileName %>'
     ],
     output: {
         path: process.cwd() + '/<% structureConfig.pkg %>',
-        filename: '<% moduleName %>',
+        filename: '<% mainFileName %>',
         <%# webpackLibrary %>
         libraryTarget: '<% webpackLibrary %>',
         <%/ webpackLibrary %>
