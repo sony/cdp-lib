@@ -1,7 +1,14 @@
-'use strict';
+﻿'use strict';
 
 const path  = require('path');
 const pkg   = require('./package.json');
+
+const target = {
+    type: 'library',
+    es: 'es2015',
+    module: 'commonjs',
+    env: 'node',
+};
 
 const dir = {
     src: 'src',
@@ -13,18 +20,17 @@ const dir = {
     types: '@types',
 };
 
-const lib = {
+const main = {
     namespace: 'cdp',
-    script: pkg.name + '.js',
-    d_ts: pkg.name + '.d.ts',
+    basename: 'cdp-lib',
     bundle_d_ts: 'index.d.ts',
 };
 
 const d_ts_bundle = {
     name: pkg.name,
-    main: path.join(dir.built, lib.d_ts),
+    main: path.join(dir.built, main.basename + '.d.ts'),
     baseDir: dir.built,
-    out: path.join('..', dir.pkg, dir.types, pkg.name, lib.bundle_d_ts),
+    out: path.join('..', dir.pkg, dir.types, pkg.name, main.bundle_d_ts),
     externals: false,
     verbose: false,
 };
@@ -36,10 +42,11 @@ const banner = {
 
 // project configuration
 module.exports = {
+    target: target,
 
     pkg: pkg,
     dir: dir,
-    lib: lib,
+    main: main,
 
     dts_bundle: d_ts_bundle,
 

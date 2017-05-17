@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "<% moduleSystem %>",
-    "target": "<% esTarget %>",
+    "module": "<% module %>",
+    "target": "<% es %>",
     "declaration": true,
     "emitBOM": true,
     "sourceMap": true,

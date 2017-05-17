@@ -9,19 +9,19 @@ const banner    = require('./banner');
 const srcmap    = require('./srcmap');
 const config    = require('../project.config.js');
 
-const PACKAGE_NAME      = config.pkg.name;
-const PACKAGE_NAMESPACE = config.lib.namespace;
+const PACKAGE_NAME  = config.pkg.name;
+const NAMESPACE     = config.main.namespace;
 
 const SOURCE_DIR_NAME = config.dir.src;
 
 const D_TS_SETTING  = config.dts_bundle;
-const LIBRARY_FILE  = path.join(process.cwd(), config.dir.pkg, config.lib.main + '.js');
-const TYPE_DEF_FILE = path.join(process.cwd(), config.dir.pkg, config.dir.types, PACKAGE_NAME, config.lib.bundle_d_ts);
+const MAIN_FILE     = path.join(process.cwd(), config.dir.pkg, config.main.basename + '.js');
+const TYPE_DEF_FILE = path.join(process.cwd(), config.dir.pkg, config.dir.types, PACKAGE_NAME, config.main.bundle_d_ts);
 
 function update_srcmap_namespace(code) {
     const namespace = (() => {
-        if (PACKAGE_NAMESPACE) {
-            return PACKAGE_NAMESPACE + ':///' + PACKAGE_NAME + '/';
+        if (NAMESPACE) {
+            return NAMESPACE + ':///' + PACKAGE_NAME + '/';
         } else {
             return PACKAGE_NAME + ':///';
         }
@@ -40,7 +40,7 @@ function update_srcmap_namespace(code) {
 }
 
 function normalize_src() {
-    let src = fs.readFileSync(LIBRARY_FILE).toString();
+    let src = fs.readFileSync(MAIN_FILE).toString();
 
     src = '\ufeff' + update_srcmap_namespace(src)
         .replace(/^\ufeff/gm, '')    // remove bom
@@ -48,7 +48,7 @@ function normalize_src() {
         .replace(/\r\n/gm, '\n')
     ;
 
-    fs.writeFileSync(LIBRARY_FILE, src, 'utf8');
+    fs.writeFileSync(MAIN_FILE, src, 'utf8');
 }
 
 function normalize_d_ts() {

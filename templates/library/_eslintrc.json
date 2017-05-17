@@ -19,6 +19,7 @@
     "comma-dangle": "off",
     "no-cond-assign": ["error", "always"],
     "no-unused-vars": ["error", {"args": "none"}],
+    "no-extra-boolean-cast": "off",
     "no-console": "off"
   }
 }

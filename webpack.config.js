@@ -1,15 +1,23 @@
-var webpack = require('webpack');
-var banner = require('./tasks/banner');
+const webpack   = require('webpack');
+const path      = require('path');
+const banner    = require('./tasks/banner');
+const config    = require('./project.config.js');
+
+const TARGET            = config.target.env;
+const MAIN_ENTRY        = path.join(__dirname, config.dir.built, config.main.basename + '.js');
+const OUTPUT_PATH       = path.join(__dirname, config.dir.pkg);
+const OUTPUT_FILE_NAME  = config.main.basename + '.js';
+const OUTPUT_LIB_TARGET = ('commonjs' === config.target.module) ? 'commonjs2' : config.target.module;
 
 module.exports = {
-    target: 'node',
+    target: TARGET,
     entry: [
-      './built/cdp-lib.js'
+      MAIN_ENTRY,
     ],
     output: {
-        path: process.cwd() + '/dist',
-        filename: 'cdp-lib.js',
-        libraryTarget: 'commonjs2',
+        path: OUTPUT_PATH,
+        filename: OUTPUT_FILE_NAME,
+        libraryTarget: OUTPUT_LIB_TARGET,
     },
     devtool: 'inline-source-map',
     module: {
@@ -21,8 +29,8 @@ module.exports = {
             },
         ],
     },
-    // externals を指定しない場合、3rd Library の使用するものを concat 可能
     externals: {
+        // external module defs here:
         'fs-extra': {
             commonjs: 'fs-extra',
             commonjs2: 'fs-extra',

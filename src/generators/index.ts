@@ -16,7 +16,7 @@ export * from "./web";
  * generator 生成関数
  */
 export function newGenerator(config: IProjectConfigration): GeneratorBase {
-    switch (config.projectKind) {
+    switch (config.projectType) {
         case "library":
             return newGeneratorLibrary(config);
         case "mobile":
@@ -26,7 +26,7 @@ export function newGenerator(config: IProjectConfigration): GeneratorBase {
         case "web":
             return newGeneratorWeb(config);
         default:
-            assert(false, "unsupported project kind: " + config.projectKind);
+            assert(false, "unsupported project kind: " + config.projectType);
             return null;
     }
 }

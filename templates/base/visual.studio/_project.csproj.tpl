@@ -83,10 +83,12 @@
     <Content Include="project.config.js" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
+    {{# webpack }}
     <Content Include="webpack.config.js" />
+    {{/ webpack }}
   </ItemGroup>
   <ItemGroup>
-    <Content Include="{{pkg}}\{{mainFileBaseName}}.js" />
+    <Content Include="{{pkg}}\{{mainBaseName}}.js" />
     <TypeScriptCompile Include="{{pkg}}\{{types}}\{{projectName}}\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +102,7 @@
     <Content Include="{{doc}}\typedoc\index.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="{{src}}\{{mainFileBaseName}}.ts" />
+    <TypeScriptCompile Include="{{src}}\{{mainBaseName}}.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="{{task}}\banner.js" />

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "<% moduleSystem %>",
-    "target": "<% esTarget %>",
+    "module": "<% module %>",
+    "target": "<% es %>",
     "allowJs": true,
     "declaration": false,
     "emitBOM": true,

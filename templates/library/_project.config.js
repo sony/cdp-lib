@@ -3,15 +3,15 @@
 const path  = require('path');
 const pkg   = require('./package.json');
 
-const type = {
-    kind: '<% projectKind %>',
-    es: '<% esTarget %>',
-    <%# moduleSystem %>
-    module: '<% moduleSystem %>',
-    <%/ moduleSystem %>
-    <%# webpackTarget %>
-    env: '<% webpackTarget %>',
-    <%/ webpackTarget %>
+const target = {
+    type: '<% projectType %>',
+    es: '<% es %>',
+    <%# module %>
+    module: '<% module %>',
+    <%/ module %>
+    <%# env %>
+    env: '<% env %>',
+    <%/ env %>
 };
 
 const dir = {
@@ -24,19 +24,19 @@ const dir = {
     types: '<% structureConfig.types %>',
 };
 
-const lib = {
+const main = {
     <%# namespace %>
     namespace: '<% namespace %>',
     <%/ namespace %>
-    main: path.basename('<% mainFileName %>', '.js'),
+    basename: '<% mainBaseName %>',
     bundle_d_ts: 'index.d.ts',
 };
 
 const d_ts_bundle = {
     name: pkg.name,
-    main: path.join(dir.built, lib.main + '.d.ts'),
+    main: path.join(dir.built, main.basename + '.d.ts'),
     baseDir: dir.built,
-    out: path.join('..', dir.pkg, dir.types, pkg.name, lib.bundle_d_ts),
+    out: path.join('..', dir.pkg, dir.types, pkg.name, main.bundle_d_ts),
     externals: false,
     verbose: false,
 };
@@ -48,10 +48,11 @@ const banner = {
 
 // project configuration
 module.exports = {
+    target: target,
 
     pkg: pkg,
     dir: dir,
-    lib: lib,
+    main: main,
 
     dts_bundle: d_ts_bundle,
 

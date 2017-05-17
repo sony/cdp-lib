@@ -20,7 +20,7 @@ import {
     IBaseStructureConfigration,
     IDependency,
     IProjectConfigration,
-    ICompileConfigration,
+    IBuildTargetConfigration,
 } from "./interfaces";
 
 /**
@@ -181,11 +181,19 @@ export abstract class GeneratorBase {
             { name: "typescript-formatter", version: undefined, },
         ];
         const minify = [
-            { name: "uglify-js",            version: undefined, esTarget: ["es5"],      },
-            { name: "uglify-es",            version: undefined, esTarget: ["es2015"],   },
+            { name: "uglify-js",            version: undefined, es: ["es5"],    },
+            { name: "uglify-es",            version: undefined, es: ["es2015"], },
         ];
 
-        return (<ICompileConfigration>this._config).minify ? base.concat(minify) : base;
+        let extra = [];
+        if ((<IBuildTargetConfigration>this._config).minify) {
+            extra = extra.concat(minify);
+        }
+        if (this.isEnableTool("webpack")) {
+            extra.push({ name: "webpack", version: undefined, });
+        }
+
+        return _.sortBy(base.concat(minify, extra), (depend) => depend.name);
     }
 
     /**
@@ -199,11 +207,11 @@ export abstract class GeneratorBase {
 
         const depends = <{ name: string; version: string; last?: boolean; }[]>dependencies
             .filter((depend) => {
-                if (null == depend.esTarget) {
+                if (null == depend.es) {
                     return true;
                 } else {
-                    return !!depend.esTarget.find((esVersion) => {
-                        return (<ICompileConfigration>this._config).esTarget === esVersion;
+                    return !!depend.es.find((esVersion) => {
+                        return (<IBuildTargetConfigration>this._config).es === esVersion;
                     });
                 }
             });
@@ -238,7 +246,7 @@ export abstract class GeneratorBase {
      * @return {String} libraryTarget に指定する文字列
      */
     protected queryWebpackLibraryTarget(): string {
-        switch ((<ICompileConfigration>this._config).moduleSystem) {
+        switch ((<IBuildTargetConfigration>this._config).module) {
             case "commonjs":
                 return "commonjs2";
             case "amd":
@@ -256,11 +264,21 @@ export abstract class GeneratorBase {
      * @return {Object} env に指定するテンプレートパラメータオブジェクト
      */
     protected queryEsLintEnvParam(): any {
-        const compileSetting = <ICompileConfigration>this._config;
+        const compileSetting = <IBuildTargetConfigration>this._config;
         return {
-            es6: "es5" !== compileSetting.esTarget,
-            node: "web" !== compileSetting.webpackTarget,
+            es6: "es5" !== compileSetting.es,
+            node: "web" !== compileSetting.env,
         };
+    }
+
+    /**
+     * IBuildTargetConfigration.tools プロパティの指定状況を取得
+     *
+     * @param  {String}  name ツール名を指定
+     * @return {Boolean} true: 指定されている / false: 指定されていない
+     */
+    protected isEnableTool(name: string): boolean {
+        return !!(<IBuildTargetConfigration>this._config).tools.find((tool) => name === tool);
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -349,6 +367,14 @@ export abstract class GeneratorBase {
             path.join(srcDir, "_NOTICE"),
             path.join(dstDir, "NOTICE"),
         );
+
+        // build tools: webpack
+        if (this.isEnableTool("webpack")) {
+            fs.copySync(
+                path.join(srcDir, "tools", "webpack.config.js"),
+                path.join(dstDir, "webpack.config.js"),
+            );
+        }
     }
 
     /**

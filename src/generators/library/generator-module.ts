@@ -81,12 +81,8 @@ export class GeneratorModule extends GeneratorBase {
         const depends = super.defaultDevDependencies.concat([
             { name: "@types/jasmine",   version: undefined, },
             { name: "jasmine-node",     version: "^2.0.0",  },
-            { name: "webpack",          version: undefined, },
         ]);
-
-        return _.sortBy(depends, (depend) => {
-            return depend.name;
-        });
+        return _.sortBy(depends, (depend) => depend.name);
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -117,10 +113,10 @@ export class GeneratorModule extends GeneratorBase {
         debug("moduleName: " + this.config.moduleName);
 
         // main file name
-        if (null == this.config.mainFileName) {
-            this.config.mainFileName = this.config.moduleName + ".js";
+        if (null == this.config.mainBaseName) {
+            this.config.mainBaseName = this.config.moduleName;
         }
-        debug("mainFileName: " + this.config.mainFileName);
+        debug("mainBaseName: " + this.config.mainBaseName);
     }
 
     /**
@@ -139,17 +135,6 @@ export class GeneratorModule extends GeneratorBase {
             path.join(templatePath("library"), "_project.config.js"),
             path.join(this.rootDir, "project.config.js"),
             this._config,
-            { delimiters: "<% %>" }
-        );
-
-        // webpack.config.js
-        if (null == this.config.webpackLibrary) {
-            this.config.webpackLibrary = this.queryWebpackLibraryTarget();
-        }
-        copyTpl(
-            path.join(templatePath("library"), "_webpack.config.js"),
-            path.join(this.rootDir, "webpack.config.js"),
-            this.config,
             { delimiters: "<% %>" }
         );
 
@@ -250,14 +235,17 @@ export class GeneratorModule extends GeneratorBase {
             param.projectName       = this._config.projectName;
             param.projectGUID       = createGUID();
             param.types             = param.types.replace("@", "%40"); // escape "@" to "%40"
-            param.mainFileBaseName  = path.basename(this._config.mainFileName, ".js");
+            param.mainBaseName      = this._config.mainBaseName;
             param.license           = "NONE" !== this._config.license;
+
+            // build tools
+            param.webpack = this.isEnableTool("webpack");
 
             // setup built js group
             param.jsGroup = [
                 {
                     relativePath: param.built + "\\",
-                    fileName: param.mainFileBaseName,
+                    fileName: param.mainBaseName,
                     dependee: true,
                     d_ts: true,
                     map: true,
@@ -270,7 +258,7 @@ export class GeneratorModule extends GeneratorBase {
                 // setup pkg group
                 param.jsGroup.push({
                     relativePath: param.pkg + "\\",
-                    fileName: param.mainFileBaseName,
+                    fileName: param.mainBaseName,
                     dependee: false,
                     d_ts: false,
                     map: false,
@@ -282,7 +270,7 @@ export class GeneratorModule extends GeneratorBase {
             param.tsGroup = [
                 {
                     relativePath: param.test + "\\jasmine\\",
-                    fileName: param.mainFileBaseName + ".spec",
+                    fileName: param.mainBaseName + ".spec",
                     dependee: true,
                     map: false,
                 },

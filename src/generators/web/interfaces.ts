@@ -1,14 +1,14 @@
 ﻿import {
     IProjectConfigration,
-    ICompileConfigration,
+    IBuildTargetConfigration,
 } from "../base";
 
 /**
  * @interface IWebAppConfigration
  * @brief web プロジェクトのコンフィギュレーション設定
  */
-export interface IWebAppConfigration extends IProjectConfigration, ICompileConfigration {
-    projectKind: "web";     // プロジェクト種類
-    webpackTarget?: "web";  // Webpack target configuration
+export interface IWebAppConfigration extends IProjectConfigration, IBuildTargetConfigration {
+    projectType: "web";     // プロジェクト種類
+    env?: "web";            // 実行環境の target
     supportCSS: true;       // CSS を含める場合には true
 }

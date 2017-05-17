@@ -3,7 +3,7 @@
   "version": "<% version %>",
   "description": "",
   "author": "",
-  "main": "<% structureConfig.pkg %>/<% moduleName %><%# minify %>.min<%/ minify %>.js",
+  "main": "<% structureConfig.pkg %>/<% mainBaseName %><%# minify %>.min<%/ minify %>.js",
   "types": "<% structureConfig.pkg %>/<% structureConfig.types %>/<% projectName %>/index.d.ts",
   "scripts": {
     "build": "run-p build:*",
@@ -11,7 +11,7 @@
     "prebuild:ts": "node ./<% structureConfig.task %>/build-ts-clean.js",
     "postbuild:ts": "node ./<% structureConfig.task %>/build-ts-normalize.js",
     <%# minify %>
-    "minify": "uglifyjs <% structureConfig.pkg %>/<% moduleName %>.js -o <% structureConfig.pkg %>/<% moduleName %>.min.js --comments /^!/ --source-map includeSources,url=<% moduleName %>.min.js.map",
+    "minify": "uglifyjs <% structureConfig.pkg %>/<% mainBaseName %>.js -o <% structureConfig.pkg %>/<% mainBaseName %>.min.js --comments /^!/ --source-map includeSources,url=<% mainBaseName %>.min.js.map",
     <%/ minify %>
     "test": "run-s lint unit-test",
     "pretest": "tsc -p ./<% structureConfig.test %>/jasmine/tsconfig.json",

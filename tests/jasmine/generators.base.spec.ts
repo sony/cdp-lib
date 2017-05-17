@@ -9,7 +9,7 @@ describe("check definition", () => {
     beforeEach(() => {
         instance = new Library.GeneratorModule({
             projectName: "test",
-            projectKind: "library",
+            projectType: "library",
             action: "create",
             version: "1.0.0",
             license: "Apache-2.0",
