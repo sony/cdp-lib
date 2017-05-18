@@ -71,6 +71,15 @@ export interface IBuildTargetConfigration {
 }
 
 /**
+ * @interface IWebpackConfigration
+ * @brief Webpack 用コンフィギュレーション設定
+ */
+export interface IWebpackConfigration {
+    node: boolean;      // node 環境の場合 true を指定
+    guide: boolean;     // guide コメントを付加する場合は true を指定
+}
+
+/**
  * @interface IVisualStudioConfigration
  * @brief Visual Studio 用コンフィギュレーション設定
  */

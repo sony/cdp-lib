@@ -19,6 +19,12 @@ module.exports = {
         filename: OUTPUT_FILE_NAME,
         libraryTarget: OUTPUT_LIB_TARGET,
     },
+    <%# node %>
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
+    <%/ node %>
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -30,6 +36,7 @@ module.exports = {
         ],
     },
     externals: {
+    <%# guide %>
         // external module defs here:
         //'jquery': {
         //    root: 'jQuery',
@@ -37,6 +44,7 @@ module.exports = {
         //    commonjs2: 'jquery',
         //    amd: 'jquery'
         //},
+    <%/ guide %>
     },
     plugins: [
         new webpack.optimize.LimitChunkCountPlugin({

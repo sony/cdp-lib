@@ -21,6 +21,7 @@ import {
     IDependency,
     IProjectConfigration,
     IBuildTargetConfigration,
+    IWebpackConfigration,
 } from "./interfaces";
 
 /**
@@ -370,9 +371,22 @@ export abstract class GeneratorBase {
 
         // build tools: webpack
         if (this.isEnableTool("webpack")) {
-            fs.copySync(
-                path.join(srcDir, "tools", "webpack.config.js"),
+            const param: IWebpackConfigration = {
+                node: (() => {
+                    switch ((<IBuildTargetConfigration>this._config).env) {
+                        case "node":
+                            return true;
+                        default:
+                            return false;
+                    }
+                })(),
+                guide: true,
+            };
+            copyTpl(
+                path.join(srcDir, "tools", "_webpack.config.js"),
                 path.join(dstDir, "webpack.config.js"),
+                param,
+                { delimiters: "<% %>" }
             );
         }
     }
