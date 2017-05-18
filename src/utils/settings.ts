@@ -9,7 +9,6 @@ export interface IGlobalSettings {
     force?: boolean;            // エラー継続用
     verbose?: boolean;          // 詳細ログ
     silent?: boolean;           // silent mode
-    libPath?: string;           // cdp-lib 本体があるディレクトリ
     targetDir?: string;         // 作業ディレクトリ
     lang?: "en-US" | "ja-JP";
 }
@@ -18,9 +17,10 @@ let _settings: IGlobalSettings = {
     force: false,
     verbose: false,
     silent: false,
-    libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
     lang: "en-US",
 };
+
+let _libPath: string;   // cdp-lib の存在している path
 
 ///////////////////////////////////////////////////////////////////////
 // exports methods:
@@ -44,7 +44,6 @@ export function setSettings(settings: IGlobalSettings): void {
         _settings.force     = settings.force        || _settings.force;
         _settings.verbose   = settings.verbose      || _settings.verbose;
         _settings.silent    = settings.silent       || _settings.silent;
-        _settings.libPath   = settings.libPath      || _settings.libPath;
         _settings.targetDir = settings.targetDir    || _settings.targetDir;
         _settings.lang      = settings.lang         || _settings.lang;
     } else {
@@ -52,7 +51,6 @@ export function setSettings(settings: IGlobalSettings): void {
             force: false,
             verbose: false,
             silent: false,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
             lang: "en-US",
         };
     }
@@ -64,7 +62,24 @@ export function setSettings(settings: IGlobalSettings): void {
  * @return {String} cdp-lib への path
  */
 export function getLibPath(): string {
-    return _settings.libPath;
+    if (null == _libPath) {
+        const TRY_COUNT = 3;
+        let tried = 0;
+        _libPath = __dirname;
+        while (true) {
+            if (TRY_COUNT <= tried) {
+                throw Error("lib path is not resolved.");
+            }
+            _libPath = path.join(_libPath, "..");
+            const check = path.join(_libPath, "cdp-lib");
+            if (fs.pathExistsSync(check)) {
+                _libPath = check;
+                break;
+            }
+            tried++;
+        }
+    }
+    return _libPath;
 }
 
 /**
@@ -149,10 +164,10 @@ export function translate(key: string): string {
     if (!_lang) {
         try {
             _lang = JSON.parse(fs.readFileSync(
-                path.join(_settings.libPath, "res/locales", "messages." + _settings.lang + ".json"), "utf8").toString()
+                path.join(getLibPath(), "res/locales", "messages." + _settings.lang + ".json"), "utf8").toString()
             );
         } catch (error) {
-            throw Error("Language resource JSON parse error" + error.message);
+            throw Error("Language resource JSON parse error: " + error.message);
         }
     }
 

@@ -106,25 +106,21 @@ describe("check utils/settings", () => {
             force: false,
             verbose: false,
             silent: false,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
             lang: "en-US",
         });
 
         settings.force = true;
-        settings.libPath = "hoge";
 
         expect(getSettings()).not.toEqual({
             force: true,
             verbose: false,
             silent: false,
-            libPath: "hoge",
             lang: "en-US",
         });
         expect(getSettings()).toEqual({
             force: false,
             verbose: false,
             silent: false,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
             lang: "en-US",
         });
     });
@@ -138,7 +134,6 @@ describe("check utils/settings", () => {
             force: true,
             verbose: false,
             silent: false,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
             lang: "en-US",
         });
         setSettings({
@@ -148,7 +143,6 @@ describe("check utils/settings", () => {
             force: true,
             verbose: true,
             silent: false,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
             lang: "en-US",
         });
         setSettings({
@@ -158,17 +152,6 @@ describe("check utils/settings", () => {
             force: true,
             verbose: true,
             silent: true,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
-            lang: "en-US",
-        });
-        setSettings({
-            libPath: "hoge",
-        });
-        expect(getSettings()).toEqual({
-            force: true,
-            verbose: true,
-            silent: true,
-            libPath: "hoge",
             lang: "en-US",
         });
         setSettings(null);
@@ -176,18 +159,13 @@ describe("check utils/settings", () => {
             force: false,
             verbose: false,
             silent: false,
-            libPath: path.join(process.cwd(), "node_modules", "cdp-lib"),
             lang: "en-US",
         });
     });
 
     it("getLibPath", () => {
         expect(getLibPath).toBeDefined();
-        expect(getLibPath()).toEqual(path.join(process.cwd(), "node_modules", "cdp-lib"));
-        setSettings({
-            libPath: "hoge",
-        });
-        expect(getLibPath()).toEqual("hoge");
+        expect(getLibPath()).toEqual(path.join(__dirname, "../.."));
     });
 
     it("log", () => {
