@@ -15,8 +15,8 @@ const NAMESPACE     = config.main.namespace;
 const SOURCE_DIR_NAME = config.dir.src;
 
 const D_TS_SETTING  = config.dts_bundle;
-const MAIN_FILE     = path.join(process.cwd(), config.dir.pkg, config.main.basename + '.js');
-const TYPE_DEF_FILE = path.join(process.cwd(), config.dir.pkg, config.dir.types, PACKAGE_NAME, config.main.bundle_d_ts);
+const MAIN_FILE     = path.join(__dirname, '..', config.dir.pkg, config.main.basename + '.js');
+const TYPE_DEF_FILE = path.join(__dirname, '..', config.dir.pkg, config.dir.types, PACKAGE_NAME, config.main.bundle_d_ts);
 
 function update_srcmap_namespace(code) {
     const namespace = (() => {
