@@ -106,14 +106,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="{{task}}\banner.js" />
-    <Content Include="{{task}}\build-ts-clean.js" />
-    <Content Include="{{task}}\build-ts-normalize.js" />
+    <Content Include="{{task}}\bundle-finalizer.js" />
     <Content Include="{{task}}\clean.js" />
+    <Content Include="{{task}}\remap-coverage.js" />
     <Content Include="{{task}}\srcmap.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="{{test}}\eslint\eslintrc.json" />
     <Content Include="{{test}}\tslint\tslint.json" />
-    <Content Include="{{test}}\jasmine\tsconfig.json" />
+    {{^outputSameDir}}
+    <Content Include="{{test}}\unit\tsconfig.json" />
+    {{/outputSameDir}}
   </ItemGroup>
 </Project>

@@ -5,15 +5,12 @@
     "declaration": true,
     "emitBOM": false,
     "sourceMap": true,
-    "inlineSources": true,
-    "outDir": "<% structureConfig.built %>/"
+    "inlineSources": true
   },
   "exclude": [
     "node_modules",
     "<% structureConfig.pkg %>",
-    "<% structureConfig.built %>",
     "<% structureConfig.doc %>",
-    "<% structureConfig.task %>",
-    "<% structureConfig.test %>"
+    "<% structureConfig.task %>"
   ]
 }

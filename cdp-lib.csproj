@@ -110,9 +110,9 @@
     <Content Include="tasks\remap-coverage.js" />
     <Content Include="tasks\srcmap.js" />
     <Content Include="templates\base\task\banner.js" />
-    <Content Include="templates\base\task\build-ts-clean.js" />
-    <Content Include="templates\base\task\build-ts-normalize.js" />
+    <Content Include="templates\base\task\bundle-finalizer.js" />
     <Content Include="templates\base\task\clean.js" />
+    <Content Include="templates\base\task\remap-coverage.js" />
     <Content Include="templates\base\task\srcmap.js" />
     <Content Include="templates\base\tools\_webpack.config.js" />
     <Content Include="templates\library\.gitignore" />
@@ -361,6 +361,7 @@
     <Content Include="templates\base\_LICENSE.MIT" />
     <None Include="templates\base\_NOTICE" />
     <Content Include="templates\library\_tsconfig.test.json" />
+    <Content Include="templates\library\_tsconfig.output-same-dir.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\library\_eslintrc.json" />

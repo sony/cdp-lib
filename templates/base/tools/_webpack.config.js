@@ -1,6 +1,6 @@
 const webpack   = require('webpack');
 const path      = require('path');
-const banner    = require('./tasks/banner');
+const banner    = require('./<% taskPath %>/banner');
 const config    = require('./project.config.js');
 
 const TARGET            = config.target.env;

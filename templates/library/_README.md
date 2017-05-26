@@ -27,7 +27,9 @@ Folder and file structure of this repository is the following list.
                 metrics/                            // output source metrics reports.
             typedoc/                                // typedoc generated documents here.
         <% structureConfig.test %>/                                      // tests scripts directory.
+<%^ outputSameDir %>
         <% structureConfig.built %>/                                      // temporary built scripts here.
+<%/ outputSameDir %>
 
 
 ### How to install

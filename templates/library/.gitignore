@@ -20,4 +20,4 @@ temp/
 /{{structureConfig.built}}/**/*.js
 /{{structureConfig.built}}/**/*.map
 /{{structureConfig.built}}/**/*.d.ts
-/{{structureConfig.test}}/jasmine/**/*.js
+/{{structureConfig.test}}/unit/**/*.js

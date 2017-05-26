@@ -42,6 +42,8 @@ export abstract class GeneratorBase {
             getTargetDir() :
             path.join(process.cwd(), this._config.projectName);
         this._config.structureConfig = $.extend({}, this.defaultBaseStructure(), this._config.structureConfig);
+        (<IBuildTargetConfigration>this._config).outputSameDir
+            = this._config.structureConfig.src === this._config.structureConfig.built;
 
         debug(JSON.stringify(this._config, null, 4));
     }
@@ -130,6 +132,7 @@ export abstract class GeneratorBase {
                         .replace(/task/,    this._config.structureConfig.task)
                         .replace(/test/,    this._config.structureConfig.test)
                         .replace(/types/,   this._config.structureConfig.types)
+                        .replace(/temp/,    this._config.structureConfig.temp)
                 );
                 fs.copySync(path.join(templatePath(target), file), dst);
         });
@@ -173,7 +176,6 @@ export abstract class GeneratorBase {
             { name: "eslint",               version: undefined, },
             { name: "npm-run-all",          version: undefined, },
             { name: "plato",                version: undefined, },
-            { name: "remap-istanbul",       version: undefined, },
             { name: "source-map",           version: undefined, },
             { name: "source-map-loader",    version: undefined, },
             { name: "tslint",               version: undefined, },
@@ -193,8 +195,11 @@ export abstract class GeneratorBase {
         if (this.isEnableTool("webpack")) {
             extra.push({ name: "webpack", version: undefined, });
         }
+        if (this.isEnableTool("nyc")) {
+            extra.push({ name: "nyc", version: undefined, });
+        }
 
-        return _.sortBy(base.concat(minify, extra), (depend) => depend.name);
+        return _.sortBy(base.concat(extra), (depend) => depend.name);
     }
 
     /**
@@ -216,6 +221,8 @@ export abstract class GeneratorBase {
                     });
                 }
             });
+
+        debug(JSON.stringify(depends, null, 4));
 
         const progress = (context: any): any => {
             if ("string" === typeof context && !this._config.settings.silent) {
@@ -381,6 +388,7 @@ export abstract class GeneratorBase {
                     }
                 })(),
                 guide: true,
+                taskPath: this._config.structureConfig.task,
             };
             copyTpl(
                 path.join(srcDir, "tools", "_webpack.config.js"),

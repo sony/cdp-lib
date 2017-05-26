@@ -22,6 +22,7 @@ const dir = {
     task: '<% structureConfig.task %>',
     test: '<% structureConfig.test %>',
     types: '<% structureConfig.types %>',
+    temp: '<% structureConfig.temp %>',
 };
 
 const main = {
@@ -30,6 +31,10 @@ const main = {
     <%/ namespace %>
     basename: '<% mainBaseName %>',
     bundle_d_ts: 'index.d.ts',
+};
+
+const built_cleanee = {
+    ts: ['**/*.js', '**/*.d.ts', '**/*.map'],
 };
 
 const d_ts_bundle = {
@@ -53,6 +58,8 @@ module.exports = {
     pkg: pkg,
     dir: dir,
     main: main,
+
+    built_cleanee: built_cleanee,
 
     dts_bundle: d_ts_bundle,
 

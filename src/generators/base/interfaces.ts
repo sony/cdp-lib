@@ -23,6 +23,7 @@ export interface IBaseStructureConfigration {
     task?: string;                              // タスクディレクトリ名
     test?: string;                              // テストディレクトリ名
     types?: string;                             // TypeScript 型定義ディレクトリ名
+    temp?: string;                              // 作業ディレクトリ名
     srcConfig?: ISourceDirctoryConfigration;    // ISourceDirctoryConfigration
 }
 
@@ -66,6 +67,7 @@ export interface IBuildTargetConfigration {
     minify?: boolean;                                           // リリース時に minify する場合は true
     // build tool
     tools?: string[];                                           // 既定の build tool ex) ["webpack"]
+    outputSameDir?: boolean;                                    // src と built が同じディレクトリになる場合 true
     // CSS
     supportCSS?: boolean;                                       // [TBD] CSS を含める場合には true
 }
@@ -77,6 +79,7 @@ export interface IBuildTargetConfigration {
 export interface IWebpackConfigration {
     node: boolean;      // node 環境の場合 true を指定
     guide: boolean;     // guide コメントを付加する場合は true を指定
+    taskPath: string;   // 'task' ディレクトリ名
 }
 
 /**
@@ -89,6 +92,7 @@ export interface IVisualStudioConfigration extends IBaseStructureConfigration {
     mainBaseName: string;       // メインファイル名 ex) "cdp-lib" / index
     license: boolean;           // LICENSE を追加する場合は true
     webpack: boolean;           // webpack.config.js を追加する場合は true
+    outputSameDir: boolean;     // src と built が同じディレクトリになる場合 true
     tsGroup: {
         relativePath: string;   // "hogehoge\"
         fileName: string;       // "cdp-lib"

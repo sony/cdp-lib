@@ -40,6 +40,7 @@ export class GeneratorModule extends GeneratorBase {
             task: "tasks",
             test: "tests",
             types: "@types",
+            temp: ".temp",
         };
     }
 
@@ -63,8 +64,8 @@ export class GeneratorModule extends GeneratorBase {
             "banner.js",
             "clean.js",
             "srcmap.js",
-            "build-ts-clean.js",
-            "build-ts-normalize.js",
+            "bundle-finalizer.js",
+            "remap-coverage.js",
         ];
     }
 
@@ -79,7 +80,8 @@ export class GeneratorModule extends GeneratorBase {
      */
     protected get defaultDevDependencies(): IDependency[] {
         const depends = super.defaultDevDependencies.concat([
-            { name: "@types/jasmine",   version: undefined, },
+            { name: "@types/jasmine", version: undefined, },
+        // TODO: browser/node で切り替え
             { name: "jasmine-node",     version: "^2.0.0",  },
         ]);
         return _.sortBy(depends, (depend) => depend.name);
@@ -138,21 +140,31 @@ export class GeneratorModule extends GeneratorBase {
             { delimiters: "<% %>" }
         );
 
-        // main tsconfig.json
-        copyTpl(
-            path.join(templatePath("library"), "_tsconfig.json"),
-            path.join(this.rootDir, "tsconfig.json"),
-            this._config,
-            { delimiters: "<% %>", bom: false, }
-        );
-
-        // test tsconfig.json
-        copyTpl(
-            path.join(templatePath("library"), "_tsconfig.test.json"),
-            path.join(this.rootDir, this._config.structureConfig.test, "jasmine", "tsconfig.json"),
-            this._config,
-            { delimiters: "<% %>", bom: false, }
-        );
+        // tsconfig
+        if (!this.config.outputSameDir) {
+            // main tsconfig.json
+            copyTpl(
+                path.join(templatePath("library"), "_tsconfig.json"),
+                path.join(this.rootDir, "tsconfig.json"),
+                this._config,
+                { delimiters: "<% %>", bom: false, }
+            );
+            // test tsconfig.json
+            copyTpl(
+                path.join(templatePath("library"), "_tsconfig.test.json"),
+                path.join(this.rootDir, this._config.structureConfig.test, "unit", "tsconfig.json"),
+                this._config,
+                { delimiters: "<% %>", bom: false, }
+            );
+        } else {
+            // main tsconfig.json
+            copyTpl(
+                path.join(templatePath("library"), "_tsconfig.output-same-dir.json"),
+                path.join(this.rootDir, "tsconfig.json"),
+                this._config,
+                { delimiters: "<% %>", bom: false, }
+            );
+        }
 
         // eslintrc.json
         copyTpl(
@@ -217,7 +229,7 @@ export class GeneratorModule extends GeneratorBase {
         // index.spec.ts
         copyTpl(
             path.join(templatePath("library"), "src", "_index.spec.ts"),
-            path.join(this.rootDir, this._config.structureConfig.test, "jasmine", _module + ".spec.ts"),
+            path.join(this.rootDir, this._config.structureConfig.test, "unit", _module + ".spec.ts"),
             param,
             { delimiters: "<% %>" }
         );
@@ -241,19 +253,20 @@ export class GeneratorModule extends GeneratorBase {
             // build tools
             param.webpack = this.isEnableTool("webpack");
 
+            param.outputSameDir = this.config.outputSameDir;
+
             // setup built js group
-            param.jsGroup = [
-                {
+            param.jsGroup = [];
+            if (!param.outputSameDir) {
+                param.jsGroup.push({
                     relativePath: param.built + "\\",
                     fileName: param.mainBaseName,
                     dependee: true,
                     d_ts: true,
                     map: true,
                     min_map: false,
-                },
-            ];
-
-            // minify
+                });
+            }
             if (this.config.minify) {
                 // setup pkg group
                 param.jsGroup.push({
@@ -269,12 +282,20 @@ export class GeneratorModule extends GeneratorBase {
             // setup test js group
             param.tsGroup = [
                 {
-                    relativePath: param.test + "\\jasmine\\",
+                    relativePath: param.test + "\\unit\\",
                     fileName: param.mainBaseName + ".spec",
                     dependee: true,
-                    map: false,
+                    map: this.config.outputSameDir,
                 },
             ];
+            if (param.outputSameDir) {
+                param.tsGroup.push({
+                    relativePath: param.built + "\\",
+                    fileName: param.mainBaseName,
+                    dependee: false,
+                    map: true,
+                });
+            }
 
             return param;
         })();
