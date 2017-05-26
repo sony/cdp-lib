@@ -114,6 +114,13 @@
   <ItemGroup>
     <Content Include="{{test}}\eslint\eslintrc.json" />
     <Content Include="{{test}}\tslint\tslint.json" />
+    {{#testem}}
+    <Content Include="{{test}}\runner\index.mustache" />
+    <Content Include="{{test}}\runner\require-main.js" />
+    <Content Include="{{test}}\runner\testem-amd.js" />
+    <Content Include="{{test}}\runner\testem-ci.js" />
+    <Content Include="{{test}}\runner\testem.json" />
+    {{/testem}}
     {{^outputSameDir}}
     <Content Include="{{test}}\unit\tsconfig.json" />
     {{/outputSameDir}}

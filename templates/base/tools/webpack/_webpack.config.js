@@ -1,7 +1,7 @@
 const webpack   = require('webpack');
 const path      = require('path');
 const banner    = require('./<% taskPath %>/banner');
-const config    = require('./project.config.js');
+const config    = require('./project.config');
 
 const TARGET            = config.target.env;
 const MAIN_ENTRY        = path.join(__dirname, config.dir.built, config.main.basename + '.js');
@@ -19,12 +19,12 @@ module.exports = {
         filename: OUTPUT_FILE_NAME,
         libraryTarget: OUTPUT_LIB_TARGET,
     },
-    <%# node %>
+    <%# nodejs %>
     node: {
         __dirname: false,
         __filename: false,
     },
-    <%/ node %>
+    <%/ nodejs %>
     devtool: 'inline-source-map',
     module: {
         rules: [

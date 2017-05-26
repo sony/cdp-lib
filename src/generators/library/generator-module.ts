@@ -13,6 +13,7 @@ import {
 import { ILibraryConfigration } from "./interfaces";
 
 const fs            = Utils.fs;
+const glob          = Utils.glob;
 const $             = Utils.$;
 const _             = Utils._;
 const debug         = Utils.debug;
@@ -81,10 +82,22 @@ export class GeneratorModule extends GeneratorBase {
     protected get defaultDevDependencies(): IDependency[] {
         const depends = super.defaultDevDependencies.concat([
             { name: "@types/jasmine", version: undefined, },
-        // TODO: browser/node で切り替え
-            { name: "jasmine-node",     version: "^2.0.0",  },
         ]);
-        return _.sortBy(depends, (depend) => depend.name);
+
+        let extra = [];
+        if (this.config.nodejs) {
+            extra.push({ name: "jasmine-node", version: "^2.0.0", });
+        } else {
+            extra.push({ name: "requirejs", version: "^2.0.0", });
+        }
+        if (this.isEnableTool("testem")) {
+            extra.push({ name: "testem", version: undefined, });
+        }
+        if (this.isEnableTool("phantomjs-prebuilt")) {
+            extra.push({ name: "phantomjs-prebuilt", version: undefined, });
+        }
+
+        return _.sortBy(depends.concat(extra), (depend) => depend.name);
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -174,6 +187,29 @@ export class GeneratorModule extends GeneratorBase {
             { delimiters: "<% %>", bom: false, }
         );
 
+        // testem
+        if (!this.config.nodejs) {
+            copyTpl(
+                path.join(templatePath("base/tools/testem"), "_testem.json"),
+                path.join(this.rootDir, this._config.structureConfig.test, "runner", "testem.json"),
+                this._config,
+                { delimiters: "<% %>", bom: false, }
+            );
+
+            const testemStuffPath = templatePath("base/tools/testem/files");
+
+            glob.sync("**", {
+                cwd: testemStuffPath,
+                nodir: true,
+            })
+                .forEach((file) => {
+                    fs.copySync(
+                        path.join(testemStuffPath, file),
+                        path.join(this.rootDir, this._config.structureConfig.test, "runner", file)
+                    );
+                });
+        }
+
         // .gitignore
         copyTpl(
             path.join(templatePath("library"), ".gitignore"),
@@ -248,10 +284,11 @@ export class GeneratorModule extends GeneratorBase {
             param.projectGUID       = createGUID();
             param.types             = param.types.replace("@", "%40"); // escape "@" to "%40"
             param.mainBaseName      = this._config.mainBaseName;
-            param.license           = "NONE" !== this._config.license;
+            param.license           = !this._config.private;
 
-            // build tools
+            // tools
             param.webpack = this.isEnableTool("webpack");
+            param.testem = !this.config.nodejs;
 
             param.outputSameDir = this.config.outputSameDir;
 

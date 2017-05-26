@@ -47,6 +47,7 @@ export interface IProjectConfigration {
     action: string;                                 // ex) "create"
     version: string;                                // バージョン ex) "1.0.0"
     license: string;                                // ライセンス ex) "Apache-2.0"
+    private?: boolean;                              // private パッケージの場合 true
     settings: Utils.IGlobalSettings;                // ログオプション
     moduleName?: string;                            // import に指定する モジュール名 ex) "cdp-lib"
     mainBaseName?: string;                          // メインファイル名 ex) "cdp-lib" / "index"
@@ -64,6 +65,7 @@ export interface IBuildTargetConfigration {
     es?: "es5" | "es2015";                                      // TypeScript の transpile target
     module?: "none" | "commonjs" | "amd" | "umd";               // JavaScript module system
     env?: "web" | "node" | "electron" | "electron-renderer";    // 実行環境の target
+    nodejs?: boolean;                                           // "node" | "electron" の場合に true
     minify?: boolean;                                           // リリース時に minify する場合は true
     // build tool
     tools?: string[];                                           // 既定の build tool ex) ["webpack"]
@@ -77,7 +79,7 @@ export interface IBuildTargetConfigration {
  * @brief Webpack 用コンフィギュレーション設定
  */
 export interface IWebpackConfigration {
-    node: boolean;      // node 環境の場合 true を指定
+    nodejs: boolean;    // "node" | "electron" の場合に true
     guide: boolean;     // guide コメントを付加する場合は true を指定
     taskPath: string;   // 'task' ディレクトリ名
 }
@@ -92,6 +94,7 @@ export interface IVisualStudioConfigration extends IBaseStructureConfigration {
     mainBaseName: string;       // メインファイル名 ex) "cdp-lib" / index
     license: boolean;           // LICENSE を追加する場合は true
     webpack: boolean;           // webpack.config.js を追加する場合は true
+    testem: boolean;            // testem runner を追加する場合は true
     outputSameDir: boolean;     // src と built が同じディレクトリになる場合 true
     tsGroup: {
         relativePath: string;   // "hogehoge\"

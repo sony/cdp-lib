@@ -1,0 +1,8 @@
+{
+  "framework": "jasmine2",
+  "launch_in_dev": ["chrome"],
+  "launch_in_ci": ["phantomjs"],
+  "src_files": [
+    "<% structureConfig.test %>/unit/*.js"
+  ]
+}

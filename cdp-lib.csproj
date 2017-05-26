@@ -114,7 +114,10 @@
     <Content Include="templates\base\task\clean.js" />
     <Content Include="templates\base\task\remap-coverage.js" />
     <Content Include="templates\base\task\srcmap.js" />
-    <Content Include="templates\base\tools\_webpack.config.js" />
+    <Content Include="templates\base\tools\testem\files\require-main.js" />
+    <Content Include="templates\base\tools\testem\files\testem-amd.js" />
+    <Content Include="templates\base\tools\testem\files\testem-ci.js" />
+    <Content Include="templates\base\tools\webpack\_webpack.config.js" />
     <Content Include="templates\library\.gitignore" />
     <Content Include="tests\unit\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
@@ -356,6 +359,8 @@
     <Content Include="templates\base\visual.studio\_js.item.group.tpl" />
     <Content Include="templates\base\visual.studio\_project.csproj.tpl" />
     <Content Include="templates\base\visual.studio\_solution.sln.tpl" />
+    <Content Include="templates\base\tools\testem\files\index.mustache" />
+    <Content Include="templates\base\tools\testem\_testem.json" />
     <None Include="templates\base\_BANNER" />
     <None Include="templates\base\_LICENSE.Apache-2.0" />
     <Content Include="templates\base\_LICENSE.MIT" />

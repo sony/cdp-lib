@@ -41,9 +41,23 @@ export abstract class GeneratorBase {
         this._projectRootDir = getTargetDir() ?
             getTargetDir() :
             path.join(process.cwd(), this._config.projectName);
+
         this._config.structureConfig = $.extend({}, this.defaultBaseStructure(), this._config.structureConfig);
+
+        this._config.private = "NONE" === this._config.license;
+
         (<IBuildTargetConfigration>this._config).outputSameDir
             = this._config.structureConfig.src === this._config.structureConfig.built;
+
+        (<IBuildTargetConfigration>this._config).nodejs = ((env: string) => {
+            switch (env) {
+                case "node":
+                case "electron":
+                    return true;
+                default:
+                    return false;
+            }
+        })((<IBuildTargetConfigration>this._config).env);
 
         debug(JSON.stringify(this._config, null, 4));
     }
@@ -110,7 +124,7 @@ export abstract class GeneratorBase {
      * template directory を指定して配下のファイルをコピー
      * IBaseStructureConfigration の設定が反映される
      *
-     * @param {String} path    ターゲットを指定. null の場合は、templates を返却
+     * @param {String} target  ターゲットを指定. null の場合は、templates を返却
      * @param {String} dstRoot コピー先を指定. 指定が無い場合は rootDir が設定
      */
     protected copyTplDir(target: string, dstRoot?: string, options?: glob.IOptions): void {
@@ -184,8 +198,8 @@ export abstract class GeneratorBase {
             { name: "typescript-formatter", version: undefined, },
         ];
         const minify = [
-            { name: "uglify-js",            version: undefined, es: ["es5"],    },
-            { name: "uglify-es",            version: undefined, es: ["es2015"], },
+            { name: "uglify-js",    version: undefined, es: ["es5"],    },
+            { name: "uglify-es",    version: undefined, es: ["es2015"], },
         ];
 
         let extra = [];
@@ -379,19 +393,12 @@ export abstract class GeneratorBase {
         // build tools: webpack
         if (this.isEnableTool("webpack")) {
             const param: IWebpackConfigration = {
-                node: (() => {
-                    switch ((<IBuildTargetConfigration>this._config).env) {
-                        case "node":
-                            return true;
-                        default:
-                            return false;
-                    }
-                })(),
+                nodejs: (<IBuildTargetConfigration>this._config).nodejs,
                 guide: true,
                 taskPath: this._config.structureConfig.task,
             };
             copyTpl(
-                path.join(srcDir, "tools", "_webpack.config.js"),
+                path.join(srcDir, "tools/webpack/_webpack.config.js"),
                 path.join(dstDir, "webpack.config.js"),
                 param,
                 { delimiters: "<% %>" }

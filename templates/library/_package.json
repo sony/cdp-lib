@@ -1,6 +1,9 @@
 {
   "name": "<% projectName %>",
   "version": "<% version %>",
+  <%# private %>
+  "private": true,
+  <%/ private %>
   "description": "",
   "author": "",
   "main": "<% structureConfig.pkg %>/<% mainBaseName %><%# minify %>.min<%/ minify %>.js",
@@ -13,8 +16,13 @@
     "depends": "npm list --depth=1",
     "depends:prod": "npm list --depth=0 --only=prod",
     "depends:dev": "npm list --depth=0 --only=dev",
+    <%# nodejs %>
     "debug": "node --inspect --debug-brk ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
     "debug:inspect": "node-debug ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
+    <%/ nodejs %>
+    "debug": "testem -f ./<% structureConfig.test %>/runner/testem-amd.js",
+    <%^ nodejs %>
+    <%/ nodejs %>
     "clean": "node ./<% structureConfig.task %>/clean.js",
     "clean:temp": "node ./<% structureConfig.task %>/clean.js --temp",
     "clean:coverage": "node ./<% structureConfig.task %>/clean.js --coverage",
@@ -41,9 +49,22 @@
     "lint:js": "eslint <% structureConfig.task %>/**/*.js <% structureConfig.built %>/**/*.js -c <% structureConfig.test %>/eslint/eslintrc.json",
     "lint:ts": "tslint --type-check -p ./tsconfig.json -c ./<% structureConfig.test %>/tslint/tslint.json '<% structureConfig.src %>/**/*.ts,!<% structureConfig.src %>/**/*.d.ts'",
     "unit-test": "npm run coverage:exec",
+    <%# nodejs %>
     "unit-test:ci": "node ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
+    <%/ nodejs %>
+    <%^ nodejs %>
+    "unit-test:ci": "testem ci -f ./<% structureConfig.test %>/runner/testem-ci.js",
+    <%/ nodejs %>
     "coverage": "run-s clean:coverage compile:ts coverage:exec",
+    <%# nodejs %>
     "coverage:exec": "nyc --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=./<% structureConfig.temp %> -n=<% structureConfig.built %>/** ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
+    <%/ nodejs %>
+    <%^ nodejs %>
+    "coverage:exec": "run-s clean:temp coverage:instrument unit-test:ci coverage:remap coverage:report",
+    "coverage:instrument": "nyc instrument ./<% structureConfig.built %> ./<% structureConfig.built %> --source-map=false",
+    "coverage:remap": "node ./<% structureConfig.task %>/remap-coverage.js",
+    "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=./<% structureConfig.temp %>",
+    <%/ nodejs %>
     "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
     "metrics": "plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json <% structureConfig.built %>/**/*.js"
   },

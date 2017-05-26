@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "module": "<% module %>",
+    <%# nodejs %>
+    "module": "commonjs",
+    <%/ nodejs %>
+    <%^ nodejs %>
+    "module": "amd",
+    <%/ nodejs %>
     "target": "<% es %>",
     "declaration": true,
     "emitBOM": false,
