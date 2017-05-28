@@ -20,8 +20,8 @@
     "debug": "node --inspect --debug-brk ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
     "debug:inspect": "node-debug ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
     <%/ nodejs %>
-    "debug": "testem -f ./<% structureConfig.test %>/runner/testem-amd.js",
     <%^ nodejs %>
+    "debug": "testem -f ./<% structureConfig.test %>/runner/testem-amd.js",
     <%/ nodejs %>
     "clean": "node ./<% structureConfig.task %>/clean.js",
     "clean:temp": "node ./<% structureConfig.task %>/clean.js --temp",
@@ -57,13 +57,13 @@
     <%/ nodejs %>
     "coverage": "run-s clean:coverage compile:ts coverage:exec",
     <%# nodejs %>
-    "coverage:exec": "nyc --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=./<% structureConfig.temp %> -n=<% structureConfig.built %>/** ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
+    "coverage:exec": "nyc --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=<% structureConfig.doc %>/reports/coverage -n=<% structureConfig.built %>/** ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",
     <%/ nodejs %>
     <%^ nodejs %>
-    "coverage:exec": "run-s clean:temp coverage:instrument unit-test:ci coverage:remap coverage:report",
+    "coverage:exec": "run-s coverage:instrument unit-test:ci coverage:remap coverage:report",
     "coverage:instrument": "nyc instrument ./<% structureConfig.built %> ./<% structureConfig.built %> --source-map=false",
     "coverage:remap": "node ./<% structureConfig.task %>/remap-coverage.js",
-    "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=./<% structureConfig.temp %>",
+    "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=<% structureConfig.doc %>/reports/coverage",
     <%/ nodejs %>
     "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
     "metrics": "plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json <% structureConfig.built %>/**/*.js"

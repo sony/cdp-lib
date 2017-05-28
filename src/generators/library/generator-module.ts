@@ -196,7 +196,7 @@ export class GeneratorModule extends GeneratorBase {
                 { delimiters: "<% %>", bom: false, }
             );
 
-            const testemStuffPath = templatePath("base/tools/testem/files");
+            const testemStuffPath = templatePath("base/tools/testem/runner");
 
             glob.sync("**", {
                 cwd: testemStuffPath,
