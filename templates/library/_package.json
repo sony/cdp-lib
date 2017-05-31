@@ -47,7 +47,7 @@
     <%/ minify %>
     "lint": "run-p -l lint:*",
     "lint:js": "eslint <% structureConfig.task %>/**/*.js <% structureConfig.built %>/**/*.js -c <% structureConfig.test %>/eslint/eslintrc.json",
-    "lint:ts": "tslint --type-check -p ./tsconfig.json -c ./<% structureConfig.test %>/tslint/tslint.json '<% structureConfig.src %>/**/*.ts,!<% structureConfig.src %>/**/*.d.ts'",
+    "lint:ts": "tslint --type-check -p ./tsconfig.json -c ./<% structureConfig.test %>/tslint/tslint.json -e <% structureConfig.src %>/**/*.d.ts <% structureConfig.src %>/**/*.ts",
     "unit-test": "npm run coverage:exec",
     <%# nodejs %>
     "unit-test:ci": "node ./node_modules/jasmine-node/bin/jasmine-node <% structureConfig.test %>/unit/",

@@ -84,7 +84,7 @@ export class GeneratorModule extends GeneratorBase {
             { name: "@types/jasmine", version: undefined, },
         ]);
 
-        let extra = [];
+        const extra = [];
         if (this.config.nodejs) {
             extra.push({ name: "jasmine-node", version: "^2.0.0", });
         } else {
