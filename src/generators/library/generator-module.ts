@@ -88,7 +88,7 @@ export class GeneratorModule extends GeneratorBase {
         if (this.config.nodejs) {
             extra.push({ name: "jasmine-node", version: "^2.0.0", });
         } else {
-            extra.push({ name: "requirejs", version: "^2.0.0", });
+            extra.push({ name: "requirejs", version: undefined, });
         }
         if (this.isEnableTool("testem")) {
             extra.push({ name: "testem", version: undefined, });
