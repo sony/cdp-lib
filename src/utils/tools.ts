@@ -312,7 +312,7 @@ export function formatXML(str: string, options?: FormatXmlOptions): string {
             if (pad > 0) {
                 pad -= 1;
             }
-        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+        } else if (node.match(/^<\w[^>]*[^/]>.*$/)) {
             indent = 1;
         } else {
             indent = 0;

@@ -119,7 +119,7 @@ export class GeneratorModule extends GeneratorBase {
     private ensureModuleProps(): void {
         // module name
         if (null == this.config.moduleName) {
-            if (!/^.*[(\\|\s|/|:|\*|?|\"|<|>|\|)].*$/.test(this.config.projectName)) {
+            if (!/^.*[(\\|\s|/|:|*|?|"|<|>||)].*$/.test(this.config.projectName)) {
                 this.config.moduleName = this.config.projectName;
             } else {
                 this.config.moduleName = _.trim(_.dasherize(this.config.projectName), "-");
@@ -190,13 +190,13 @@ export class GeneratorModule extends GeneratorBase {
         // testem
         if (!this.config.nodejs) {
             copyTpl(
-                path.join(templatePath("base/tools/testem"), "_testem.json"),
+                path.join(templatePath("library/tools/testem"), "_testem.json"),
                 path.join(this.rootDir, this._config.structureConfig.test, "runner", "testem.json"),
                 this._config,
                 { delimiters: "<% %>", bom: false, }
             );
 
-            const testemStuffPath = templatePath("base/tools/testem/runner");
+            const testemStuffPath = templatePath("library/tools/testem/runner");
 
             glob.sync("**", {
                 cwd: testemStuffPath,

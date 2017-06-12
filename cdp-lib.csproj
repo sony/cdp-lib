@@ -110,15 +110,27 @@
     <Content Include="tasks\remap-coverage.js" />
     <Content Include="tasks\srcmap.js" />
     <Content Include="templates\base\task\banner.js" />
+    <Content Include="templates\base\task\build-addon.js" />
     <Content Include="templates\base\task\bundle-finalizer.js" />
     <Content Include="templates\base\task\clean.js" />
+    <Content Include="templates\base\task\command.js" />
+    <Content Include="templates\base\task\compile-scss.js" />
+    <Content Include="templates\base\task\compile-ts.js" />
+    <Content Include="templates\base\task\copy.js" />
+    <Content Include="templates\base\task\cordova-receiver.js" />
+    <Content Include="templates\base\task\external-rearrange.js" />
+    <Content Include="templates\base\task\instrument.js" />
+    <Content Include="templates\base\task\minify.js" />
+    <Content Include="templates\base\task\porting-setup.js" />
     <Content Include="templates\base\task\remap-coverage.js" />
     <Content Include="templates\base\task\srcmap.js" />
-    <Content Include="templates\base\tools\testem\runner\require-main.js" />
-    <Content Include="templates\base\tools\testem\runner\testem-amd.js" />
-    <Content Include="templates\base\tools\testem\runner\testem-ci.js" />
+    <Content Include="templates\base\task\string-replace.js" />
+    <Content Include="templates\base\task\tsconfig-templates.js" />
     <Content Include="templates\base\tools\webpack\_webpack.config.js" />
     <Content Include="templates\library\.gitignore" />
+    <Content Include="templates\library\tools\testem\runner\require-main.js" />
+    <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
+    <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
     <Content Include="tests\unit\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>
@@ -359,8 +371,6 @@
     <Content Include="templates\base\visual.studio\_js.item.group.tpl" />
     <Content Include="templates\base\visual.studio\_project.csproj.tpl" />
     <Content Include="templates\base\visual.studio\_solution.sln.tpl" />
-    <Content Include="templates\base\tools\testem\_testem.json" />
-    <Content Include="templates\base\tools\testem\runner\index.mustache" />
     <None Include="templates\base\_BANNER" />
     <None Include="templates\base\_LICENSE.Apache-2.0" />
     <Content Include="templates\base\_LICENSE.MIT" />
@@ -371,6 +381,8 @@
   <ItemGroup>
     <Content Include="templates\library\_eslintrc.json" />
     <Content Include="templates\library\structure\pkg\.gitkeep" />
+    <Content Include="templates\library\tools\testem\runner\index.mustache" />
+    <Content Include="templates\library\tools\testem\_testem.json" />
     <None Include="templates\library\_package.json" />
     <Content Include="templates\library\_project.config.js" />
     <None Include="templates\library\_README.md" />
