@@ -5,15 +5,21 @@
 } from "../base";
 
 /**
- * @interface IExternalModules
+ * @interface IExternalModuleInfo
  * @brief 外部ライブラリの定義
  */
+export interface IExternalModuleInfo {
+    acquisition: "npm" | "npm:dev" | "cordova" | "resource";    // 取得先
+    regular: boolean;                                           // 既定でインストールに含めるか
+    subset?: IExternalModules;                                  // サブセットモジュール
+}
+
+/**
+ * @interface IExternalModules
+ * @brief 外部ライブラリの一覧定義
+ */
 export interface IExternalModules {
-    [name: string]: {
-        acquisition: "npm" | "npm:dev" | "cordova" | "resource";    // 取得先
-        regular: boolean;                                           // 既定でインストールに含めるか
-        subset?: IExternalModules;                                  // サブセットモジュール
-    };
+    [name: string]: IExternalModuleInfo;
 }
 
 /**
