@@ -1,7 +1,4 @@
-﻿/* tslint:disable:no-unused-variable no-unused-vars */
-/* eslint-disable no-unused-vars */
-
-import * as path from "path";
+﻿import * as path from "path";
 import * as os from "os";
 import {
     IBaseStructureConfigration,
@@ -81,7 +78,9 @@ export class GeneratorModule extends GeneratorBase {
      */
     protected get defaultDevDependencies(): IDependency[] {
         const depends = super.defaultDevDependencies.concat([
-            { name: "@types/jasmine", version: undefined, },
+            { name: "@types/jasmine",       version: undefined, },
+            { name: "dts-bundle",           version: undefined, },
+            { name: "typescript-formatter", version: undefined, },
         ]);
 
         const extra = [];
@@ -89,12 +88,6 @@ export class GeneratorModule extends GeneratorBase {
             extra.push({ name: "jasmine-node", version: "^2.0.0", });
         } else {
             extra.push({ name: "requirejs", version: undefined, });
-        }
-        if (this.isEnableTool("testem")) {
-            extra.push({ name: "testem", version: undefined, });
-        }
-        if (this.isEnableTool("phantomjs-prebuilt")) {
-            extra.push({ name: "phantomjs-prebuilt", version: undefined, });
         }
 
         return _.sortBy(depends.concat(extra), (depend) => depend.name);
@@ -346,7 +339,7 @@ export class GeneratorModule extends GeneratorBase {
         );
 
         // .csproj
-        const createProj = (() => {
+        (() => {
             const toXmlString = (file: string) => {
                 const hogan = Utils.hogan;
                 const normalizeText = Utils.normalizeText;

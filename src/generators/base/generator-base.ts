@@ -186,7 +186,6 @@ export abstract class GeneratorBase {
         const base = [
             { name: "convert-source-map",   version: undefined, },
             { name: "del",                  version: undefined, },
-            { name: "dts-bundle",           version: undefined, },
             { name: "eslint",               version: undefined, },
             { name: "npm-run-all",          version: undefined, },
             { name: "plato",                version: undefined, },
@@ -195,7 +194,6 @@ export abstract class GeneratorBase {
             { name: "tslint",               version: undefined, },
             { name: "typedoc",              version: undefined, },
             { name: "typescript",           version: undefined, },
-            { name: "typescript-formatter", version: undefined, },
         ];
         const minify = [
             { name: "uglify-js",    version: undefined, es: ["es5"],    },
@@ -211,6 +209,12 @@ export abstract class GeneratorBase {
         }
         if (this.isEnableTool("nyc")) {
             extra.push({ name: "nyc", version: undefined, });
+        }
+        if (this.isEnableTool("testem")) {
+            extra.push({ name: "testem", version: undefined, });
+        }
+        if (this.isEnableTool("phantomjs-prebuilt")) {
+            extra.push({ name: "phantomjs-prebuilt", version: undefined, });
         }
 
         return _.sortBy(base.concat(extra), (depend) => depend.name);

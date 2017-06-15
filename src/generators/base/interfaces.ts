@@ -25,6 +25,10 @@ export interface IBaseStructureConfigration {
     types?: string;                             // TypeScript 型定義ディレクトリ名
     temp?: string;                              // 作業ディレクトリ名
     srcConfig?: ISourceDirctoryConfigration;    // ISourceDirctoryConfigration
+    lib?: string;                               // internal library module ディレクトリ名
+    external?: string;                          // external module ディレクトリ名
+    porting?: string;                           // porting module ディレクトリ名
+    res?: string;                               // リソースディレクトリ名
 }
 
 /**
@@ -70,8 +74,6 @@ export interface IBuildTargetConfigration {
     // build tool
     tools?: string[];                                           // 既定の build tool ex) ["webpack"]
     outputSameDir?: boolean;                                    // src と built が同じディレクトリになる場合 true
-    // CSS
-    supportCSS?: boolean;                                       // [TBD] CSS を含める場合には true
 }
 
 /**

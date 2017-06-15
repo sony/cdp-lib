@@ -1,7 +1,7 @@
 ﻿/* eslint-env node, es6 */
 'use strict';
 
-const _         = require('lodash');
+const _      = require('lodash');
 const config = require('../project.config');
 
 const app           = config.dir.src;
@@ -52,7 +52,7 @@ const tsconfig_templates = {
         },
         'include': [
             '<%= rootDir %>',
-            `${app}/${porting}/${scripts}/${types}`,   // porting は@types の位置まで仕様にする.
+            `${app}/${porting}/${scripts}/${types}`,
         ],
         'exclude': [
             `!${app}/${porting}`,
@@ -134,9 +134,6 @@ const tsconfig_templates = {
         'compilerOptions': {
             'outFile': `./${www}/${lib}/${scripts}/<%= param %>.js`,
             'declaration': true,
-            // cannot set "declarationDir" with "outFile"
-            // https://github.com/Microsoft/TypeScript/issues/12405
-            //'declarationDir': "./.temp/@types",
         },
         'include': [
             `${app}/${lib}/${scripts}/<%= param %>/**/*.ts`,
