@@ -31,7 +31,7 @@ var org = {
     force: false,
     verbose: false,
     silent: false,
-    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib',
+    libPath: "D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib",
     lang: "en-US",
 };
 
@@ -39,7 +39,7 @@ var hoge = {
     force: false,
     verbose: false,
     silent: false,
-    libPath: 'D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib',
+    libPath: "D:\Projects\CDP\DevBoilerplate\cdp-lib\node_modules\cdp-lib",
     lang: "en-US",
 };
 
@@ -276,7 +276,7 @@ describe("check utils/tools", () => {
     it("createGUID", () => {
         expect(createGUID).toBeDefined();
         expect("function" === typeof createGUID).toBeTruthy();
-        let guid = createGUID();
+        const guid = createGUID();
         expect(guid.indexOf("{")).toBeGreaterThan(-1);
         expect(guid.indexOf("}")).toBeGreaterThan(0);
         expect(guid.length).toEqual(38);
@@ -286,7 +286,7 @@ describe("check utils/tools", () => {
         expect(str2XmlNode).toBeDefined();
         expect("function" === typeof str2XmlNode).toBeTruthy();
 
-        let $preference = str2XmlNode(`<preference name="DisallowOverscroll" value="true"/>`);
+        const $preference = str2XmlNode(`<preference name="DisallowOverscroll" value="true"/>`);
         expect($preference.attr("name")).toEqual("DisallowOverscroll");
         expect($preference.attr("value")).toEqual("true");
     });

@@ -4,21 +4,25 @@
 import * as path from "path";
 import * as os from "os";
 import {
+    fs,
+    glob,
+    $,
+    _,
+    debug,
+    templatePath,
+    copyTpl,
+    execCommand,
+    str2XmlNode,
+    xmlNode2Str,
+    formatXML,
+} from "../../utils";
+import {
     IBaseStructureConfigration,
     IDependency,
     IVisualStudioConfigration,
     GeneratorBase,
-    Utils,
 } from "../base";
 import { IMobileAppConfigration } from "./interfaces";
-
-const fs            = Utils.fs;
-const glob          = Utils.glob;
-const $             = Utils.$;
-const _             = Utils._;
-const debug         = Utils.debug;
-const templatePath  = Utils.templatePath;
-const copyTpl       = Utils.copyTpl;
 
 /**
  * @class GeneratorCordova
@@ -59,8 +63,7 @@ export class GeneratorCordova extends GeneratorBase {
      * @param {ILibraryConfigration} config コンフィグ設定
      */
     async create(): Promise<void> {
-        // TODO:
-        return Promise.reject("under construction.");
+        await this.createProjectStructure();
     }
 
     /**
@@ -118,4 +121,94 @@ export class GeneratorCordova extends GeneratorBase {
     private get config(): IMobileAppConfigration {
         return <IMobileAppConfigration>this._config;
     }
+
+    /**
+     * プロジェクト構成の作成
+     */
+    private async createProjectStructure(): Promise<void> {
+        const cordovaEnabled = (0 < this.config.platforms.length);
+
+        if (cordovaEnabled) {
+            await this.chdir(this.rootDir);
+            await this.createCordovaScaffold();
+            await this.updateConfigXML();
+            await this.mergeCordovaScaffold();
+            await this.addCordovaExtentionFiles();
+            await this.addCordovaPlatforms();
+            await this.chdir("..");
+        } else {
+            // TODO:
+        }
+    }
+
+    //___________________________________________________________________________________________________________________//
+
+    /**
+     * cordova を用いたプロジェクト作成
+     */
+    private async createCordovaScaffold(): Promise<void> {
+        this.progress("mobile.create.cordova.createCordovaScaffold");
+        debug("createCordovaScaffold");
+
+        // `$ cordova create cool-mobile com.sony.cdp.coolmobile "Cool Mobile"`
+        await execCommand("cordova", ["create", this.config.projectName, this.config.appId, this.config.appName]);
+
+        // remove files
+        glob.sync("www/**/*", {
+            cwd: this.config.projectName,
+        }).forEach((file) => {
+            fs.removeSync(path.join(this.config.projectName, file));
+        });
+        fs.removeSync(path.join(this.config.projectName, "res"));
+        fs.removeSync(path.join(this.config.projectName, ".npmignore"));
+
+        // move root directory
+        fs.copySync(this.config.projectName, "./");
+        fs.removeSync(this.config.projectName);
+    }
+
+    /**
+     * config.xml の修正
+     */
+    private async updateConfigXML(): Promise<void> {
+        this.progress("mobile.create.cordova.updateConfigXml");
+        debug("updateConfigXML");
+
+        const configXmlPath = path.join(process.cwd(), "config.xml");
+        const $configXmlDom = $(str2XmlNode(fs.readFileSync(configXmlPath).toString()));
+
+        $configXmlDom
+            .find("widget")
+            .attr("version", this.config.version)
+            .prepend(str2XmlNode(`
+                <preference name="DisallowOverscroll" value="true"/>
+                <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
+                <preference name="BackgroundColor" value="0xff000000" />
+            `))
+            ;
+
+        // remove cordova team information
+        $configXmlDom
+            .find("description")
+            .remove();
+        $configXmlDom
+            .find("author")
+            .remove();
+
+        fs.writeFileSync(configXmlPath, formatXML(xmlNode2Str($configXmlDom)));
+    }
+
+    private async mergeCordovaScaffold(): Promise<void> {
+        debug("mergeCordovaScaffold");
+    }
+
+    private async addCordovaExtentionFiles(): Promise<void> {
+        debug("addCordovaExtentionFiles");
+    }
+
+    private async addCordovaPlatforms(): Promise<void> {
+        debug("addCordovaPlatforms");
+    }
+
+    //___________________________________________________________________________________________________________________//
 }

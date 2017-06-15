@@ -245,11 +245,16 @@ export function createGUID(): string {
 /**
  * Create XML DOM node.
  *
- * @param  {String} str  string xml format. ex) '<preference name="DisallowOverscroll" value="true"/>'
- * @return {jQuery} XML Node instance
+ * @param   str  string xml format. ex) '<preference name="DisallowOverscroll" value="true"/>'
+ * @returns XML Node instance
  */
 export function str2XmlNode(str: string): JQuery {
-    return $($.parseXML(str)).children();
+    let fullXML = true;
+    if (!/<?xml/i.test(str)) {
+        fullXML = false;
+    }
+    const $xml = $($.parseXML(str));
+    return fullXML ? $xml : $xml.children();
 }
 
 /**
@@ -317,11 +322,14 @@ export function formatXML(str: string, options?: FormatXmlOptions): string {
         } else {
             indent = 0;
         }
-        xml += spaces(pad) + node + opt.eol;
+        xml += spaces(pad) + node + "\n";
         pad += indent;
     }
 
-    xml = xml.replace(/\n\n/gm, "\n");
+    xml = xml
+        .replace(/\n\n/gm, "\n")
+        .replace(/^ +\n/gm, "")
+        ;
 
     return normalizeText(xml, opt);
 }

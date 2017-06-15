@@ -9,5 +9,19 @@
       }
     }
   },
+  "mobile": {
+    "create": {
+      "cordova": {
+        "createCordovaScaffold": "cordova プロジェクトを構成中です...",
+        "updateConfigXml": "'config.xml' ファイルを更新しています...",
+        "addExtensions": "cordova 拡張ファイルを追加しています...",
+        "addPlatforms": "対応プラットフォームを追加しています...",
+        "iOSWarning": "'iOS' 追加処理をスキップします。追加するには Mac OS 上から再度指定してください。",
+        "addPlugins": "cordova プラグインを追加しています..."
+      },
+      "error": {
+      }
+    }
+  },
   "EOF": "EOF"
 }

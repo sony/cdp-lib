@@ -9,5 +9,19 @@
       }
     }
   },
+  "mobile": {
+    "create": {
+      "cordova": {
+        "createCordovaScaffold": "create cordova scaffold...",
+        "updateConfigXml": "update 'config.xml' file...",
+        "addExtensions": "add cordova extension files...",
+        "addPlatforms": "add cordova platforms...",
+        "iOSWarning": "'iOS' option is skipped. Please try on the Mac OS.",
+        "addPlugins": "add cordova plugins..."
+      },
+      "error": {
+      }
+    }
+  },
   "EOF": "EOF"
 }
