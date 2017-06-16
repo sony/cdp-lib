@@ -4,6 +4,7 @@
     "create": {
       "foundation": "Creating project's foundation settings...",
       "queryVersion": "Resolving dependency module's versions...",
+      "solution": "generating Visual Studio solution files...",
       "error": {
         "alreadyExist": "Project directory already exist."
       }
@@ -18,6 +19,11 @@
         "addPlatforms": "add cordova platforms...",
         "iOSWarning": "'iOS' option is skipped. Please try on the Mac OS.",
         "addPlugins": "add cordova plugins..."
+      },
+      "app": {
+        "createDirectoryStructure": "generating application directories...",
+        "createProjectSettings": "updating project information...",
+        "createSourceTemplate": "generating application sources..."
       },
       "error": {
       }

@@ -4,6 +4,7 @@
     "create": {
       "foundation": "プロジェクトの基本構成を作成しています...",
       "queryVersion": "依存モジュールのバージョンを確認しています...",
+      "solution": "Visual Studio のソリューションファイルの構成をしています...",
       "error": {
         "alreadyExist": "プロジェクトディレクトリはすでに存在しています。"
       }
@@ -18,6 +19,11 @@
         "addPlatforms": "対応プラットフォームを追加しています...",
         "iOSWarning": "'iOS' 追加処理をスキップします。追加するには Mac OS 上から再度指定してください。",
         "addPlugins": "cordova プラグインを追加しています..."
+      },
+      "app": {
+        "createDirectoryStructure": "アプリケーションのディレクトリを構成中です...",
+        "createProjectSettings": "プロジェクト情報を更新しています...",
+        "createSourceTemplate": "アプリケーションのソースコードを生成しています..."
       },
       "error": {
       }

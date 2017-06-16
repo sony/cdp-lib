@@ -54,14 +54,10 @@ const banner = {
 // project configuration
 module.exports = {
     target: target,
-
     pkg: pkg,
     dir: dir,
     main: main,
-
     built_cleanee: built_cleanee,
-
     dts_bundle: d_ts_bundle,
-
     banner: banner,
 };

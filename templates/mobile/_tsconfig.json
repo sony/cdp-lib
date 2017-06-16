@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base",
+  "compileOnSave": true,
+  "compilerOptions": {
+    "declaration": false
+  },
+  "include": [
+    "<% structureConfig.src %>/<% structureConfig.srcConfig.script %>/**/*.ts",
+    "<% structureConfig.src %>/<% structureConfig.lib %>/<% structureConfig.srcConfig.script %>/**/*.ts",
+    "<% structureConfig.src %>/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.ts",
+    "platforms/*/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.ts",
+    "<% structureConfig.test %>/unit/**/*.ts"
+  ],
+  "exclude": [
+    "<% structureConfig.src %>/<% structureConfig.external %>",
+    "<% structureConfig.src %>/<% structureConfig.res %>",
+    "<% structureConfig.src %>/<% structureConfig.srcConfig.stylesheet %>",
+    "<% structureConfig.src %>/<% structureConfig.srcConfig.template %>",
+    "npm",
+    "!platforms/*/<% structureConfig.porting %>",
+    "<% structureConfig.doc %>",
+    "<% structureConfig.task %>",
+    "<% structureConfig.pkg %>",
+    "<% structureConfig.temp %>",
+    "node_modules",
+    "bin",
+    "obj"
+  ]
+}

@@ -17,7 +17,10 @@ node_modules/
 bin/
 obj/
 temp/
+www/
+platforms/*/www/
+platforms/*/assets/www/
+platforms/*/{{structureConfig.porting}}/**/*.js
 {{structureConfig.built}}/**/*.js
 {{structureConfig.built}}/**/*.map
-{{structureConfig.built}}/**/*.d.ts
 {{structureConfig.test}}/unit/**/*.js

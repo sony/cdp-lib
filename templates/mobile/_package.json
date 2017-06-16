@@ -1,0 +1,81 @@
+{
+  "name": "<% projectName %>",
+  "version": "<% version %>",
+  <%# private %>
+  "private": true,
+  <%/ private %>
+  "description": "",
+  "author": "",
+  "scripts": {
+    "test": "run-s -l clean compile lint unit-test",
+    "ci": "run-s -l clean compile lint unit-test metrics document build:release",
+    "deploy": "run-s ci clean:deploy",
+    "update": "npm update --save-dev && npm update --save && npm run deploy",
+    "depends": "npm list --depth=1",
+    "depends:prod": "npm list --depth=0 --only=prod",
+    "depends:dev": "npm list --depth=0 --only=dev",
+    "debug": "testem -f ./<% structureConfig.test %>/runner/testem-amd.js",
+    "clean": "node ./<% structureConfig.task %>/clean.js && node ./<% structureConfig.task %>/porting-setup.js --porting=clean",
+    "clean:temp": "node ./<% structureConfig.task %>/clean.js --temp",
+    "clean:coverage": "node ./<% structureConfig.task %>/clean.js --coverage",
+    "clean:typedoc": "node ./<% structureConfig.task %>/clean.js --typedoc",
+    "clean:test": "node ./<% structureConfig.task %>/clean.js --test",
+    "clean:built": "node ./<% structureConfig.task %>/clean.js --built && node ./<% structureConfig.task %>/porting-setup.js --porting=clean",
+    "clean:pkg": "node ./<% structureConfig.task %>/clean.js --pkg",
+    "clean:porting": "node ./<% structureConfig.task %>/porting-setup.js --porting=clean",
+    "clean:deploy": "node ./<% structureConfig.task %>/clean.js --built --test --temp",
+    "compile": "run-p compile:ts compile:scss",
+    "compile:ts": "node ./<% structureConfig.task %>/compile-ts.js",
+    "compile:scss": "node ./<% structureConfig.task %>/compile-scss.js",
+    "compile:debug": "run-p compile:debug:*",
+    "compile:debug:ts": "npm run compile:ts -- --pkg --<% structureConfig.src %> --lib",
+    "compile:debug:scss": "npm run compile:scss -- --pkg --<% structureConfig.src %> --lib",
+    "compile:release": "run-p compile:release:*",
+    "compile:release:ts": "npm run compile:ts -- --pkg=release --<% structureConfig.src %> --lib",
+    "compile:release:scss": "npm run compile:scss -- --pkg --<% structureConfig.src %> --lib",
+    "build:clean": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/porting-setup.js --porting=clean",
+    "build:config": "node ./<% structureConfig.task %>/string-replace.js",
+    "build:porting": "node ./<% structureConfig.task %>/porting-setup.js",
+    "build:debug": "npm run build:clean && run-p compile:debug copy:debug && node ./<% structureConfig.task %>/build-addon.js",
+    "build:release": "npm run build:clean && run-p compile:release copy:release && node ./<% structureConfig.task %>/build-addon.js --release",
+    "copy:debug": "node ./<% structureConfig.task %>/copy.js",
+    "copy:release": "node ./<% structureConfig.task %>/copy.js --release",
+    "bundle": "node ./<% structureConfig.task %>/bundle-finalizer.js",
+    "minify": "node ./<% structureConfig.task %>/minify.js",
+    "porting:dev": "node ./<% structureConfig.task %>/porting-setup.js --platform=dev --porting=rebase",
+    "porting:android": "node ./<% structureConfig.task %>/porting-setup.js --platform=android --porting=rebase",
+    "porting:ios": "node ./<% structureConfig.task %>/porting-setup.js --platform=ios --porting=rebase",
+    "lint": "run-p -l lint:*",
+    "lint:js": "eslint <% structureConfig.task %>/**/*.js <% structureConfig.src %>/<% structureConfig.srcConfig.script %>/**/*.js platforms/*/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.js -c <% structureConfig.test %>/eslint/eslintrc.json",
+    "lint:ts": "tslint --type-check -p ./tsconfig.json -c ./<% structureConfig.test %>/tslint/tslint.json -e <% structureConfig.src %>/**/*.d.ts <% structureConfig.src %>/**/*.ts platforms/*/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.ts",
+    "unit-test": "npm run coverage:exec",
+    "unit-test:ci": "testem ci -f ./<% structureConfig.test %>/runner/testem-ci.js",
+    "coverage": "run-s clean:coverage compile:ts coverage:exec",
+    "coverage:exec": "run-s coverage:instrument unit-test:ci coverage:remap coverage:report",
+    "coverage:instrument": "node ./<% structureConfig.task %>/instrument.js",
+    "coverage:remap": "node ./<% structureConfig.task %>/remap-coverage.js",
+    "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=<% structureConfig.doc %>/reports/coverage",
+    "rearrange": "node ./<% structureConfig.task %>/external-rearrange.js",
+    "module": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/compile-ts.js --pkg=release --lib && node ./<% structureConfig.task %>/copy.js --task=lib-types && node ./<% structureConfig.task %>/clean.js --temp",
+    "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
+    "metrics": "plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
+  },
+  <%# license %>
+  "license": "<% license %>",
+  <%/ license %>
+  "browserslist": [
+    "last 1 Android versions",
+    "last 2 ChromeAndroid versions",
+    "last 2 iOS versions"
+  ],
+  "dependencies": {
+    <%# dependencies %>
+    "<% name %>": "<% version %>"<%^ last %>,<%/ last %>
+    <%/ dependencies %>
+  },
+  "devDependencies": {
+    <%# devDependencies %>
+    "<% name %>": "<% version %>"<%^ last %>,<%/ last %>
+    <%/ devDependencies %>
+  }
+}

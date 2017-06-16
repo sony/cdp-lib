@@ -64,7 +64,23 @@ export class GeneratorCordova extends GeneratorBase {
      * @param {ILibraryConfigration} config コンフィグ設定
      */
     async create(): Promise<void> {
-        await this.createProjectStructure();
+        debug(JSON.stringify(this.config, null, 4));
+
+        if (this.isEnableCordova()) {
+            await this.chdir(this.rootDir);
+            await this.createCordovaScaffold();
+            await this.updateConfigXML();
+            await this.addCordovaPlatforms();
+            await this.addCordovaPlugins();
+            await this.addCordovaExtentionFiles();
+            await this.cacheCordovaPackageJSON();
+            await this.chdir("..");
+        }
+
+        await this.createDirectoryStructure();
+        await this.createProjectSettings();
+        await this.createSourceTemplate();
+        await this.createVisualStudioSolution();
     }
 
     /**
@@ -95,7 +111,6 @@ export class GeneratorCordova extends GeneratorBase {
             { name: "@types/jasmine",       version: undefined, },
             { name: "@types/jquery",        version: undefined, },
             { name: "@types/requirejs",     version: undefined, },
-            { name: "@types/jquery",        version: undefined, },
             { name: "@types/underscore",    version: undefined, },
             { name: "autoprefixer",         version: undefined, },
             { name: "clean-css",            version: undefined, },
@@ -110,11 +125,38 @@ export class GeneratorCordova extends GeneratorBase {
             extra.push({ name: depend.name, version: depend.version, });
         });
 
+        if (this.isEnableCordova()) {
+            extra.push({ name: "@types/cordova", version: undefined, });
+        }
+
         return _.sortBy(depends.concat(extra), (depend) => depend.name);
     }
 
     ///////////////////////////////////////////////////////////////////////
     // private methods:
+
+    /**
+     * 開発時の依存モジュールリストの取得
+     * 必要に応じてオーバーライド
+     *
+     * @return {IDependency}
+     */
+    private get defaultDependencies(): IDependency[] {
+        const depends = [
+            { name: "@cdp/mobile",  version: "git+ssh://git@github.com/CDP-Tokyo/cdp-js.git#dev", },
+            { name: "backbone",     version: undefined, },
+            { name: "jquery",       version: undefined, },
+            { name: "requirejs",    version: undefined, },
+            { name: "underscore",   version: undefined, },
+        ];
+
+        const extra = [];
+        this.config.dependencies.forEach((depend) => {
+            extra.push({ name: depend.name, version: depend.version, });
+        });
+
+        return _.sortBy(depends.concat(extra), (depend) => depend.name);
+    }
 
     /**
      * configration にアクセス
@@ -124,26 +166,33 @@ export class GeneratorCordova extends GeneratorBase {
     }
 
     /**
-     * プロジェクト構成の作成
+     * cordova の有効/無効チェック
+     *
+     * @returns true: 有効 / false: 無効
      */
-    private async createProjectStructure(): Promise<void> {
-        const cordovaEnabled = (0 < this.config.platforms.length);
+    private isEnableCordova(): boolean {
+        return (0 < this.config.platforms.length);
+    }
 
-        if (cordovaEnabled) {
-            await this.chdir(this.rootDir);
-            await this.createCordovaScaffold();
-            await this.updateConfigXML();
-            await this.addCordovaPlatforms();
-            await this.addCordovaPlugins();
-            await this.addCordovaExtentionFiles();
-            await this.cacheCordovaPackageJSON();
-            await this.chdir("..");
-        }
+    /**
+     * lib/porting の設定状況のチェック
+     *
+     * @param target
+     * @returns true: 設定 / false: 未設定
+     */
+    private hasStructureOf(target: "lib" | "porting"): boolean {
+        return (this.config.projectStructure && 0 <= this.config.projectStructure.indexOf(target));
+    }
 
-        await this.createDirectoryStructure();
-        await this.createProjectSettings();
-        await this.createSourceTemplate();
-        await this.createVisualStudioSolution();
+    /**
+     * インストール対象/非対象チェック
+     *
+     * @param name    [in] モジュール名
+     * @param depends [in] 検索対象
+     * @returns true: 対象 / false: 非対象
+     */
+    private isInstallationTarget(name: string, depends: IDependency[]): boolean {
+        return !!depends.find((depend) => name === depend.name);
     }
 
     //___________________________________________________________________________________________________________________//
@@ -210,11 +259,13 @@ export class GeneratorCordova extends GeneratorBase {
     private async addCordovaPlatforms(): Promise<void> {
         debug("addCordovaPlatforms");
 
-        const index = this.config.platforms.indexOf("ios");
+        const targets = this.config.platforms.slice();
+
+        const index = targets.indexOf("ios");
         if (0 <= index && "darwin" !== process.platform) {
             this.warn("mobile.create.cordova.iOSWarning");
-            this.config.platforms.splice(index, 1);
-            if (this.config.platforms.length <= 0) {
+            targets.splice(index, 1);
+            if (targets.length <= 0) {
                 return Promise.resolve();
             }
         }
@@ -222,7 +273,7 @@ export class GeneratorCordova extends GeneratorBase {
         this.progress("mobile.create.cordova.addPlatforms");
 
         // `$ cordova platform add android ios`
-        await execCommand("cordova", ["platform", "add"].concat(this.config.platforms));
+        await execCommand("cordova", ["platform", "add"].concat(targets));
     }
 
     /**
@@ -281,11 +332,14 @@ export class GeneratorCordova extends GeneratorBase {
      * ディレクトリ構成情報のコピー
      */
     private createDirectoryStructure(): void {
+        this.progress("mobile.create.app.createDirectoryStructure");
+        debug("createDirectoryStructure");
+
         // app base structure
         this.copyTplDir("mobile/structure/base");
 
         // lib
-        if (this.config.projectStructure && 0 <= this.config.projectStructure.indexOf("lib")) {
+        if (this.hasStructureOf("lib")) {
             this.copyTplDir(
                 "mobile/structure/lib",
                 path.join(this.rootDir, this.config.structureConfig.src, this.config.structureConfig.lib)
@@ -293,7 +347,7 @@ export class GeneratorCordova extends GeneratorBase {
         }
 
         // porting
-        if (this.config.projectStructure && 0 <= this.config.projectStructure.indexOf("porting")) {
+        if (this.hasStructureOf("porting")) {
             this.copyTplDir(
                 "mobile/structure/porting",
                 path.join(this.rootDir, this.config.structureConfig.src, this.config.structureConfig.porting)
@@ -317,101 +371,113 @@ export class GeneratorCordova extends GeneratorBase {
             fs.mkdir(WWW);
         }
         fs.copySync(templatePath("base/.gitkeep"), path.join(WWW, ".gitkeep"));
+
+        // task
+        glob.sync("**/*", {
+            cwd: templatePath("mobile/task"),
+        }).forEach((file) => {
+            fs.copySync(
+                path.join(templatePath("mobile/task"), file),
+                path.join(this.rootDir, this.config.structureConfig.task, file)
+            );
+        });
     }
 
     /**
      * プロジェクト設定ファイルの作成
      */
     private async createProjectSettings(): Promise<void> {
-        //// project.config.js
-        //copyTpl(
-        //    path.join(templatePath("library"), "_project.config.js"),
-        //    path.join(this.rootDir, "project.config.js"),
-        //    this._config,
-        //    { delimiters: "<% %>" }
-        //);
+        this.progress("mobile.create.app.createProjectSettings");
+        debug("createProjectSettings");
 
-        //// tsconfig
-        //if (!this.config.outputSameDir) {
-        //    // main tsconfig.json
-        //    copyTpl(
-        //        path.join(templatePath("library"), "_tsconfig.json"),
-        //        path.join(this.rootDir, "tsconfig.json"),
-        //        this._config,
-        //        { delimiters: "<% %>", bom: false, }
-        //    );
-        //    // test tsconfig.json
-        //    copyTpl(
-        //        path.join(templatePath("library"), "_tsconfig.test.json"),
-        //        path.join(this.rootDir, this._config.structureConfig.test, "unit", "tsconfig.json"),
-        //        this._config,
-        //        { delimiters: "<% %>", bom: false, }
-        //    );
-        //} else {
-        //    // main tsconfig.json
-        //    copyTpl(
-        //        path.join(templatePath("library"), "_tsconfig.output-same-dir.json"),
-        //        path.join(this.rootDir, "tsconfig.json"),
-        //        this._config,
-        //        { delimiters: "<% %>", bom: false, }
-        //    );
-        //}
+        // project.config.js
+        copyTpl(
+            path.join(templatePath("mobile"), "_project.config.js"),
+            path.join(this.rootDir, "project.config.js"),
+            $.extend({}, this._config, {
+                hogan: this.isInstallationTarget("hogan.js", this.config.dependencies),
+                iscroll: this.isInstallationTarget("iscroll", this.config.dependencies),
+            }),
+            { delimiters: "<% %>" }
+        );
 
-        //// eslintrc.json
-        //copyTpl(
-        //    path.join(templatePath("library"), "_eslintrc.json"),
-        //    path.join(this.rootDir, this._config.structureConfig.test, "eslint", "eslintrc.json"),
-        //    this.queryEsLintEnvParam(),
-        //    { delimiters: "<% %>", bom: false, }
-        //);
+        // tsconfig
+        // tsconfig.base.json
+        copyTpl(
+            path.join(templatePath("mobile"), "_tsconfig.base.json"),
+            path.join(this.rootDir, "tsconfig.base.json"),
+            this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
 
-        //// testem
-        //if (!this.config.nodejs) {
-        //    copyTpl(
-        //        path.join(templatePath("library/tools/testem"), "_testem.json"),
-        //        path.join(this.rootDir, this._config.structureConfig.test, "runner", "testem.json"),
-        //        this._config,
-        //        { delimiters: "<% %>", bom: false, }
-        //    );
+        // main tsconfig.json
+        copyTpl(
+            path.join(templatePath("mobile"), "_tsconfig.json"),
+            path.join(this.rootDir, "tsconfig.json"),
+            this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
 
-        //    const testemStuffPath = templatePath("library/tools/testem/runner");
+        // eslintrc.json
+        copyTpl(
+            path.join(templatePath("mobile"), "_eslintrc.json"),
+            path.join(this.rootDir, this._config.structureConfig.test, "eslint", "eslintrc.json"),
+            this.queryEsLintEnvParam(),
+            { delimiters: "<% %>", bom: false, }
+        );
 
-        //    glob.sync("**", {
-        //        cwd: testemStuffPath,
-        //        nodir: true,
-        //    })
-        //        .forEach((file) => {
-        //            fs.copySync(
-        //                path.join(testemStuffPath, file),
-        //                path.join(this.rootDir, this._config.structureConfig.test, "runner", file)
-        //            );
-        //        });
-        //}
+        // testem
+        copyTpl(
+            path.join(templatePath("mobile/tools/testem"), "_testem.json"),
+            path.join(this.rootDir, this._config.structureConfig.test, "runner", "testem.json"),
+            this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
 
-        //// .gitignore
-        //copyTpl(
-        //    path.join(templatePath("library"), ".gitignore"),
-        //    path.join(this.rootDir, ".gitignore"),
-        //    this._config,
-        //    { bom: false, }
-        //);
+        const testemStuffPath = templatePath("mobile/tools/testem/runner");
 
-        //// README.md
-        //copyTpl(
-        //    path.join(templatePath("library"), "_README.md"),
-        //    path.join(this.rootDir, "README.md"),
-        //    this._config,
-        //    { delimiters: "<% %>" }
-        //);
+        glob.sync("**", {
+            cwd: testemStuffPath,
+            nodir: true,
+        })
+            .forEach((file) => {
+                fs.copySync(
+                    path.join(testemStuffPath, file),
+                    path.join(this.rootDir, this._config.structureConfig.test, "runner", file)
+                );
+            });
 
-        //// package.json
-        //this.config.devDependencies = await this.queryDependenciesParam(this.config.devDependencies || this.defaultDevDependencies);
-        //copyTpl(
-        //    path.join(templatePath("library"), "_package.json"),
-        //    path.join(this.rootDir, "package.json"),
-        //    this._config,
-        //    { delimiters: "<% %>", bom: false, }
-        //);
+        // .gitignore
+        copyTpl(
+            path.join(templatePath("mobile"), ".gitignore"),
+            path.join(this.rootDir, ".gitignore"),
+            this._config,
+            { bom: false, }
+        );
+
+        // README.md
+        copyTpl(
+            path.join(templatePath("mobile"), "_README.md"),
+            path.join(this.rootDir, "README.md"),
+            $.extend({}, this._config, {
+                cordova: this.isEnableCordova(),
+                lib: this.hasStructureOf("lib"),
+                porting: this.hasStructureOf("porting"),
+            }),
+            { delimiters: "<% %>" }
+        );
+
+        // package.json
+        this.config.dependencies = await this.queryDependenciesParam(this.defaultDependencies);
+        this.config.devDependencies = await this.queryDependenciesParam(this.defaultDevDependencies);
+        copyTpl(
+            path.join(templatePath("mobile"), "_package.json"),
+            path.join(this.rootDir, "package.json"),
+            this._config,
+            { delimiters: "<% %>", bom: false, }
+        );
+
+        // TODO: cordovaPackageJSON とマージ
     }
 
     /**

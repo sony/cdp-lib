@@ -120,6 +120,7 @@
     <Content Include="templates\library\tools\testem\runner\require-main.js" />
     <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
+    <Content Include="templates\mobile\.gitignore" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
     <Content Include="templates\mobile\structure\base\src\template\gallery\listctrl.html" />
     <Content Include="templates\mobile\structure\base\src\template\gallery\theme-switcher.html" />
@@ -135,6 +136,11 @@
     <Content Include="templates\mobile\task\porting-setup.js" />
     <Content Include="templates\mobile\task\string-replace.js" />
     <Content Include="templates\mobile\task\tsconfig-templates.js" />
+    <Content Include="templates\mobile\tools\testem\runner\config-generator.js" />
+    <Content Include="templates\mobile\tools\testem\runner\test-main.js" />
+    <Content Include="templates\mobile\tools\testem\runner\testem-amd.js" />
+    <Content Include="templates\mobile\tools\testem\runner\testem-ci.js" />
+    <Content Include="templates\mobile\_project.config.js" />
     <Content Include="tests\unit\cdp-lib.spec.js">
       <DependentUpon>cdp-lib.spec.ts</DependentUpon>
     </Content>
@@ -390,6 +396,13 @@
     <Content Include="templates\mobile\structure\porting\script\.gitkeep" />
     <Content Include="templates\mobile\structure\porting\stylesheet\.gitkeep" />
     <Content Include="templates\mobile\structure\porting\template\.gitkeep" />
+    <Content Include="templates\mobile\_tsconfig.base.json" />
+    <Content Include="templates\mobile\_tsconfig.json" />
+    <Content Include="templates\mobile\_eslintrc.json" />
+    <Content Include="templates\mobile\tools\testem\runner\index.mustache" />
+    <Content Include="templates\mobile\tools\testem\_testem.json" />
+    <Content Include="templates\mobile\_README.md" />
+    <Content Include="templates\mobile\_package.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\library\_eslintrc.json" />

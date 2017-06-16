@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "<% module %>",
+    "moduleResolution": "node",
+    "target": "<% es %>",
+    "emitBOM": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "pretty": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./app/modules/@types"
+    ],
+    "types": [
+      "@cdp/mobile",
+      "requirejs",
+      "jasmine"
+    ]
+  }
+}

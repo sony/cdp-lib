@@ -34,21 +34,21 @@ Folder and file structure of this repository is the following list.
 
 ### How to install
 
-    $npm install <% projectName %>
+    $ npm install <% projectName %>
 
 ### How to development
 
 * build
 
-    $npm run build
+    $ npm run build
 
 * test
 
-    $npm test
+    $ npm test
 
 * deplay and update dependencies
 
-    $npm run update
+    $ npm run update
 
 
 ### How to use
