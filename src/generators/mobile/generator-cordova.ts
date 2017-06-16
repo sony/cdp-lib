@@ -8,6 +8,7 @@ import {
     glob,
     $,
     _,
+    chalk,
     debug,
     templatePath,
     copyTpl,
@@ -132,13 +133,14 @@ export class GeneratorCordova extends GeneratorBase {
             await this.chdir(this.rootDir);
             await this.createCordovaScaffold();
             await this.updateConfigXML();
-            await this.mergeCordovaScaffold();
-            await this.addCordovaExtentionFiles();
             await this.addCordovaPlatforms();
+            await this.addCordovaPlugins();
+            await this.addCordovaExtentionFiles();
+            await this.cacheCordovaPackageJSON();
             await this.chdir("..");
-        } else {
-            // TODO:
         }
+
+        // TODO:
     }
 
     //___________________________________________________________________________________________________________________//
@@ -180,6 +182,7 @@ export class GeneratorCordova extends GeneratorBase {
         $configXmlDom
             .find("widget")
             .attr("version", this.config.version)
+            .attr("ios-CFBundleIdentifier", this.config.appId)
             .prepend(str2XmlNode(`
                 <preference name="DisallowOverscroll" value="true"/>
                 <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
@@ -198,16 +201,75 @@ export class GeneratorCordova extends GeneratorBase {
         fs.writeFileSync(configXmlPath, formatXML(xmlNode2Str($configXmlDom)));
     }
 
-    private async mergeCordovaScaffold(): Promise<void> {
-        debug("mergeCordovaScaffold");
-    }
-
-    private async addCordovaExtentionFiles(): Promise<void> {
-        debug("addCordovaExtentionFiles");
-    }
-
+    /**
+     * platform 追加
+     */
     private async addCordovaPlatforms(): Promise<void> {
         debug("addCordovaPlatforms");
+
+        const index = this.config.platforms.indexOf("ios");
+        if (0 <= index && "darwin" !== process.platform) {
+            this.warn("mobile.create.cordova.iOSWarning");
+            this.config.platforms.splice(index, 1);
+            if (this.config.platforms.length <= 0) {
+                return Promise.resolve();
+            }
+        }
+
+        this.progress("mobile.create.cordova.addPlatforms");
+
+        // `$ cordova platform add android ios`
+        await execCommand("cordova", ["platform", "add"].concat(this.config.platforms));
+    }
+
+    /**
+     * plugin 追加
+     */
+    private async addCordovaPlugins(): Promise<void> {
+        this.progress("mobile.create.cordova.addPlugins");
+        debug("addCordovaPlugins");
+
+        /*
+         * I/F は複数のプラグインを一括で追加することが可能だが、
+         * cordova version を判定しているプラグインは誤判定することがあるため、
+         * 1つずつ追加する
+         *
+         * 以下の不具合に類似する現象
+         * https://issues.apache.org/jira/browse/CB-12663
+         */
+        for (let i = 0, n = this.config.cordova_plugin.length; i < n; i++) {
+            // `$ cordova plugin add cordova-plugin-inappbrowser`
+            await execCommand("cordova", ["plugin", "add", this.config.cordova_plugin[i].name]);
+        }
+    }
+
+    /**
+     * cordova project に追加するリソースをコピー
+     */
+    private async addCordovaExtentionFiles(): Promise<void> {
+        this.progress("mobile.create.cordova.addExtensions");
+        debug("addCordovaExtentionFiles");
+        this.copyTplDir("mobile/cordova");
+    }
+
+    /**
+     * cordova が生成した package.json をキャッシュ
+     */
+    private async cacheCordovaPackageJSON(): Promise<void> {
+        if (fs.existsSync("./package.json")) {
+            this.config.cordovaPackageJson = JSON.parse(fs.readFileSync("./package.json").toString());
+
+            // remove cordova team information
+            delete this.config.cordovaPackageJson.name;
+            delete this.config.cordovaPackageJson.version;
+            delete this.config.cordovaPackageJson.main;
+            delete this.config.cordovaPackageJson.scripts;
+            delete this.config.cordovaPackageJson.author;
+            delete this.config.cordovaPackageJson.license;
+
+            // ファイルはいったん削除
+            fs.removeSync("./package.json");
+        }
     }
 
     //___________________________________________________________________________________________________________________//

@@ -37,4 +37,5 @@ export interface IMobileAppConfigration extends IProjectConfigration, IBuildTarg
     dependencies?: IDependency[];           // npm 依存モジュール情報
     cordova_plugin?: IDependency[];         // cordova plugin モジュール情報
     resource_addon?: IDependency[];         // local resource モジュール情報
+    cordovaPackageJson?: any;               // cordova が生成した package.json 情報
 }

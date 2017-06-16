@@ -96,16 +96,25 @@ export abstract class GeneratorBase {
     /**
      * 進捗テキストを通知
      *
-     * @param {String} key ローカライズリソースキーを指定
+     * @param key ローカライズリソースキーを指定
      */
     protected progress(key: string): void {
         log(chalk.cyan(translate(key)));
     }
 
     /**
+     * 警告テキストを通知
+     *
+     * @param key ローカライズリソースキーを指定
+     */
+    protected warn(key: string): void {
+        log(chalk.yellow(translate(key)));
+    }
+
+    /**
      * work directory の変更
      *
-     * @param {String} directory target directory.
+     * @param directory target directory.
      */
     protected chdir(directory: string): void {
         process.chdir(directory);

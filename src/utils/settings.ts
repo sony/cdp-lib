@@ -28,7 +28,7 @@ let _libPath: string;   // cdp-lib の存在している path
 /**
  * 設定取得
  *
- * @return {IGlobalSettings} options ログに使用するオプション
+ * @returns options ログに使用するオプション
  */
 export function getSettings(): IGlobalSettings {
     return $.extend({}, _settings);
@@ -37,7 +37,7 @@ export function getSettings(): IGlobalSettings {
 /**
  * 設定指定
  *
- * @param {IGlobalSettings} options ログに使用するオプション
+ * @param options ログに使用するオプション
  */
 export function setSettings(settings: IGlobalSettings): void {
     if (settings) {
@@ -59,7 +59,7 @@ export function setSettings(settings: IGlobalSettings): void {
 /**
  * "cdp-lib" が存在するパスを取得
  *
- * @return {String} cdp-lib への path
+ * @returns cdp-lib への path
  */
 export function getLibPath(): string {
     if (null == _libPath) {
@@ -85,7 +85,7 @@ export function getLibPath(): string {
 /**
  * 指定された targetDir を取得
  *
- * @return {String} targetDir への path
+ * @returns targetDir への path
  */
 export function getTargetDir(): string {
     return _settings.targetDir;
@@ -95,8 +95,8 @@ export function getTargetDir(): string {
  * ログ出力
  * console.log() と同等
  *
- * @param {String} message        出力メッセージ
- * @param {Any[]}  optionalParams 付加情報
+ * @param message        出力メッセージ
+ * @param optionalParams 付加情報
  */
 export function log(message?: string, ...optionalParams: any[]): void {
     if (!_settings.silent) {
@@ -112,8 +112,8 @@ export function log(message?: string, ...optionalParams: any[]): void {
  * 詳細ログ出力
  * console.debug() と同等
  *
- * @param {String} message        出力メッセージ
- * @param {Any[]}  optionalParams 付加情報
+ * @param message        出力メッセージ
+ * @param optionalParams 付加情報
  */
 export function debug(message?: string, ...optionalParams: any[]): void {
     if (!_settings.silent && _settings.verbose) {
@@ -129,9 +129,9 @@ export function debug(message?: string, ...optionalParams: any[]): void {
  * 検証
  * console.assert() と同等
  *
- * @param {Boolean} test           検証する式
- * @param {String}  message        出力メッセージ
- * @param {Any[]}   optionalParams 付加情報
+ * @param test           検証する式
+ * @param message        出力メッセージ
+ * @param optionalParams 付加情報
  */
 export function assert(test?: boolean, message?: string, ...optionalParams: any[]): void {
     if (!test) {
@@ -157,8 +157,8 @@ let _lang: any;
 /**
  * ローカライズ
  *
- * @param {String} key キー文字列
- * @return 翻訳された文字列
+ * @param key キー文字列
+ * @returns 翻訳された文字列
  */
 export function translate(key: string): string {
     if (!_lang) {
