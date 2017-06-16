@@ -121,6 +121,9 @@
     <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
+    <Content Include="templates\mobile\structure\base\src\template\gallery\listctrl.html" />
+    <Content Include="templates\mobile\structure\base\src\template\gallery\theme-switcher.html" />
+    <Content Include="templates\mobile\structure\base\src\template\main.html" />
     <Content Include="templates\mobile\task\build-addon.js" />
     <Content Include="templates\mobile\task\compile-scss.js" />
     <Content Include="templates\mobile\task\compile-ts.js" />
@@ -246,6 +249,7 @@
     <TypeScriptCompile Include="src\utils\tools.ts" />
     <TypeScriptCompile Include="templates\library\src\_index.spec.ts" />
     <TypeScriptCompile Include="templates\library\src\_index.ts" />
+    <TypeScriptCompile Include="templates\mobile\structure\base\src\script\index.ts" />
     <TypeScriptCompile Include="tests\unit\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\unit\generators.base.spec.ts" />
     <TypeScriptCompile Include="tests\unit\generators.desktop.spec.ts" />
@@ -377,6 +381,15 @@
     <None Include="templates\base\_NOTICE" />
     <Content Include="templates\library\_tsconfig.test.json" />
     <Content Include="templates\library\_tsconfig.output-same-dir.json" />
+    <Content Include="templates\mobile\structure\base\src\external\types\.gitkeep" />
+    <Content Include="templates\mobile\structure\base\src\res\locales\.gitkeep" />
+    <Content Include="templates\mobile\structure\base\src\stylesheet\app.scss" />
+    <Content Include="templates\mobile\structure\base\src\stylesheet\_gallery.scss" />
+    <Content Include="templates\mobile\structure\lib\script\.gitkeep" />
+    <Content Include="templates\mobile\structure\lib\stylesheet\.gitkeep" />
+    <Content Include="templates\mobile\structure\porting\script\.gitkeep" />
+    <Content Include="templates\mobile\structure\porting\stylesheet\.gitkeep" />
+    <Content Include="templates\mobile\structure\porting\template\.gitkeep" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\library\_eslintrc.json" />

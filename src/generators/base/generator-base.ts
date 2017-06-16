@@ -155,7 +155,29 @@ export abstract class GeneratorBase {
                         .replace(/task/,    this._config.structureConfig.task)
                         .replace(/test/,    this._config.structureConfig.test)
                         .replace(/types/,   this._config.structureConfig.types)
-                        .replace(/temp/,    this._config.structureConfig.temp)
+                        .replace(/temp\//,    this._config.structureConfig.temp + "/")
+                        .replace(/lib/,         this._config.structureConfig.lib || "lib")
+                        .replace(/external/,    this._config.structureConfig.external || "external")
+                        .replace(/porting/,     this._config.structureConfig.porting || "porting")
+                        .replace(/res/,         this._config.structureConfig.res || "res")
+                        .replace(
+                            /script/,
+                            this._config.structureConfig.srcConfig
+                                ? (this._config.structureConfig.srcConfig.script || "scripts")
+                                : "scripts"
+                        )
+                        .replace(
+                            /stylesheet/,
+                            this._config.structureConfig.srcConfig
+                                ? (this._config.structureConfig.srcConfig.stylesheet || "stylesheets")
+                                : "stylesheets"
+                        )
+                        .replace(
+                            /template/,
+                            this._config.structureConfig.srcConfig
+                                ? (this._config.structureConfig.srcConfig.template || "templates")
+                                : "templates"
+                        )
                 );
                 fs.copySync(path.join(templatePath(target), file), dst);
         });
