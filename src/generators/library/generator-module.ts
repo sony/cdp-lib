@@ -271,7 +271,7 @@ export class GeneratorModule extends GeneratorBase {
         const vsParam = (() => {
             const createGUID = Utils.createGUID;
 
-            const param: IVisualStudioConfigration = $.extend({}, this._config.structureConfig);
+            const param: IVisualStudioConfigration = <any>$.extend({}, this._config.structureConfig);
 
             param.projectName       = this._config.projectName;
             param.projectGUID       = createGUID();
