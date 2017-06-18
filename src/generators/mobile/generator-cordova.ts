@@ -316,9 +316,11 @@ export class GeneratorCordova extends GeneratorBase {
             // remove cordova team information
             delete this.config.cordovaPackageJson.name;
             delete this.config.cordovaPackageJson.version;
+            delete this.config.cordovaPackageJson.displayName;
             delete this.config.cordovaPackageJson.main;
             delete this.config.cordovaPackageJson.scripts;
             delete this.config.cordovaPackageJson.author;
+            delete this.config.cordovaPackageJson.description;
             delete this.config.cordovaPackageJson.license;
 
             // ファイルはいったん削除
@@ -478,6 +480,24 @@ export class GeneratorCordova extends GeneratorBase {
         );
 
         // TODO: cordovaPackageJSON とマージ
+        if (this.config.cordovaPackageJson) {
+            const PKG_PATH = path.join(this.rootDir, "package.json");
+            const pkg = JSON.parse(fs.readFileSync(PKG_PATH).toString());
+            $.extend(true, pkg, this.config.cordovaPackageJson);
+
+            const sortKeys = (target: object): object => {
+                const sorted = {};
+                Object.keys(target).sort().forEach((key) => {
+                    sorted[key] = target[key];
+                });
+                return sorted;
+
+            };
+            pkg.dependencies    = sortKeys(pkg.dependencies);
+            pkg.devDependencies = sortKeys(pkg.devDependencies);
+
+            fs.writeFileSync(PKG_PATH, JSON.stringify(pkg, null, 2), "utf-8");
+        }
     }
 
     /**

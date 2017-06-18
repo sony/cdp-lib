@@ -221,7 +221,6 @@ export abstract class GeneratorBase {
             { name: "npm-run-all",          version: undefined, },
             { name: "plato",                version: undefined, },
             { name: "source-map",           version: undefined, },
-            { name: "source-map-loader",    version: undefined, },
             { name: "tslint",               version: undefined, },
             { name: "typedoc",              version: undefined, },
             { name: "typescript",           version: undefined, },
@@ -236,7 +235,8 @@ export abstract class GeneratorBase {
             extra = extra.concat(minify);
         }
         if (this.isEnableTool("webpack")) {
-            extra.push({ name: "webpack", version: undefined, });
+            extra.push({ name: "webpack",           version: undefined, });
+            extra.push({ name: "source-map-loader", version: undefined, });
         }
         if (this.isEnableTool("nyc")) {
             extra.push({ name: "nyc", version: undefined, });

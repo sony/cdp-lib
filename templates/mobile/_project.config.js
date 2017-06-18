@@ -1,6 +1,5 @@
 ﻿'use strict';
 
-const path  = require('path');
 const pkg   = require('./package.json');
 
 const target = {
@@ -81,8 +80,7 @@ const build_settings = {
     },
     string_replace: {
         'release': {
-            '%% buildsetting %%': true,
-            '%% dev_functions_enabled %%': true,
+            '%% build_setting %%': true,
         },
     },
     hook_scripts: {

@@ -4,6 +4,7 @@
   <%# private %>
   "private": true,
   <%/ private %>
+  "displayName": "<% appName %>",
   "description": "",
   "author": "",
   "scripts": {
