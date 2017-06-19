@@ -116,11 +116,11 @@
     <Content Include="templates\base\task\remap-coverage.js" />
     <Content Include="templates\base\task\srcmap.js" />
     <Content Include="templates\base\tools\webpack\_webpack.config.js" />
-    <Content Include="templates\library\.gitignore" />
+    <None Include="templates\library\_gitignore" />
     <Content Include="templates\library\tools\testem\runner\require-main.js" />
     <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
-    <Content Include="templates\mobile\.gitignore" />
+    <None Include="templates\mobile\_gitignore" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
     <Content Include="templates\mobile\src\structure\src\template\gallery\listctrl.html" />
     <Content Include="templates\mobile\src\structure\src\template\gallery\theme-switcher.html" />
@@ -336,7 +336,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\base\.gitkeep" />
-    <Content Include="templates\base\.npmignore" />
+    <None Include="templates\base\_npmignore" />
     <Content Include="dist\cdp-lib.min.js.map">
       <DependentUpon>cdp-lib.js</DependentUpon>
     </Content>

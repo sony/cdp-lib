@@ -462,7 +462,7 @@ export class GeneratorCordova extends GeneratorBase {
 
         // .gitignore
         copyTpl(
-            path.join(templatePath("mobile"), ".gitignore"),
+            path.join(templatePath("mobile"), "_gitignore"),
             path.join(this.rootDir, ".gitignore"),
             this._config,
             { bom: false, }

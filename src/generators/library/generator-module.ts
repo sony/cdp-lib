@@ -205,7 +205,7 @@ export class GeneratorModule extends GeneratorBase {
 
         // .gitignore
         copyTpl(
-            path.join(templatePath("library"), ".gitignore"),
+            path.join(templatePath("library"), "_gitignore"),
             path.join(this.rootDir, ".gitignore"),
             this._config,
             { bom: false, }

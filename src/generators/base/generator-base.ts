@@ -389,7 +389,7 @@ export abstract class GeneratorBase {
 
         // .npmignore
         copyTpl(
-            path.join(srcDir, ".npmignore"),
+            path.join(srcDir, "_npmignore"),
             path.join(dstDir, ".npmignore"),
             this._config.structureConfig
         );
