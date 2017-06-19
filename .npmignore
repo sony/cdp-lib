@@ -12,3 +12,4 @@
 /*.suo
 /tsconfig.json
 /webpack.config.json
+/.npmignore
