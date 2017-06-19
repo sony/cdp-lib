@@ -11,6 +11,10 @@
 export interface IExternalModuleInfo {
     acquisition: "npm" | "npm:dev" | "cordova" | "resource";    // 取得先
     regular: boolean;                                           // 既定でインストールに含めるか
+    globalExport?: string;                                      // global Object 名を指定
+    alias?: string;                                             // alias を設定する場合に指定
+    venderName?: string;                                        // vender 名を設定する場合に指定
+    fileName?: string;                                          // file 名を設定する場合に指定
     subset?: IExternalModules;                                  // サブセットモジュール
 }
 

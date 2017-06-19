@@ -61,6 +61,11 @@ const external_rearrange = {
             },
         },
         <%/ hogan %>
+        <%# hammerjs %>
+        'jquery-hammerjs': {
+            vender: 'hammerjs',
+        },
+        <%/ hammerjs %>
         <%# iscroll %>
         'iscroll': {
             dev: 'iscroll-probe.js',

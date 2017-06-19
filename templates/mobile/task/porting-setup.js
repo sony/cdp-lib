@@ -200,13 +200,15 @@ function runBuild(options) {
 function runArrange(options) {
     const platforms = detectPorting(options.platform);
     if (platforms.length <= 0) {
-        return Promise.resolve();
+        return;
     } else {
         platforms.forEach((platform) => {
             if ('dev' !== platform) {
                 const srcDir = path.join(__dirname, '..', config.dir.pkg, config.dir.porting + '_' + platform);
                 const dstDir = path.join(__dirname, '../platforms', platform, 'platform_www', config.dir.porting);
-                fs.moveSync(srcDir, dstDir, { overwrite: true });
+                if (fs.existsSync(srcDir)) {
+                    fs.moveSync(srcDir, dstDir, { overwrite: true });
+                }
             }
         });
     }
@@ -227,7 +229,9 @@ function runRebase(options) {
             if ('dev' !== target) {
                 const srcDir = path.join(__dirname, '..', config.dir.pkg, config.dir.porting + '_' + target);
                 const dstDir = path.join(__dirname, '..', config.dir.pkg, config.dir.porting);
-                fs.moveSync(srcDir, dstDir);
+                if (fs.existsSync(srcDir)) {
+                    fs.moveSync(srcDir, dstDir);
+                }
             }
         })
         .catch((reason) => {

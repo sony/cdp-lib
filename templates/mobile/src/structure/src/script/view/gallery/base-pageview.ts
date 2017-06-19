@@ -17,23 +17,6 @@ import {
     Theme,
     Toast,
 } from "cdp/ui";
-/*//以下と同等
-import {
-    Framework,
-    Tools,
-    UI,
-} from "@cdp/mobile";
-const toUrl         = Framework.toUrl;
-type HideEventData  = Framework.HideEventData;
-const Template      = Tools.Template;
-type JST            = Tools.JST;
-const PageView      = UI.PageView;
-type PageViewConstructOptions<TModel extends Backbone.Model>    = UI.PageViewConstructOptions<TModel>;
-const PageContainerView                                         = UI.PageContainerView;
-type PageContainerOptions<TModel extends Backbone.Model>        = UI.PageContainerOptions<TModel>;
-const Theme = UI.Theme;
-const Toast = UI.Toast;
-*/
 
 const TAG = "[view.gallery.BasePageView] ";
 

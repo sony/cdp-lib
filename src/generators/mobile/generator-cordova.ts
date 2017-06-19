@@ -90,6 +90,7 @@ export class GeneratorCordova extends GeneratorBase {
         return [
             "banner.js",
             "clean.js",
+            "command.js",
             "srcmap.js",
             "bundle-finalizer.js",
             "remap-coverage.js",
@@ -107,11 +108,8 @@ export class GeneratorCordova extends GeneratorBase {
      */
     protected get defaultDevDependencies(): IDependency[] {
         const depends = super.defaultDevDependencies.concat([
-            { name: "@types/backbone",      version: undefined, },
             { name: "@types/jasmine",       version: undefined, },
-            { name: "@types/jquery",        version: undefined, },
             { name: "@types/requirejs",     version: undefined, },
-            { name: "@types/underscore",    version: undefined, },
             { name: "autoprefixer",         version: undefined, },
             { name: "clean-css",            version: undefined, },
             { name: "fs-extra",             version: undefined, },
@@ -355,6 +353,18 @@ export class GeneratorCordova extends GeneratorBase {
                 path.join(this.rootDir, this.config.structureConfig.src, this.config.structureConfig.porting)
             );
 
+            // create: dev/porting/@types
+            fs.copySync(
+                templatePath("base/.gitkeep"),
+                path.join(
+                    this.rootDir,
+                    this.config.structureConfig.src,
+                    this.config.structureConfig.porting,
+                    this.config.structureConfig.types,
+                    ".gitkeep"
+                )
+            );
+
             const PLATFORMS_ROOT = path.join(this.rootDir, "platforms");
             fs.readdirSync(PLATFORMS_ROOT)
                 .forEach((platform) => {
@@ -398,6 +408,7 @@ export class GeneratorCordova extends GeneratorBase {
             path.join(this.rootDir, "project.config.js"),
             $.extend({}, this._config, {
                 hogan: this.isInstallationTarget("hogan.js", this.config.dependencies),
+                hammerjs: this.isInstallationTarget("hammerjs", this.config.dependencies),
                 iscroll: this.isInstallationTarget("iscroll", this.config.dependencies),
             }),
             { delimiters: "<% %>" }
@@ -470,12 +481,13 @@ export class GeneratorCordova extends GeneratorBase {
         );
 
         // package.json
-        this.config.dependencies = await this.queryDependenciesParam(this.defaultDependencies);
-        this.config.devDependencies = await this.queryDependenciesParam(this.defaultDevDependencies);
+        const resolvedConfig = $.extend(true, {}, this.config);
+        resolvedConfig.dependencies = await this.queryDependenciesParam(this.defaultDependencies);
+        resolvedConfig.devDependencies = await this.queryDependenciesParam(this.defaultDevDependencies);
         copyTpl(
             path.join(templatePath("mobile"), "_package.json"),
             path.join(this.rootDir, "package.json"),
-            this._config,
+            resolvedConfig,
             { delimiters: "<% %>", bom: false, }
         );
 
@@ -504,35 +516,120 @@ export class GeneratorCordova extends GeneratorBase {
      * ソースの雛形作成
      */
     private async createSourceTemplate(): Promise<void> {
-        //const _module = path.basename(this._config.moduleName, ".js");
-        //const param = {
-        //    sampleClass: _.classify(_module),
-        //    sampleModule: _module,
-        //    built: this._config.structureConfig.built,
-        //};
+        this.progress("mobile.create.app.createSourceTemplate");
+        debug("createSourceTemplate");
 
-        //const script = (() => {
-        //    if (this._config.structureConfig.srcConfig) {
-        //        return this._config.structureConfig.srcConfig.script || "";
-        //    }
-        //    return "";
-        //})();
+        // copy sources
+        this.copyTplDir(
+            "mobile/src/structure",
+            path.join(this.rootDir)
+        );
 
-        //// index.ts
-        //copyTpl(
-        //    path.join(templatePath("library"), "src", "_index.ts"),
-        //    path.join(this.rootDir, this._config.structureConfig.src, script, _module + ".ts"),
-        //    param,
-        //    { delimiters: "<% %>" }
-        //);
+        { // config.ts
+            const additional = (() => {
+                if (this.config.dependencies.length < 0) {
+                    return null;
+                }
+                const param = {
+                    additional: {
+                        list: [],
+                        listWithCustomName: [],
+                    },
+                };
+                this.config.dependencies.forEach((info) => {
+                    if (info.fileName) {
+                        param.additional.listWithCustomName.push({
+                            moduleName: info.alias || info.name,
+                            venderName: info.alias || info.venderName || info.name,
+                            fileName: info.fileName,
+                        });
+                    } else {
+                        param.additional.list.push({
+                            moduleName: info.alias || info.name,
+                        });
+                    }
+                });
+                return param;
+            })();
 
-        //// index.spec.ts
-        //copyTpl(
-        //    path.join(templatePath("library"), "src", "_index.spec.ts"),
-        //    path.join(this.rootDir, this._config.structureConfig.test, "unit", _module + ".spec.ts"),
-        //    param,
-        //    { delimiters: "<% %>" }
-        //);
+            copyTpl(
+                path.join(templatePath("mobile/src"), "_config.ts"),
+                path.join(this.rootDir, this.config.structureConfig.src, this.config.structureConfig.srcConfig.script, "config.ts"),
+                $.extend({}, this._config, additional),
+                { delimiters: "<% %>" }
+            );
+        }
+
+        { // app.ts
+            const globals = (() => {
+                if (this.config.dependencies.length < 0) {
+                    return null;
+                }
+                const param = {
+                    globals: {
+                        importsList: [],
+                        exportsList: [],
+                        hasExports: false,
+                    },
+                };
+                this.config.dependencies.forEach((info) => {
+                    if (info.globalExport) {
+                        param.globals.exportsList.push({
+                            globalExport: info.globalExport,
+                            moduleName: info.alias || info.name,
+                        });
+                    } else {
+                        param.globals.importsList.push({
+                            moduleName: info.alias || info.name,
+                        });
+                    }
+                });
+                param.globals.hasExports = (0 < param.globals.exportsList.length);
+                return param;
+            })();
+
+            copyTpl(
+                path.join(templatePath("mobile/src"), "_app.ts"),
+                path.join(this.rootDir, this.config.structureConfig.src, this.config.structureConfig.srcConfig.script, "app.ts"),
+                globals,
+                { delimiters: "<% %>" }
+            );
+        }
+
+        {// localize resources
+            copyTpl(
+                path.join(templatePath("mobile/src"), "_messages.en-US.json"),
+                path.join(
+                    this.rootDir,
+                    this.config.structureConfig.src,
+                    this.config.structureConfig.res,
+                    "locales",
+                    "messages.en-US.json"
+                ),
+                this.config,
+                { delimiters: "<% %>", bom: false, }
+            );
+            copyTpl(
+                path.join(templatePath("mobile/src"), "_messages.ja-JP.json"),
+                path.join(
+                    this.rootDir,
+                    this.config.structureConfig.src,
+                    this.config.structureConfig.res,
+                    "locales",
+                    "messages.ja-JP.json"
+                ),
+                this.config,
+                { delimiters: "<% %>", bom: false, }
+            );
+        }
+
+        {// index.html
+            copyTpl(
+                path.join(templatePath("mobile/src"), "_index.html"),
+                path.join(this.rootDir, this.config.structureConfig.src, "index.html"),
+                this.config
+            );
+        }
     }
 
     /**

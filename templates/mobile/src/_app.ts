@@ -1,27 +1,23 @@
-﻿// AMD entries module must be named for releases build
-/// <amd-module name="app" />
-
-// AMD dependenciy entries
-import "hogan";
-import "./view/loader";
-
-/*
- * NOTE: tsconfig 設定覚書
- *  - module を amd rename する場合は、types: ["cdp"] 必須
- *   import { global, Framework, UI } from "cdp";
- *  - node_modules 配下を自動解決する場合 moduleResolution: "node" 必須
- *   import { global, Framework, UI } from "@cdp/mobile";
- */
-
+﻿<%# globals %>
+<%# importsList %>
+import "<% moduleName %>";
+<%/ importsList %>
+<%# hasExports %>
 import { global } from "cdp";
+/* tslint:disable:no-string-literal */
+<%/ hasExports %>
+<%# exportsList %>
+import * as <% globalExport %> from "<% moduleName %>";
+global["<% globalExport %>"] = <% globalExport %>;
+<%/ exportsList %>
+<%# hasExports %>
+/* tslint:enable:no-string-literal */
+<%/ hasExports %>
+
+<%/ globals %>
 import { Router as router } from "cdp/framework";
 import { Theme } from "cdp/ui";
-
-// AMD global exports example
-import * as IScroll from "iscroll";
-/* tslint:disable:no-string-literal */
-global["IScroll"] = IScroll;
-/* tslint:enable:no-string-literal */
+import "./view/loader";
 
 const TAG: string = "[app] ";
 

@@ -12,5 +12,3 @@
 /*.suo
 /tsconfig.json
 /webpack.config.json
-/npm-install.*
-/.npmignore

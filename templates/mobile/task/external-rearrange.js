@@ -40,7 +40,7 @@ function queryOptions() {
 function createBasenameList(files) {
     const basenames = {};
     files.forEach(function (file) {
-        const basename = file.replace(/(-[0-9]+.[0-9]+.[A-Za-z0-9_-]+)?([.-]min)?(\.[a-zA-Z]+)?(\.[a-zA-Z]+$)/, '');
+        const basename = file.replace(/(-[0-9]+.[0-9]+.[A-Za-z0-9_-]+)?([.-]min)?(.amd|.commonjs|.mustache)?(\.[a-zA-Z]+$)/, '');
         basenames[basename] = true;
     });
     return Object.keys(basenames);

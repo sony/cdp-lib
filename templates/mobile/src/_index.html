@@ -13,19 +13,19 @@
           connect-src 'self' https:;
           media-src *; img-src 'self' data: https:;">
 
-    <title>Check Mobile Target</title>
+    <title>{{appName}}</title>
 
     <!-- style sheet entry -->
-    <link rel="stylesheet" href="stylesheets/splash.css" />
-    <link rel="stylesheet" href="modules/cdp/stylesheets/cdp.structure.css" />
-    <link rel="stylesheet" href="modules/cdp/stylesheets/cdp.icons.css" />
-    <link rel="stylesheet" href="modules/cdp/stylesheets/cdp.swatch.css" />
-    <!--<link rel="stylesheet" href="modules/cdp/stylesheets/cdp.css" />-->
-    <link rel="stylesheet" href="porting/stylesheets/porting-test.css" />
-    <link rel="stylesheet" href="stylesheets/app.css" />
+    <link rel="stylesheet" href="{{structureConfig.srcConfig.stylesheet}}/splash.css" />
+    <link rel="stylesheet" href="{{structureConfig.external}}/cdp/{{structureConfig.srcConfig.stylesheet}}/cdp.structure.css" />
+    <link rel="stylesheet" href="{{structureConfig.external}}/cdp/{{structureConfig.srcConfig.stylesheet}}/cdp.icons.css" />
+    <link rel="stylesheet" href="{{structureConfig.external}}/cdp/{{structureConfig.srcConfig.stylesheet}}/cdp.swatch.css" />
+    <!--<link rel="stylesheet" href="{{structureConfig.external}}/cdp/{{structureConfig.srcConfig.stylesheet}}/cdp.css" />-->
+    <link rel="stylesheet" href="{{structureConfig.srcConfig.stylesheet}}/app.css" />
 
 </head>
 <body bgcolor="white" style="background-color:white;">
+    <!-- sample splash screen -->
     <article id="splash-screen">
         <div id="splash-contents">
             <ul id="waiting-img">
@@ -41,7 +41,7 @@
         </div>
     </article>
     <!-- foundation script entry -->
-    <script src="scripts/config.js"></script>
-    <script src="modules/requirejs/scripts/require.js" data-main="index"></script>
+    <script src="{{structureConfig.srcConfig.script}}/config.js"></script>
+    <script src="{{structureConfig.external}}/requirejs/{{structureConfig.srcConfig.script}}/require.js" data-main="index"></script>
 </body>
 </html>

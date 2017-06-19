@@ -1,4 +1,4 @@
-﻿import CheckModel from "../../app/scripts/model/check-model";
+﻿import CheckModel from "../../app/scripts/model/sample-model";
 import { MainView } from "../../app/scripts/view/main-view";
 
 

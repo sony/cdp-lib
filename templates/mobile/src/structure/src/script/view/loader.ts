@@ -1,10 +1,4 @@
-﻿// AMD dependenciy entries
+﻿// >>>TOP_VIEWS_ENTRY>>> top views entry
 import "./main-view";
 import "./gallery/list-control";
-
-// 以下は非推奨の形式
-// <amd-dependency path="./main-view" />
-// <amd-dependency path="./gallery/list-control" />
-
-// 非推奨形式の場合、何かしら有効なコードが無いと展開されない.
-//export const SIGNATURE = "[view.loader]";
+// <<<TOP_VIEWS_ENTRY<<<

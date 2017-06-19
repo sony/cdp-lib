@@ -39,6 +39,10 @@ export interface IDependency {
     name: string;           // module name ex) "typescript"
     version?: string;       // 指定バージョン. 無指定の場合は最新バージョン
     es?: string[];          // 指定された ES version のときのみ有効にする
+    globalExport?: string;  // global export を必要とするものは global Object 名を指定
+    alias?: string;         // alias を設定する場合に指定
+    venderName?: string;    // vender 名を設定する場合に指定
+    fileName?: string;      // file 名を設定する場合に指定
 }
 
 /**

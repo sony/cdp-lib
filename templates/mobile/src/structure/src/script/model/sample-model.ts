@@ -1,6 +1,6 @@
 ﻿/**
  * @class CheckModel
- * @brief TODO:
+ * @brief Sample Class implementation
  */
 export default class CheckModel {
 
@@ -10,8 +10,8 @@ export default class CheckModel {
     /**
      * Cool method
      *
-     * @param  {String} message [in] input message string
-     * @return {String} cool message string
+     * @param   message [in] input message string
+     * @returns cool message string
      */
     public static coolMethod(message: string): string {
         return "Hello cool " + message;

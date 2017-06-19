@@ -7,6 +7,8 @@ const template  = require('./tsconfig-templates');
 const config    = require('../project.config');
 
 const CONFIG_TS_PATH        = path.join(__dirname, '..', config.dir.src, config.dir.script, 'config.ts');
+const LIB_ROOT_PATH         = path.join(__dirname, '..', config.dir.src, config.dir.lib, config.dir.script);
+const PORTING_ROOT_PATH     = path.join(__dirname, '..', config.dir.src, config.dir.porting, config.dir.script);
 const LIB_D_TS_OUT_PATH     = path.join(__dirname, '..', config.dir.pkg, config.dir.lib, config.dir.script);
 const BUILD_D_TS_OUT_PATH   = path.join(__dirname, '..', config.dir.temp, config.dir.types);
 
@@ -50,12 +52,11 @@ function setupConfig(id, param) {
     return filePath;
 }
 
-function validLib() {
-    const LIB_ROOT = path.join(__dirname, '..', config.dir.src, config.dir.lib, config.dir.script);
-    if (fs.existsSync(LIB_ROOT)) {
-        const finds = fs.readdirSync(LIB_ROOT);
+function validStructure(targetRootPath) {
+    if (fs.existsSync(targetRootPath)) {
+        const finds = fs.readdirSync(targetRootPath);
         for (let i = 0, n = finds.length; i < n; i++) {
-            const filePath = path.join(LIB_ROOT, finds[i]);
+            const filePath = path.join(targetRootPath, finds[i]);
             if (fs.statSync(filePath).isDirectory() && config.dir.types !== finds[i]) {
                 return true;
             }
@@ -65,14 +66,12 @@ function validLib() {
 }
 
 function detectPorting(target) {
-    const PORTING_SRC_DIR = path.join(config.dir.porting, config.dir.script);
-    const PORTING_DEV_DIR = path.join(config.dir.src, PORTING_SRC_DIR);
     const PLATFORMS_ROOT = path.join(__dirname, '..', 'platforms');
 
     const valid_targets = [];
 
     // valid porting
-    if (!fs.existsSync(PORTING_DEV_DIR)) {
+    if (!validStructure(PORTING_ROOT_PATH)) {
         return valid_targets;
     }
 
@@ -233,7 +232,7 @@ function compileReleaseApp(options) {
 function compileReleaseLib(options) {
     if (!(options.all || options.lib)) {
         return Promise.resolve();
-    } else if (!validLib()) {
+    } else if (!validStructure(LIB_ROOT_PATH)) {
         return Promise.resolve();
     }
     return new Promise((resolve, reject) => {
