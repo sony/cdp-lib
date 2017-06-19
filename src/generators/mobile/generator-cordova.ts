@@ -480,6 +480,8 @@ export class GeneratorCordova extends GeneratorBase {
             { delimiters: "<% %>" }
         );
 
+        // TODO: templates/mobile/addon からコピーする場合はここで対応
+
         // package.json
         const resolvedConfig = $.extend(true, {}, this.config);
         resolvedConfig.dependencies = await this.queryDependenciesParam(this.defaultDependencies);
@@ -536,12 +538,14 @@ export class GeneratorCordova extends GeneratorBase {
                         listWithCustomName: [],
                     },
                 };
-                this.config.dependencies.forEach((info) => {
-                    if (info.fileName) {
+
+                const targets = [...this.config.dependencies, ...this.config.resource_addon];
+                targets.forEach((info) => {
+                    if (info.fileName || info.venderName) {
                         param.additional.listWithCustomName.push({
                             moduleName: info.alias || info.name,
-                            venderName: info.alias || info.venderName || info.name,
-                            fileName: info.fileName,
+                            venderName: info.venderName || info.alias || info.name,
+                            fileName: info.fileName || info.alias || info.name,
                         });
                     } else {
                         param.additional.list.push({
@@ -572,7 +576,9 @@ export class GeneratorCordova extends GeneratorBase {
                         hasExports: false,
                     },
                 };
-                this.config.dependencies.forEach((info) => {
+
+                const targets = [...this.config.dependencies, ...this.config.resource_addon];
+                targets.forEach((info) => {
                     if (info.globalExport) {
                         param.globals.exportsList.push({
                             globalExport: info.globalExport,

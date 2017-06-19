@@ -109,9 +109,15 @@ function resolveModuleInfo(target) {
 
     // prod
     if (null == info.prod) {
-        const candidate = path.basename(info.dev, '.js') + '.min.js';
-        if (fs.existsSync(path.join(info.cwd, candidate))) {
-            info.prod = candidate;
+        const trySuffix = [
+            ".min.js",
+            "-min.js",
+        ];
+        for (let i = 0, n = trySuffix.length; i < n; i++) {
+            const candidate = path.basename(info.dev, '.js') + trySuffix[i];
+            if (fs.existsSync(path.join(info.cwd, candidate))) {
+                info.prod = candidate;
+            }
         }
     }
 
@@ -173,12 +179,21 @@ function resolveDevSourceFile(basename, info, ext) {
 }
 
 function resolveProdSourceFile(basename, info, ext) {
-    let srcFile = info.files[info.files.indexOf(info.prod)];
-    if (!srcFile) {
-        srcFile = info.files[info.files.indexOf(basename + '-' + info.version + '.min' + ext)];
-    }
+    let srcFile = info.files[info.files.indexOf(basename + '-' + info.version + '.min' + ext)];
     if (!srcFile && info.prod) {
-        srcFile = info.files[info.files.indexOf(info.prod.replace('*', info.version))];
+        srcFile = info.files[info.files.indexOf(info.prod)];
+        if (!srcFile) {
+            srcFile = info.files[info.files.indexOf(info.prod.replace('*', info.version))];
+        }
+        if (!srcFile) {
+            const regexp = new RegExp(basename + '(-[0-9]+.[0-9]+.[A-Za-z0-9_-]+)?([.-]min.[.a-zA-Z]+$)');
+            for (let i = 0, n = info.files.length; i < n; i++) {
+                if (regexp.test(info.files[i])) {
+                    srcFile = info.files[i];
+                    break;
+                }
+            }
+        }
     }
     return srcFile;
 }

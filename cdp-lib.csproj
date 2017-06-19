@@ -120,6 +120,7 @@
     <Content Include="templates\library\tools\testem\runner\require-main.js" />
     <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
+    <Content Include="templates\mobile\addon\.gitkeep" />
     <None Include="templates\mobile\_gitignore" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
     <Content Include="templates\mobile\src\structure\src\template\gallery\listctrl.html" />
