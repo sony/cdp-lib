@@ -479,7 +479,7 @@ export class GeneratorCordova extends GeneratorBase {
             { delimiters: "<% %>", bom: false, }
         );
 
-        // TODO: cordovaPackageJSON とマージ
+        // cordovaPackageJSON とマージ
         if (this.config.cordovaPackageJson) {
             const PKG_PATH = path.join(this.rootDir, "package.json");
             const pkg = JSON.parse(fs.readFileSync(PKG_PATH).toString());

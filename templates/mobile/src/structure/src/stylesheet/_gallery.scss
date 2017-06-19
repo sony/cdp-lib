@@ -1,0 +1,11 @@
+﻿// テストコメント:1
+.switcher-adjust {
+    padding-bottom: 0.5em;
+}
+
+/* テストコメント:2 */
+.gallery-example {
+    &.ui-listview:not(.ui-listview-inset) {
+        margin-top: 16px;
+    }
+}

@@ -122,6 +122,10 @@
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
     <Content Include="templates\mobile\.gitignore" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
+    <Content Include="templates\mobile\src\structure\src\template\gallery\listctrl.html" />
+    <Content Include="templates\mobile\src\structure\src\template\gallery\theme-switcher.html" />
+    <Content Include="templates\mobile\src\_index.html" />
+    <Content Include="templates\mobile\src\_main.html" />
     <Content Include="templates\mobile\structure\base\src\template\gallery\listctrl.html" />
     <Content Include="templates\mobile\structure\base\src\template\gallery\theme-switcher.html" />
     <Content Include="templates\mobile\structure\base\src\template\main.html" />
@@ -255,6 +259,15 @@
     <TypeScriptCompile Include="src\utils\tools.ts" />
     <TypeScriptCompile Include="templates\library\src\_index.spec.ts" />
     <TypeScriptCompile Include="templates\library\src\_index.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\structure\src\script\index.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\structure\src\script\view\gallery\base-pageview.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\structure\src\script\view\gallery\list-control.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\structure\src\script\view\loader.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\structure\src\script\view\main-view.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_app.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_config.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_sample-model.spec.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_sample-model.ts" />
     <TypeScriptCompile Include="templates\mobile\structure\base\src\script\index.ts" />
     <TypeScriptCompile Include="tests\unit\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\unit\generators.base.spec.ts" />
@@ -403,6 +416,11 @@
     <Content Include="templates\mobile\tools\testem\_testem.json" />
     <Content Include="templates\mobile\_README.md" />
     <Content Include="templates\mobile\_package.json" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\app.scss" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\images\.gitkeep" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\splash.scss" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\_gallery.scss" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\_splash.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\library\_eslintrc.json" />
