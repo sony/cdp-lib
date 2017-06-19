@@ -46,6 +46,12 @@
     "type": "git",
     "url": "git+https://github.com/CDP-Tokyo/cdp-lib.git"
   },
+  "files": [
+    "dist",
+    "docs",
+    "res",
+    "templates"
+  ],
   "keywords": [
     "CDP",
     "TypeScript",
