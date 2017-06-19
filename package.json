@@ -50,7 +50,12 @@
     "dist",
     "docs",
     "res",
-    "templates"
+    "templates",
+    "templates/base/.npmignore",
+    "templates/desktop/.gitignore",
+    "templates/library/.gitignore",
+    "templates/mobile/.gitignore",
+    "templates/web/.gitignore"
   ],
   "keywords": [
     "CDP",
