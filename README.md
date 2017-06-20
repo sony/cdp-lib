@@ -23,13 +23,13 @@ Folder and file structure of this repository is the following list.
 
 ### How to install
 
-    $npm install cdp-lib
+    $ npm install cdp-lib
 
 ### How to development
 
 * build
 
-    $npm run build
+    $ npm run build
 
 * test
 
@@ -37,7 +37,7 @@ Folder and file structure of this repository is the following list.
 
 * deplay and update dependencies
 
-    $npm run update
+    $ npm run update
 
 
 ### How to use
