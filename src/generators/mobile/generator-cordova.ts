@@ -1,21 +1,20 @@
-﻿/* tslint:disable:no-unused-variable no-unused-vars */
-/* eslint-disable no-unused-vars */
-
-import * as path from "path";
+﻿import * as path from "path";
 import * as os from "os";
 import {
     fs,
     glob,
     $,
     _,
-    chalk,
+    hogan,
     debug,
     templatePath,
     copyTpl,
     execCommand,
     str2XmlNode,
     xmlNode2Str,
+    normalizeText,
     formatXML,
+    createGUID,
 } from "../../utils";
 import {
     IBaseStructureConfigration,
@@ -186,10 +185,10 @@ export class GeneratorCordova extends GeneratorBase {
      * インストール対象/非対象チェック
      *
      * @param name    [in] モジュール名
-     * @param depends [in] 検索対象
+     * @param depends [in] 検索対象 (既定 this.config.dependencies)
      * @returns true: 対象 / false: 非対象
      */
-    private isInstallationTarget(name: string, depends: IDependency[]): boolean {
+    private isInstallationTarget(name: string, depends: IDependency[] = this.config.dependencies): boolean {
         return !!depends.find((depend) => name === depend.name);
     }
 
@@ -407,9 +406,9 @@ export class GeneratorCordova extends GeneratorBase {
             path.join(templatePath("mobile"), "_project.config.js"),
             path.join(this.rootDir, "project.config.js"),
             $.extend({}, this._config, {
-                hogan: this.isInstallationTarget("hogan.js", this.config.dependencies),
-                hammerjs: this.isInstallationTarget("hammerjs", this.config.dependencies),
-                iscroll: this.isInstallationTarget("iscroll", this.config.dependencies),
+                hogan: this.isInstallationTarget("hogan.js"),
+                hammerjs: this.isInstallationTarget("hammerjs"),
+                iscroll: this.isInstallationTarget("iscroll"),
             }),
             { delimiters: "<% %>" }
         );
@@ -642,115 +641,110 @@ export class GeneratorCordova extends GeneratorBase {
      * Visual Studio のソリューションファイル作成
      */
     private async createVisualStudioSolution(): Promise<void> {
-        //const vsParam = (() => {
-        //    const createGUID = Utils.createGUID;
+        const vsParam = (() => {
+            const param: IVisualStudioConfigration = <any>$.extend({}, this._config.structureConfig);
 
-        //    const param: IVisualStudioConfigration = $.extend({}, this._config.structureConfig);
+            param.projectName = this._config.projectName;
+            param.projectGUID = createGUID();
+            param.types = param.types.replace("@", "%40"); // escape "@" to "%40"
+            param.license = !this._config.private;
 
-        //    param.projectName = this._config.projectName;
-        //    param.projectGUID = createGUID();
-        //    param.types = param.types.replace("@", "%40"); // escape "@" to "%40"
-        //    param.mainBaseName = this._config.mainBaseName;
-        //    param.license = !this._config.private;
+            // external
+            (<any>param).cordova    = this.isEnableCordova();
+            (<any>param).hogan      = this.isInstallationTarget("hogan.js");
+            (<any>param).hammerjs   = this.isInstallationTarget("hammerjs");
+            (<any>param).iscroll    = this.isInstallationTarget("iscroll");
+            (<any>param).flipsnap   = this.isInstallationTarget("flipsnap");
 
-        //    // tools
-        //    param.webpack = this.isEnableTool("webpack");
-        //    param.testem = !this.config.nodejs;
+            // project structure
+            (<any>param).enableLib      = this.hasStructureOf("lib");
+            (<any>param).enablePorting  = this.hasStructureOf("porting");
 
-        //    param.outputSameDir = this.config.outputSameDir;
+            // platforms
+            (<any>param).platforms = [...this.config.platforms];
 
-        //    // setup built js group
-        //    param.jsGroup = [];
-        //    if (!param.outputSameDir) {
-        //        param.jsGroup.push({
-        //            relativePath: param.built + "\\",
-        //            fileName: param.mainBaseName,
-        //            dependee: true,
-        //            d_ts: true,
-        //            map: true,
-        //            min_map: false,
-        //        });
-        //    }
-        //    if (this.config.minify) {
-        //        // setup pkg group
-        //        param.jsGroup.push({
-        //            relativePath: param.pkg + "\\",
-        //            fileName: param.mainBaseName,
-        //            dependee: false,
-        //            d_ts: false,
-        //            map: false,
-        //            min_map: true,
-        //        });
-        //    }
+            // setup built ts group
+            param.tsGroup = [];
+            glob.sync("**/*.ts", {
+                cwd: path.join(
+                    this.rootDir,
+                    param.src,
+                    param.srcConfig.script
+                ),
+            }).forEach((file) => {
+                const relativePath = path.join(
+                    param.src,
+                    param.srcConfig.script,
+                    path.dirname(file)
+                ).replace(/\//g, "\\") + "\\";
+                const fileName = path.basename(file, ".ts");
+                param.tsGroup.push({
+                    relativePath: relativePath,
+                    fileName: fileName,
+                    dependee: true,
+                    map: false,
+                });
+            });
+            // setup test ts group
+            glob.sync("**/*.ts", {
+                cwd: path.join(
+                    this.rootDir,
+                    this.config.structureConfig.test,
+                    "unit"
+                ),
+            }).forEach((file) => {
+                const relativePath = param.test + "\\unit\\";
+                const fileName = path.basename(file, ".ts");
+                param.tsGroup.push({
+                    relativePath: relativePath,
+                    fileName: fileName,
+                    dependee: true,
+                    map: false,
+                });
+            });
+            return param;
+        })();
 
-        //    // setup test js group
-        //    param.tsGroup = [
-        //        {
-        //            relativePath: param.test + "\\unit\\",
-        //            fileName: param.mainBaseName + ".spec",
-        //            dependee: true,
-        //            map: this.config.outputSameDir,
-        //        },
-        //    ];
-        //    if (param.outputSameDir) {
-        //        param.tsGroup.push({
-        //            relativePath: param.built + "\\",
-        //            fileName: param.mainBaseName,
-        //            dependee: false,
-        //            map: true,
-        //        });
-        //    }
+        // .sln
+        copyTpl(
+            path.join(templatePath("base/visual.studio"), "_solution.sln.tpl"),
+            path.join(this.rootDir, vsParam.projectName + ".sln"),
+            vsParam,
+            { delimiters: "<% %>" }
+        );
 
-        //    return param;
-        //})();
+        // .csproj
+        (() => {
+            const toXmlString = (file: string) => {
+                const options = {
+                    eol: os.EOL,
+                    bom: true,
+                    delimiters: "{{ }}",
+                };
+                const jst = hogan.compile(normalizeText(fs.readFileSync(file).toString(), { eol: "\n", bom: false }), options);
+                return jst.render(vsParam);
+            };
 
-        //// .sln
-        //copyTpl(
-        //    path.join(templatePath("base/visual.studio"), "_solution.sln.tpl"),
-        //    path.join(this.rootDir, vsParam.projectName + ".sln"),
-        //    vsParam,
-        //    { delimiters: "<% %>" }
-        //);
+            const toXmlDOM = (file: string) => {
+                return $($.parseXML(toXmlString(file)));
+            };
 
-        //// .csproj
-        //(() => {
-        //    const toXmlString = (file: string) => {
-        //        const hogan = Utils.hogan;
-        //        const normalizeText = Utils.normalizeText;
-        //        const options = {
-        //            eol: os.EOL,
-        //            bom: true,
-        //            delimiters: "{{ }}",
-        //        };
+            const toXmlNode = (file: string) => {
+                return str2XmlNode(toXmlString(file));
+            };
 
-        //        const tpl = path.join(templatePath("base/visual.studio"), file);
-        //        const jst = hogan.compile(normalizeText(fs.readFileSync(tpl).toString(), { eol: "\n", bom: false }), options);
-        //        return jst.render(vsParam);
-        //    };
+            const $proj = toXmlDOM(path.join(templatePath("mobile/visual.studio"), "_project.csproj.tpl"));
+            const $gpTS = toXmlNode(path.join(templatePath("base/visual.studio"), "_ts.item.group.tpl"));
 
-        //    const toXmlDOM = (file: string) => {
-        //        return $($.parseXML(toXmlString(file)));
-        //    };
+            $proj
+                .find("ItemGroup")
+                .last()
+                .after($gpTS)
+                ;
 
-        //    const toXmlNode = (file: string) => {
-        //        return Utils.str2XmlNode(toXmlString(file));
-        //    };
-
-        //    const $proj = toXmlDOM("_project.csproj.tpl");
-        //    const $gpTS = toXmlNode("_ts.item.group.tpl");
-        //    const $gpJS = toXmlNode("_js.item.group.tpl");
-
-        //    $proj
-        //        .find("ItemGroup")
-        //        .last()
-        //        .after($gpTS)
-        //        .after($gpJS)
-        //        ;
-
-        //    const formatXML = Utils.formatXML;
-        //    const dstPath = path.join(this.rootDir, vsParam.projectName + ".csproj");
-        //    debug(Utils.xmlNode2Str($proj));
-        //    fs.writeFileSync(dstPath, formatXML(Utils.xmlNode2Str($proj)));
-        //})();
+            const dstPath = path.join(this.rootDir, vsParam.projectName + ".csproj");
+            debug(xmlNode2Str($proj));
+            fs.writeFileSync(dstPath, formatXML(xmlNode2Str($proj)));
+        })();
     }
 }

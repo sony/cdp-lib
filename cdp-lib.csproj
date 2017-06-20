@@ -121,6 +121,7 @@
     <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
     <Content Include="templates\mobile\addon\.gitkeep" />
+    <Content Include="templates\mobile\visual.studio\_project.csproj.tpl" />
     <None Include="templates\mobile\_gitignore" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
     <Content Include="templates\mobile\src\structure\src\template\gallery\listctrl.html" />
