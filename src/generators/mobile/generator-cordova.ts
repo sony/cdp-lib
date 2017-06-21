@@ -90,6 +90,7 @@ export class GeneratorCordova extends GeneratorBase {
             "banner.js",
             "clean.js",
             "command.js",
+            "external-rearrange.js",
             "srcmap.js",
             "bundle-finalizer.js",
             "remap-coverage.js",

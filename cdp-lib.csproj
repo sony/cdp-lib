@@ -113,6 +113,7 @@
     <Content Include="templates\base\task\bundle-finalizer.js" />
     <Content Include="templates\base\task\clean.js" />
     <Content Include="templates\base\task\command.js" />
+    <Content Include="templates\base\task\external-rearrange.js" />
     <Content Include="templates\base\task\remap-coverage.js" />
     <Content Include="templates\base\task\srcmap.js" />
     <Content Include="templates\base\tools\webpack\_webpack.config.js" />
@@ -136,7 +137,6 @@
     <Content Include="templates\mobile\task\compile-ts.js" />
     <Content Include="templates\mobile\task\copy.js" />
     <Content Include="templates\mobile\task\cordova-receiver.js" />
-    <Content Include="templates\mobile\task\external-rearrange.js" />
     <Content Include="templates\mobile\task\instrument.js" />
     <Content Include="templates\mobile\task\minify.js" />
     <Content Include="templates\mobile\task\porting-setup.js" />
