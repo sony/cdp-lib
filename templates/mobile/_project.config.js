@@ -74,7 +74,7 @@ const external_rearrange = {
         },
         <%/ iscroll %>
     },
-    };
+};
 
 const built_cleanee = {
     ts: ['**/*.js', '**/*.map', `!${dir.external}/**`, `!${dir.res}/**`],
