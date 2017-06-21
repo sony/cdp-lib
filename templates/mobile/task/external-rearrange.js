@@ -150,7 +150,12 @@ function resolveModuleInfo(target) {
 
 function deleteOldFiles(info, dir) {
     info.basenames.forEach((basename) => {
-        const cwd = path.join(__dirname, '..', config.dir.src, config.dir.external, info.vender, dir);
+        const cwd = (() => {
+            if (config.external_rearrange && config.external_rearrange.root) {
+                return path.join(__dirname, '..', config.external_rearrange.root, info.vender, dir);
+            }
+            return path.join(__dirname, '..', config.dir.src, config.dir.external, info.vender, dir);
+        })();
         const target = info.rename ? info.rename : basename;
         glob.sync(target + '*', {
             cwd: cwd,
@@ -213,7 +218,12 @@ function rearrangeCore(extension, info, minifyFunc, options) {
     deleteOldFiles(info, typeDir);
 
     const SRC_DIR = info.cwd;
-    const DST_DIR = path.join(__dirname, '..', config.dir.src, config.dir.external, info.vender, typeDir);
+    const DST_DIR = (() => {
+        if (config.external_rearrange && config.external_rearrange.root) {
+            return path.join(__dirname, '..', config.external_rearrange.root, info.vender, typeDir);
+        }
+        return path.join(__dirname, '..', config.dir.src, config.dir.external, info.vender, typeDir);
+    })();
     info.basenames.forEach((basename) => {
         const srcFile = resolveDevSourceFile(basename, info, extension);
         if (srcFile) {

@@ -32,8 +32,10 @@ const dir = {
 };
 
 const external_rearrange = {
+    root: `${dir.src}/${dir.external}`,
     ignore_modules: [
         '^cordova-',
+        '^@types',
     ],
     module_adjuster: {
         '@cdp/mobile': {
@@ -72,7 +74,7 @@ const external_rearrange = {
         },
         <%/ iscroll %>
     },
-};
+    };
 
 const built_cleanee = {
     ts: ['**/*.js', '**/*.map', `!${dir.external}/**`, `!${dir.res}/**`],
