@@ -3,8 +3,6 @@
 const path      = require('path');
 const fs        = require('fs-extra');
 const glob      = require('glob');
-const uglifyjs  = require('uglify-js');
-const cleancss  = require('clean-css');
 const config    = require('../project.config');
 
 function queryOptions() {
@@ -274,6 +272,7 @@ function rearrangeJS(info, options) {
             url: baseName + '.min.js.map',
         };
 
+        const uglifyjs = require('uglify-js');
         const result = uglifyjs.minify(srcText, {
             sourceMap: options.map ? _mapOption : undefined,
             output: {
@@ -294,6 +293,7 @@ function rearrangeJS(info, options) {
 
 function rearrangeCSS(info, options) {
     rearrangeCore('.css', info, (srcText, baseName) => {
+        const cleancss = require('clean-css');
         const result = new cleancss({
             format: {
                 breaks: {
