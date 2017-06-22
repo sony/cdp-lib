@@ -66,7 +66,7 @@
     "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=<% structureConfig.doc %>/reports/coverage",
     <%/ nodejs %>
     "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
-    "metrics": "plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json <% structureConfig.built %>/**/*.js"
+    "metrics": "npm run compile:ts:src && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json <% structureConfig.built %>/**/*.js"
   },
   <%# license %>
   "license": "<% license %>",

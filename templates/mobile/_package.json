@@ -60,7 +60,7 @@
     "rearrange": "node ./<% structureConfig.task %>/external-rearrange.js",
     "module": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/compile-ts.js --pkg=release --lib && node ./<% structureConfig.task %>/copy.js --task=lib-types && node ./<% structureConfig.task %>/clean.js --temp",
     "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
-    "metrics": "plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
+    "metrics": "npm run compile:ts && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
   },
   <%# license %>
   "license": "<% license %>",
