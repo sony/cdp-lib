@@ -11,8 +11,8 @@
   "scripts": {
     "test": "run-s -l clean compile lint unit-test",
     "ci": "run-s -l clean build lint unit-test metrics document",
-    "deploy": "run-s ci clean:deploy",
-    "update": "npm update --save-dev && npm update --save && npm run deploy",
+    "package": "run-s ci && node ./<% structureConfig.task %>/clean.js --built --test --temp",
+    "update": "npm update --save-dev && npm update --save && npm run package",
     "depends": "npm list --depth=1",
     "depends:prod": "npm list --depth=0 --only=prod",
     "depends:dev": "npm list --depth=0 --only=dev",
@@ -30,7 +30,6 @@
     "clean:test": "node ./<% structureConfig.task %>/clean.js --test",
     "clean:built": "node ./<% structureConfig.task %>/clean.js --built",
     "clean:pkg": "node ./<% structureConfig.task %>/clean.js --pkg",
-    "clean:deploy": "node ./<% structureConfig.task %>/clean.js --built --test --temp",
     "build": "node ./<% structureConfig.task %>/clean.js --built --test && run-p build:*",
     "build:ts": "run-s -l compile:ts bundle:ts <%# minify %> minify:ts<%/ minify %>",
     "compile": "node ./<% structureConfig.task %>/clean.js --built --test && run-p compile:*",
