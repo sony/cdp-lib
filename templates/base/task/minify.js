@@ -3,9 +3,6 @@
 const path      = require('path');
 const fs        = require('fs-extra');
 const glob      = require('glob');
-const uglifyjs  = require('uglify-js');
-const cleancss  = require('clean-css');
-const htmlmin   = require('html-minifier');
 const srcmap    = require('./srcmap');
 const config    = require('../project.config');
 
@@ -17,7 +14,9 @@ function queryOptions() {
     let settings = {
         all: true,
         minify: true,
+        rename: false,
         map: null,          // for map file generate.
+        external: null,     // for map copy from external.
         js: false,
         css: false,
         html: false,
@@ -30,8 +29,12 @@ function queryOptions() {
                 const name = option.split('=')[0];
                 if ('no-minify' === name) {
                     settings.minify = false;
+                } else if ('rename' === name) {
+                    settings.rename = option.split('=')[1] || true;
                 } else if ('map' === name) {
                     settings.map = option.split('=')[1] || PKG_DIR;
+                } else if ('external' === name) {
+                    settings.external = (null != option.split('=')[1]) ? option.split('=')[1] : true;
                 } else if (name === key) {
                     settings.all = false;
                     settings[key] = true;
@@ -43,7 +46,8 @@ function queryOptions() {
     return settings;
 }
 
-function minifyJS(map) {
+function minifyJS(options) {
+    const uglifyjs = require('uglify-js');
     glob.sync('**/*.js', {
         cwd: PKG_DIR,
         nodir: true,
@@ -55,13 +59,15 @@ function minifyJS(map) {
         ],
     }).forEach((file) => {
         console.log('  minify... ' + file);
+        const outFile = options.rename ? path.basename(file, '.js') + '.min.js' : file;
         const srcPath = path.join(PKG_DIR, file);
-        const mapPath = map ? path.join(map, file + '.map') : null;
+        const dstPath = path.join(PKG_DIR, outFile);
+        const mapPath = options.map ? path.join(options.map, outFile + '.map') : null;
         const src = fs.readFileSync(srcPath).toString();
 
-        const _map = map ? {
+        const _map = options.map ? {
             content: 'inline',
-            url: path.basename(file) + '.map',
+            url: path.basename(outFile) + '.map',
         } : null;
 
         const result = uglifyjs.minify(src, {
@@ -71,14 +77,15 @@ function minifyJS(map) {
             },
         });
 
-        fs.outputFileSync(srcPath, result.code, 'utf8');
-        if (map) {
+        fs.outputFileSync(dstPath, result.code, 'utf8');
+        if (options.map) {
             fs.outputFileSync(mapPath, result.map, 'utf8');
         }
     });
 }
 
-function minifyCSS(map) {
+function minifyCSS(options) {
+    const cleancss = require('clean-css');
     glob.sync('**/*.css', {
         cwd: PKG_DIR,
         nodir: true,
@@ -90,8 +97,10 @@ function minifyCSS(map) {
         ],
     }).forEach((file) => {
         console.log('  minify... ' + file);
+        const outFile = options.rename ? path.basename(file, '.css') + '.min.css' : file;
         const srcPath = path.join(PKG_DIR, file);
-        const mapPath = map ? path.join(map, file + '.map') : null;
+        const dstPath = path.join(PKG_DIR, outFile);
+        const mapPath = options.map ? path.join(options.map, outFile + '.map') : null;
         const css = srcmap.separateScriptAndMapFromScriptFile(srcPath, true);
 
         const result = new cleancss({
@@ -100,21 +109,22 @@ function minifyCSS(map) {
                     afterComment: true,
                 },
             },
-            sourceMap: map || false,
-            sourceMapInlineSources: map || false,
+            sourceMap: options.map || false,
+            sourceMapInlineSources: options.map || false,
         }).minify(css.script, css.map);
 
-        if (map) {
-            result.styles += '\n/*# sourceMappingURL=' + path.basename(file) + '.map */';
+        if (options.map) {
+            result.styles += '\n/*# sourceMappingURL=' + path.basename(outFile) + '.map */';
         }
-        fs.outputFileSync(srcPath, result.styles, 'utf8');
-        if (map) {
+        fs.outputFileSync(dstPath, result.styles, 'utf8');
+        if (options.map) {
             fs.outputFileSync(mapPath, result.sourceMap, 'utf8');
         }
     });
 }
 
 function minifyHTML() {
+    const htmlmin = require('html-minifier');
     glob.sync('**/*.html', {
         cwd: PKG_DIR,
         nodir: true,
@@ -156,15 +166,15 @@ function main() {
     }
 
     if (options.all || options.js) {
-        minifyJS(options.map);
+        minifyJS(options);
     }
     if (options.all || options.css) {
-        minifyCSS(options.map);
+        minifyCSS(options);
     }
     if (options.all || options.html) {
         minifyHTML();
     }
-    if (options.map) {
+    if (options.map && (options.external || (null == options.external))) {
         copyExternalModueMap();
     }
 }

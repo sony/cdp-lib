@@ -91,6 +91,7 @@ export class GeneratorCordova extends GeneratorBase {
             "clean.js",
             "command.js",
             "external-rearrange.js",
+            "minify.js",
             "srcmap.js",
             "bundle-finalizer.js",
             "remap-coverage.js",
