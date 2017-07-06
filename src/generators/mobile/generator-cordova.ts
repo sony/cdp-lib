@@ -511,7 +511,7 @@ export class GeneratorCordova extends GeneratorBase {
             pkg.dependencies    = sortKeys(pkg.dependencies);
             pkg.devDependencies = sortKeys(pkg.devDependencies);
 
-            fs.writeFileSync(PKG_PATH, JSON.stringify(pkg, null, 2), "utf-8");
+            fs.writeFileSync(PKG_PATH, JSON.stringify(pkg, null, 2));
         }
     }
 
