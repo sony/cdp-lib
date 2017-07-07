@@ -99,7 +99,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="{{src}}\{{external}}\{{types}}\" />
+    <Content Include="{{src}}\{{external}}\{{types}}\patch.dependencies\index.d.ts" />
     <Content Include="{{src}}\{{external}}\backbone\{{srcConfig.script}}\backbone.js" />
     <Content Include="{{src}}\{{external}}\cdp\{{srcConfig.script}}\cdp.js" />
     <Content Include="{{src}}\{{external}}\cdp\{{srcConfig.stylesheet}}\cdp.css" />
@@ -108,16 +108,19 @@
     <Content Include="{{src}}\{{external}}\cdp\{{srcConfig.stylesheet}}\cdp.swatch.css" />
     {{#flipsnap}}
     <Content Include="{{src}}\{{external}}\flipsnap\{{srcConfig.script}}\flipsnap.js" />
+    <Content Include="{{src}}\{{external}}\{{types}}\patch.dependencies\flipsnap.d.ts" />
     {{/flipsnap}}
     {{#hammerjs}}
     <Content Include="{{src}}\{{external}}\hammerjs\{{srcConfig.script}}\hammer.js" />
     <Content Include="{{src}}\{{external}}\hammerjs\{{srcConfig.script}}\jquery.hammer.js" />
+    <Content Include="{{src}}\{{external}}\{{types}}\patch.dependencies\jquery.hammer.d.ts" />
     {{/hammerjs}}
     {{#hogan}}
     <Content Include="{{src}}\{{external}}\hogan\{{srcConfig.script}}\hogan.js" />
     {{/hogan}}
     {{#iscroll}}
     <Content Include="{{src}}\{{external}}\iscroll\{{srcConfig.script}}\iscroll-probe.js" />
+    <Content Include="{{src}}\{{external}}\{{types}}\patch.dependencies\iscroll.d.ts" />
     {{/iscroll}}
     <Content Include="{{src}}\{{external}}\jquery\{{srcConfig.script}}\jquery.js" />
     <Content Include="{{src}}\{{external}}\requirejs\{{srcConfig.script}}\require.js" />

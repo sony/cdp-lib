@@ -1,4 +1,5 @@
 ﻿import { BasePageView } from "./base-pageview";
+import { registerPage } from "cdp/ui";
 
 const TAG = "[view.gallery.ListControlPageView] ";
 
@@ -18,4 +19,4 @@ class ListControlPageView extends BasePageView {
     }
 }
 
-const __viewGalleryListControlPageView = new ListControlPageView();
+registerPage(ListControlPageView);

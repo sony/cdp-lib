@@ -4,9 +4,10 @@
         frameworks.push("cordova");
     }
     require(frameworks, (CDP) => {
-        CDP.initialize().done(() => {
-            // start application
-            require(["app"], (app) => app.main());
-        });
+        CDP.initialize()
+            .done(() => {
+                // start application
+                require(["app"], (app) => app.main());
+            });
     });
 })(this);

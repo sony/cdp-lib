@@ -1,13 +1,7 @@
-﻿import * as Backbone from "backbone";
-
-import {
+﻿import {
     toUrl,
-} from "cdp/framework";
-import {
-    Template,
+    getTemplate,
     JST,
-} from "cdp/tools";
-import {
     IPromiseBase,
     HideEventData,
     PageView,
@@ -24,12 +18,12 @@ const TAG = "[view.gallery.BasePageView] ";
  * @class ThemeSwitcher
  * @brief テーマ切り替え View
  */
-class ThemeSwitcher extends PageContainerView<Backbone.Model> {
+class ThemeSwitcher extends PageContainerView {
 
     /**
      * constructor
      */
-    constructor(options: PageContainerOptions<Backbone.Model>) {
+    constructor(options: PageContainerOptions) {
         super(options);
         switch (Theme.getCurrentUIPlatform()) {
             case "ios":
@@ -82,7 +76,7 @@ class ThemeSwitcher extends PageContainerView<Backbone.Model> {
  * @class BasePageView
  * @brief Gallery 共通の画面基底クラス
  */
-export class BasePageView extends PageView<Backbone.Model> {
+export class BasePageView extends PageView {
 
     private _themeSwitchTemplate: JST;
     private _themeSwitcher: ThemeSwitcher;
@@ -90,9 +84,9 @@ export class BasePageView extends PageView<Backbone.Model> {
     /**
      * constructor
      */
-    constructor(url: string, id: string, options?: PageViewConstructOptions<Backbone.Model>) {
+    constructor(url: string, id: string, options?: PageViewConstructOptions) {
         super(url, id, options);
-        this._themeSwitchTemplate = Template.getJST("#template-gallery-theme-switcher", toUrl("/templates/gallery/theme-switcher.html"));
+        this._themeSwitchTemplate = getTemplate("#template-gallery-theme-switcher", toUrl("/templates/gallery/theme-switcher.html"));
     }
 
     ///////////////////////////////////////////////////////////////////////

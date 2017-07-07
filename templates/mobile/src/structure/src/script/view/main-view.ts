@@ -1,5 +1,10 @@
-﻿import * as Backbone from "backbone";
-import { PageView, ShowEventData, HideEventData, Toast } from "cdp/ui";
+﻿import {
+    PageView,
+    ShowEventData,
+    HideEventData,
+    Toast,
+    registerPage,
+} from "cdp/ui";
 
 import CheckModel from "../model/sample-model";
 
@@ -9,7 +14,7 @@ const TAG = "[view.MainView] ";
  * @class MainView
  * @brief メインビュークラス
  */
-export class MainView extends PageView<Backbone.Model> {
+export class MainView extends PageView {
 
     /**
      * constructor
@@ -106,4 +111,4 @@ export class MainView extends PageView<Backbone.Model> {
     }
 }
 
-const __viewMainView = new MainView();
+registerPage(MainView);

@@ -83,13 +83,13 @@
             },
             // <<<EXTERNAL_MODULES<<<
 
-            //shim: {
-            //},
+            shim: {
+            },
 
-            //packages: [
-            //    // DO NOT setup manually.
-            //    // use assign_lib()/assing_porting()
-            //],
+            packages: [
+                // DO NOT setup manually.
+                // use assign_lib()/assing_porting()
+            ],
         };
 
         /* tslint:disable:no-unused-variable no-unused-vars */
@@ -110,31 +110,29 @@
     //_____________________________________________________________________________________________//
 
     /**
-     * jQuery
+     * jQuery settings
      */
-    export function jquery(): void {
-        $.support.cors = true;
-        $.ajaxSetup({ cache: false });
-        $.migrateMute = true;
-    }
+    export const jquery = {
+        ajaxSetup: { cache: false },
+    };
 
     /**
-     * jQuery Mobile
+     * jQuery Mobile settings
      * http://api.jquerymobile.com/global-config/
      */
-    export function jquerymobile(): void {
-        $.mobile.allowCrossDomainPages = true;
-        $.mobile.defaultPageTransition = "none";
-        $.mobile.hashListeningEnabled = false;
-        $.mobile.pushStateEnabled = false;
-    }
+    export const jquerymobile = {
+        allowCrossDomainPages: true,
+        defaultPageTransition: "none",
+        hashListeningEnabled: false,
+        pushStateEnabled: false,
+    };
 
     //_____________________________________________________________________________________________//
 
     /**
      * localize resource settings
      */
-    export const i18n: CDP.I18NOptions = {
+    export const i18n: CDP.I18NSettings = {
         fallbackResources: {
             en: {
                 messages: "/<% structureConfig.res %>/locales/messages.en-US.json",

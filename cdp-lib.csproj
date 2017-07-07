@@ -124,6 +124,13 @@
     <Content Include="templates\library\tools\testem\runner\testem-ci.js" />
     <Content Include="templates\mobile\addon\.gitkeep" />
     <Content Include="templates\mobile\visual.studio\_project.csproj.tpl" />
+    <Content Include="templates\mobile\visual.studio\_web.config" />
+    <Content Include="templates\mobile\src\_locales\_messages.en-US.json" />
+    <Content Include="templates\mobile\src\_locales\_messages.ja-JP.json" />
+    <Content Include="templates\mobile\structure\base\src\external\types\.gitkeep" />
+    <Content Include="templates\mobile\structure\base\src\res\.gitkeep" />
+    <None Include="templates\mobile\visual.studio\_web.Debug.config" />
+    <None Include="templates\mobile\visual.studio\_web.Release.config" />
     <None Include="templates\mobile\_gitignore" />
     <Content Include="templates\mobile\cordova\hooks\before_prepare\cordova-delegater.js" />
     <Content Include="templates\mobile\src\structure\src\template\gallery\listctrl.html" />
@@ -270,6 +277,10 @@
     <TypeScriptCompile Include="templates\mobile\src\structure\test\unit\sample-model.spec.ts" />
     <TypeScriptCompile Include="templates\mobile\src\_app.ts" />
     <TypeScriptCompile Include="templates\mobile\src\_config.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_patch.dependencies\flipsnap.d.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_patch.dependencies\iscroll.d.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_patch.dependencies\jquery.hammer.d.ts" />
+    <TypeScriptCompile Include="templates\mobile\src\_patch.dependencies\_index.d.ts" />
     <TypeScriptCompile Include="templates\mobile\structure\base\src\script\index.ts" />
     <TypeScriptCompile Include="tests\unit\cdp-lib.spec.ts" />
     <TypeScriptCompile Include="tests\unit\generators.base.spec.ts" />
@@ -402,8 +413,6 @@
     <None Include="templates\base\_NOTICE" />
     <Content Include="templates\library\_tsconfig.test.json" />
     <Content Include="templates\library\_tsconfig.output-same-dir.json" />
-    <Content Include="templates\mobile\structure\base\src\external\types\.gitkeep" />
-    <Content Include="templates\mobile\structure\base\src\res\locales\.gitkeep" />
     <Content Include="templates\mobile\structure\base\src\stylesheet\app.scss" />
     <Content Include="templates\mobile\structure\base\src\stylesheet\_gallery.scss" />
     <Content Include="templates\mobile\structure\lib\script\.gitkeep" />
@@ -422,8 +431,6 @@
     <Content Include="templates\mobile\src\structure\src\stylesheet\splash.scss" />
     <Content Include="templates\mobile\src\structure\src\stylesheet\_gallery.scss" />
     <Content Include="templates\mobile\src\structure\src\stylesheet\_splash.scss" />
-    <Content Include="templates\mobile\src\_messages.en-US.json" />
-    <Content Include="templates\mobile\src\_messages.ja-JP.json" />
     <Content Include="templates\mobile\structure\porting\script\.gitkeep" />
   </ItemGroup>
   <ItemGroup>

@@ -15,10 +15,11 @@
     ],
     "typeRoots": [
       "./node_modules/@types",
-      "./app/modules/@types"
+      "./<% structureConfig.src %>/<% structureConfig.external %>/<% structureConfig.types %>"
     ],
     "types": [
       "@cdp/mobile",
+      "patch.dependencies",
       "requirejs",
       "jasmine"
     ]

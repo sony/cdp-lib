@@ -1,23 +1,11 @@
 (function (global) {
     // static configuration: CDP
     var CDP_config = {
-        jquery: function() {
-            $.support.cors = true;
-            $.ajaxSetup({ cache: false });
-            $.migrateMute = true;
+        jquery: {
         },
-        jquerymobile: function () {
-            $.mobile.loader.prototype.options.text = undefined;
-            $.mobile.allowCrossDomainPages = true;
-            $.mobile.defaultPageTransition = "none";
-            $.mobile.hashListeningEnabled = false;
-            $.mobile.pushStateEnabled = false;
+        jquerymobile: {
         },
         i18n: {
-            fallbackResources: {
-            },
-            options: {
-            },
         },
     };
     global.Config = global.Config || {};

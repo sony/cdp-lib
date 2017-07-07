@@ -6,30 +6,31 @@
 
 
 ### Repository structure
+
 Folder and file structure of this repository is the following list.
 
     root/
-        <% structureConfig.src %>/                                        // application development root directory.
-            <% structureConfig.external %>/                               // 3rd party library modules here.
+        <% structureConfig.src %>/                    // application development root directory.
+            <% structureConfig.external %>/           // 3rd party library modules here.
 <%# lib %>
-            <% structureConfig.lib %>/                                    // for internal library module development.
+            <% structureConfig.lib %>/                // for internal library module development.
 <%/ lib %>
 <%# porting %>
-            <% structureConfig.porting %>/                                // platform specific sources are here.
+            <% structureConfig.porting %>/            // platform specific sources are here.
 <%/ porting %>
-            <% structureConfig.res %>/                                    // for application resources.
-            <% structureConfig.srcConfig.script %>/                                // .ts files here.
-            <% structureConfig.srcConfig.stylesheet %>/                            // .scss files here.
-            <% structureConfig.srcConfig.template %>/                              // templates files are here.
-            index.html                              // application root file.
-        <% structureConfig.doc %>/                                       // specification documents.
-        hooks/                                      // cordova hook scripts here.
+            <% structureConfig.res %>/                // for application resources.
+            <% structureConfig.srcConfig.script %>/            // .ts files here.
+            <% structureConfig.srcConfig.stylesheet %>/        // .scss files here.
+            <% structureConfig.srcConfig.template %>/          // templates files are here.
+            index.html          // application root file.
+        <% structureConfig.doc %>/                   // specification documents.
 <%# cordova %>
-        plugins/                                    // installed cordova plugins here.
-        platforms/                                  // native project setting files and sources.
+        hooks/                  // cordova hook scripts here.
+        plugins/                // installed cordova plugins here.
+        platforms/              // native project setting files and sources.
 <%/ cordova %>
-        <% structureConfig.test %>/                                      // tests scripts directory.
-        <% structureConfig.pkg %>/                                        // target repository. compiled source and resource are set here.
+        <% structureConfig.test %>/                  // tests scripts directory.
+        <% structureConfig.pkg %>/                    // target repository. compiled source and resource are set here.
 
 
 ### How to setup
@@ -46,11 +47,17 @@ Folder and file structure of this repository is the following list.
 
     $ npm test
 
-* deplay and update dependencies
+* update dependencies
 
     $ npm run update
 
+** only cdp modules
+
+    $ npm run update:cdp
+
+
 ### How to use
+
 Please see the following documentation.
 
 - [English/英語](docs/en)

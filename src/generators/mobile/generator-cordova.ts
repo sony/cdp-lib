@@ -142,7 +142,7 @@ export class GeneratorCordova extends GeneratorBase {
      */
     private get defaultDependencies(): IDependency[] {
         const depends = [
-            { name: "@cdp/mobile",  version: "git+ssh://git@github.com/CDP-Tokyo/cdp-js.git#dev", },
+            { name: "@cdp/mobile",  version: "git+ssh://git@github.com/CDP-Tokyo/cdp-js.git", },
             { name: "backbone",     version: undefined, },
             { name: "jquery",       version: undefined, },
             { name: "requirejs",    version: undefined, },
@@ -605,7 +605,7 @@ export class GeneratorCordova extends GeneratorBase {
 
         {// localize resources
             copyTpl(
-                path.join(templatePath("mobile/src"), "_messages.en-US.json"),
+                path.join(templatePath("mobile/src/_locales"), "_messages.en-US.json"),
                 path.join(
                     this.rootDir,
                     this.config.structureConfig.src,
@@ -617,7 +617,7 @@ export class GeneratorCordova extends GeneratorBase {
                 { delimiters: "<% %>", bom: false, }
             );
             copyTpl(
-                path.join(templatePath("mobile/src"), "_messages.ja-JP.json"),
+                path.join(templatePath("mobile/src/_locales"), "_messages.ja-JP.json"),
                 path.join(
                     this.rootDir,
                     this.config.structureConfig.src,
@@ -628,6 +628,76 @@ export class GeneratorCordova extends GeneratorBase {
                 this.config,
                 { delimiters: "<% %>", bom: false, }
             );
+            // remove .gitkeep
+            fs.unlinkSync(path.join(
+                this.rootDir,
+                this.config.structureConfig.src,
+                this.config.structureConfig.res,
+                ".gitkeep"
+            ));
+        }
+
+        {// patch.dependencies
+            copyTpl(
+                path.join(templatePath("mobile/src/_patch.dependencies"), "_index.d.ts"),
+                path.join(
+                    this.rootDir,
+                    this.config.structureConfig.src,
+                    this.config.structureConfig.external,
+                    this.config.structureConfig.types,
+                    "patch.dependencies",
+                    "index.d.ts"
+                ),
+                {
+                    hammerjs: this.isInstallationTarget("hammerjs"),
+                    flipsnap: this.isInstallationTarget("flipsnap"),
+                    iscroll: this.isInstallationTarget("iscroll"),
+                }
+            );
+
+            // copy patch d.ts
+            if (this.isInstallationTarget("hammerjs")) {
+                fs.copySync(templatePath("mobile/src/_patch.dependencies/jquery.hammer.d.ts"),
+                    path.join(
+                        this.rootDir,
+                        this.config.structureConfig.src,
+                        this.config.structureConfig.external,
+                        this.config.structureConfig.types,
+                        "patch.dependencies",
+                        "jquery.hammer.d.ts"
+                    ));
+            }
+            if (this.isInstallationTarget("flipsnap")) {
+                fs.copySync(templatePath("mobile/src/_patch.dependencies/flipsnap.d.ts"),
+                    path.join(
+                        this.rootDir,
+                        this.config.structureConfig.src,
+                        this.config.structureConfig.external,
+                        this.config.structureConfig.types,
+                        "patch.dependencies",
+                        "flipsnap.d.ts"
+                    ));
+            }
+            if (this.isInstallationTarget("iscroll")) {
+                fs.copySync(templatePath("mobile/src/_patch.dependencies/iscroll.d.ts"),
+                    path.join(
+                        this.rootDir,
+                        this.config.structureConfig.src,
+                        this.config.structureConfig.external,
+                        this.config.structureConfig.types,
+                        "patch.dependencies",
+                        "iscroll.d.ts"
+                    ));
+            }
+
+            // remove .gitkeep
+            fs.unlinkSync(path.join(
+                this.rootDir,
+                this.config.structureConfig.src,
+                this.config.structureConfig.external,
+                this.config.structureConfig.types,
+                ".gitkeep"
+            ));
         }
 
         {// index.html
@@ -748,5 +818,10 @@ export class GeneratorCordova extends GeneratorBase {
             debug(xmlNode2Str($proj));
             fs.writeFileSync(dstPath, formatXML(xmlNode2Str($proj)));
         })();
+
+        // web.config
+        fs.copySync(templatePath("mobile/visual.studio/_web.config"), path.join(this.rootDir, "web.config"));
+        fs.copySync(templatePath("mobile/visual.studio/_web.Debug.config"), path.join(this.rootDir, "web.Debug.config"));
+        fs.copySync(templatePath("mobile/visual.studio/_web.Release.config"), path.join(this.rootDir, "web.Release.config"));
     }
 }
