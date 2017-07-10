@@ -41,19 +41,29 @@ Folder and file structure of this repository is the following list.
 
 * build
 
-    $ cordova build [platform] [--release]
+```
+$ cordova build [platform] [--release]
+```
 
 * test
 
-    $ npm test
+```
+$ npm test
+```
+
 
 * update dependencies
 
-    $ npm run update
+```
+$ npm run update
+```
 
-** only cdp modules
 
-    $ npm run update:cdp
+* only cdp modules update
+
+```
+$ npm run update:cdp
+```
 
 
 ### How to use
