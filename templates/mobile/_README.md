@@ -29,6 +29,7 @@ Folder and file structure of this repository is the following list.
         plugins/                // installed cordova plugins here.
         platforms/              // native project setting files and sources.
 <%/ cordova %>
+        <% structureConfig.task %>/                  // task scripts directory.
         <% structureConfig.test %>/                  // tests scripts directory.
         <% structureConfig.pkg %>/                    // target repository. compiled source and resource are set here.
 
