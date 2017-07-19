@@ -35,6 +35,8 @@
     "compile:release": "run-p compile:release:*",
     "compile:release:ts": "npm run compile:ts -- --pkg=release --<% structureConfig.src %> --lib",
     "compile:release:scss": "npm run compile:scss -- --pkg --<% structureConfig.src %> --lib",
+    "compile:dev": "tsc -p tsconfig.json",
+    "watch:ts": "tsc -p tsconfig.json -w",
     "build:clean": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/porting-setup.js --porting=clean",
     "build:config": "node ./<% structureConfig.task %>/string-replace.js",
     "build:porting": "node ./<% structureConfig.task %>/porting-setup.js",
@@ -48,7 +50,7 @@
     "porting:android": "node ./<% structureConfig.task %>/porting-setup.js --platform=android --porting=rebase",
     "porting:ios": "node ./<% structureConfig.task %>/porting-setup.js --platform=ios --porting=rebase",
     "lint": "run-p -l lint:*",
-    "lint:js": "eslint <% structureConfig.task %>/**/*.js <% structureConfig.src %>/<% structureConfig.srcConfig.script %>/**/*.js platforms/*/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.js -c <% structureConfig.test %>/eslint/eslintrc.json",
+    "lint:js": "eslint <% structureConfig.task %>/**/*.js <% structureConfig.src %>/<% structureConfig.srcConfig.script %>/**/*.js <% structureConfig.src %>/<% structureConfig.lib %>/<% structureConfig.srcConfig.script %>/**/*.js platforms/*/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.js -c <% structureConfig.test %>/eslint/eslintrc.json",
     "lint:ts": "tslint --type-check -p ./tsconfig.json -c ./<% structureConfig.test %>/tslint/tslint.json -e <% structureConfig.src %>/**/*.d.ts <% structureConfig.src %>/**/*.ts platforms/*/<% structureConfig.porting %>/<% structureConfig.srcConfig.script %>/**/*.ts",
     "unit-test": "npm run coverage:exec",
     "unit-test:ci": "testem ci -f ./<% structureConfig.test %>/runner/testem-ci.js",
@@ -60,7 +62,7 @@
     "rearrange": "node ./<% structureConfig.task %>/external-rearrange.js",
     "module": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/compile-ts.js --pkg=release --lib && node ./<% structureConfig.task %>/copy.js --task=lib-types && node ./<% structureConfig.task %>/clean.js --temp",
     "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
-    "metrics": "npm run compile:ts && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
+    "metrics": "npm run compile:dev && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
   },
   <%# license %>
   "license": "<% license %>",
