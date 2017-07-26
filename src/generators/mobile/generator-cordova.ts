@@ -117,6 +117,7 @@ export class GeneratorCordova extends GeneratorBase {
             { name: "html-minifier",        version: undefined, },
             { name: "node-sass",            version: undefined, },
             { name: "postcss-cli",          version: undefined, },
+            { name: "smartwatch",           version: undefined, },
         ]);
 
         const extra = [];

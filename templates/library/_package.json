@@ -33,10 +33,16 @@
     "build": "node ./<% structureConfig.task %>/clean.js --built --test && run-p build:*",
     "build:ts": "run-s -l compile:ts bundle:ts <%# minify %> minify:ts<%/ minify %>",
     "compile": "node ./<% structureConfig.task %>/clean.js --built --test && run-p compile:*",
-    "compile:ts": "run-s compile:ts:* ",
+    "compile:ts": "run-s compile:ts:*",
     "compile:ts:src": "tsc -p ./tsconfig.json",
     <%^ outputSameDir %>
     "compile:ts:test": "tsc -p ./<% structureConfig.test %>/unit/tsconfig.json",
+    <%/ outputSameDir %>
+    "watch": "run-p watch:*",
+    "watch:ts": "run-p watch:ts:*",
+    "watch:ts:src": "tsc -p ./tsconfig.json -w",
+    <%^ outputSameDir %>
+    "watch:ts:test": "tsc -p ./<% structureConfig.test %>/unit/tsconfig.json -w",
     <%/ outputSameDir %>
     "bundle": "run-p bundle:* ",
     "bundle:ts": "webpack --config ./webpack.config.js && node ./<% structureConfig.task %>/bundle-finalizer.js",
@@ -64,7 +70,7 @@
     "coverage:remap": "node ./<% structureConfig.task %>/remap-coverage.js",
     "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=<% structureConfig.doc %>/reports/coverage",
     <%/ nodejs %>
-    "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
+    "document": "typedoc --out <% structureConfig.doc %>/typedoc/ --ignoreCompilerErrors <% structureConfig.src %>/",
     "metrics": "npm run compile:ts:src && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json <% structureConfig.built %>/**/*.js"
   },
   <%# license %>

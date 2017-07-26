@@ -35,7 +35,9 @@
     "compile:release:ts": "npm run compile:ts -- --pkg=release --<% structureConfig.src %> --lib",
     "compile:release:scss": "npm run compile:scss -- --pkg --<% structureConfig.src %> --lib",
     "compile:dev": "tsc -p tsconfig.json",
+    "watch": "run-p watch:*",
     "watch:ts": "tsc -p tsconfig.json -w",
+    "watch:scss": "smartwatch ac <% structureConfig.src %>/**/*.scss \"npm run compile:scss\"",
     "build:clean": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/porting-setup.js --porting=clean",
     "build:config": "node ./<% structureConfig.task %>/string-replace.js",
     "build:porting": "node ./<% structureConfig.task %>/porting-setup.js",
@@ -61,7 +63,7 @@
     "coverage:report": "nyc report --reporter=lcov --reporter=html --reporter=text --report-dir=<% structureConfig.doc %>/reports/coverage --temp-directory=<% structureConfig.doc %>/reports/coverage",
     "rearrange": "node ./<% structureConfig.task %>/external-rearrange.js",
     "module": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/compile-ts.js --pkg=release --lib && node ./<% structureConfig.task %>/copy.js --task=lib-types && node ./<% structureConfig.task %>/clean.js --temp",
-    "document": "typedoc --out <% structureConfig.doc %>/typedoc/ <% structureConfig.src %>/",
+    "document": "typedoc --out <% structureConfig.doc %>/typedoc/ --ignoreCompilerErrors <% structureConfig.src %>/",
     "metrics": "npm run compile:dev && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
   },
   <%# license %>
