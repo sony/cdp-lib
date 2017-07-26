@@ -129,6 +129,9 @@
     <Content Include="templates\mobile\src\_locales\_messages.ja-JP.json" />
     <Content Include="templates\mobile\structure\base\src\external\types\.gitkeep" />
     <Content Include="templates\mobile\structure\base\src\res\.gitkeep" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\_base.scss" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\cdp\utils\_utils.scss" />
+    <Content Include="templates\mobile\src\structure\src\stylesheet\_utils.scss" />
     <None Include="templates\mobile\visual.studio\_web.Debug.config" />
     <None Include="templates\mobile\visual.studio\_web.Release.config" />
     <None Include="templates\mobile\_gitignore" />
