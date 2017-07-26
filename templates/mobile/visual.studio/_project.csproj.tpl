@@ -130,8 +130,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="{{src}}\{{srcConfig.stylesheet}}\images\" />
+    <Content Include="{{src}}\{{srcConfig.stylesheet}}\cdp\utils\_utils.scss" />
+    <Content Include="{{src}}\{{srcConfig.stylesheet}}\_base.scss" />
     <Content Include="{{src}}\{{srcConfig.stylesheet}}\_gallery.scss" />
     <Content Include="{{src}}\{{srcConfig.stylesheet}}\_splash.scss" />
+    <Content Include="{{src}}\{{srcConfig.stylesheet}}\_utils.scss" />
     <Content Include="{{src}}\{{srcConfig.stylesheet}}\app.scss" />
     <Content Include="{{src}}\{{srcConfig.stylesheet}}\app.css">
       <DependentUpon>app.scss</DependentUpon>

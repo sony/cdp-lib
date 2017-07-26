@@ -131,6 +131,38 @@ export class GeneratorCordova extends GeneratorBase {
         return _.sortBy(depends.concat(extra), (depend) => depend.name);
     }
 
+    /**
+     * eslintrc に指定する template paramaeter を取得
+     *
+     * @return {Object} テンプレートパラメータオブジェクト
+     */
+    protected queryEsLintEnvParam(): any {
+        const base = super.queryEsLintEnvParam();
+        return {
+            ...base,
+            ...{
+                cordova: this.isEnableCordova(),
+                hammerjs: this.isInstallationTarget("hammerjs"),
+                iscroll: this.isInstallationTarget("iscroll"),
+                flipsnap: this.isInstallationTarget("flipsnap"),
+            },
+        };
+    }
+
+    /**
+     * tsconfig.base に指定する template paramaeter を取得
+     *
+     * @return {Object} テンプレートパラメータオブジェクト
+     */
+    protected queryTsConfigBaseParam(): any {
+        return {
+            ...this._config,
+            ...{
+                cordova: this.isEnableCordova(),
+            },
+        };
+    }
+
     ///////////////////////////////////////////////////////////////////////
     // private methods:
 
@@ -420,7 +452,7 @@ export class GeneratorCordova extends GeneratorBase {
         copyTpl(
             path.join(templatePath("mobile"), "_tsconfig.base.json"),
             path.join(this.rootDir, "tsconfig.base.json"),
-            this._config,
+            this.queryTsConfigBaseParam(),
             { delimiters: "<% %>", bom: false, }
         );
 

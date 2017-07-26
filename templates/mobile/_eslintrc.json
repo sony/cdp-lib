@@ -14,6 +14,18 @@
     "Symbol": true,
     "Promise": true,
     "CDP": true,
+    <%# cordova %>
+    "cordova": true,
+    <%/ cordova %>
+    <%# hammerjs %>
+    "Hammer": true,
+    <%/ hammerjs %>
+    <%# iscroll %>
+    "IScroll": true,
+    <%/ iscroll %>
+    <%# flipsnap %>
+    "Flipsnap": true,
+    <%/ flipsnap %>
     "module": true,
     "require": true,
     "define": true,

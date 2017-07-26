@@ -22,6 +22,9 @@
       "@cdp/mobile",
       "patch.dependencies",
       "requirejs",
+      <%# cordova %>
+      "cordova",
+      <%/ cordova %>
       "jasmine"
     ]
   }
