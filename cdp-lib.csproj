@@ -118,6 +118,7 @@
     <Content Include="templates\base\task\remap-coverage.js" />
     <Content Include="templates\base\task\srcmap.js" />
     <Content Include="templates\base\tools\webpack\_webpack.config.js" />
+    <Content Include="RELEASENOTE.md" />
     <None Include="templates\library\_gitignore" />
     <Content Include="templates\library\tools\testem\runner\require-main.js" />
     <Content Include="templates\library\tools\testem\runner\testem-amd.js" />
