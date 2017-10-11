@@ -175,7 +175,7 @@ export class GeneratorCordova extends GeneratorBase {
      */
     private get defaultDependencies(): IDependency[] {
         const depends = [
-            { name: "@cdp/mobile",  version: "git+ssh://git@github.com/CDP-Tokyo/cdp-js.git", },
+            { name: "@cdp/mobile",  version: undefined, },
             { name: "backbone",     version: undefined, },
             { name: "jquery",       version: undefined, },
             { name: "requirejs",    version: undefined, },
