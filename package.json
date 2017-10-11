@@ -1,6 +1,6 @@
 {
   "name": "cdp-lib",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
   "main": "dist/cdp-lib.min.js",
   "types": "dist/@types/cdp-lib/index.d.ts",
@@ -43,7 +43,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CDP-Tokyo/cdp-lib.git"
+    "url": "https://github.com/sony/cdp-lib.git"
   },
   "keywords": [
     "CDP",
@@ -54,9 +54,9 @@
   "author": "Shin Ogata",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/CDP-Tokyo/cdp-lib/issues"
+    "url": "https://github.com/sony/cdp-lib/issues"
   },
-  "homepage": "https://github.com/CDP-Tokyo/cdp-lib#readme",
+  "homepage": "https://github.com/sony/cdp-lib#readme",
   "dependencies": {
     "chalk": "^2.1.0",
     "cli-spinner": "^0.2.6",
