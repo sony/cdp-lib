@@ -99,7 +99,7 @@ export abstract class GeneratorBase {
      * @param key ローカライズリソースキーを指定
      */
     protected progress(key: string): void {
-        log(chalk.cyan(translate(key)));
+        log((<any>chalk).cyan(translate(key)));
     }
 
     /**
@@ -108,7 +108,7 @@ export abstract class GeneratorBase {
      * @param key ローカライズリソースキーを指定
      */
     protected warn(key: string): void {
-        log(chalk.yellow(translate(key)));
+        log((<any>chalk).yellow(translate(key)));
     }
 
     /**
@@ -275,7 +275,7 @@ export abstract class GeneratorBase {
 
         const progress = (context: any): any => {
             if ("string" === typeof context && !this._config.settings.silent) {
-                const spinner = getSpinner(chalk.yellow(context), 5);
+                const spinner = getSpinner((<any>chalk).yellow(context), 5);
                 spinner.start();
                 return spinner;
             } else if (context) {

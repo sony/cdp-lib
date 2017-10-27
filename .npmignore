@@ -5,11 +5,12 @@
 /src
 /tasks
 /tests
-/BANNER
+.npmignore
+BANNER
+project.config.js
+tsconfig.json
+webpack.config.json
 /*.sln
 /*.csproj
 /*.csproj.user
 /*.suo
-/tsconfig.json
-/webpack.config.json
-/.npmignore
