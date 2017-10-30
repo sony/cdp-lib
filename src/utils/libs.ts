@@ -5,7 +5,7 @@ import * as _l from "lodash";
 import * as _s from "underscore.string";
 import * as which from "which";
 import * as uuid from "uuid";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import * as semverRegex from "semver-regex";
 import { Spinner } from "cli-spinner";
 

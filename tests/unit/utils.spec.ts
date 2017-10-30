@@ -84,8 +84,8 @@ describe("check utils/libs instance", () => {
 
     it("chalk", () => {
         expect(chalk).toBeDefined();
-        expect((<any>chalk).red).toBeDefined();
-        expect("function" === typeof (<any>chalk).red).toBeTruthy();
+        expect(chalk.red).toBeDefined();
+        expect("function" === typeof chalk.red).toBeTruthy();
     });
 
     it("cli-spinner", () => {

@@ -1,6 +1,6 @@
 {
   "name": "cdp-lib",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Contains npm modules used primarily by cdp boilerplate generator.",
   "main": "dist/cdp-lib.min.js",
   "types": "dist/@types/cdp-lib/index.d.ts",
@@ -33,7 +33,7 @@
     "minify:ts": "uglifyjs dist/cdp-lib.js -o dist/cdp-lib.min.js --comments /^!/ --source-map includeSources,url=cdp-lib.min.js.map",
     "lint": "run-p -l lint:*",
     "lint:js": "eslint tasks/**/*.js built/**/*.js -c tests/eslint/eslintrc.json",
-    "lint:ts": "tslint --type-check -p ./tsconfig.json -c ./tests/tslint/tslint.json -e src/**/*.d.ts src/**/*.ts",
+    "lint:ts": "tslint -p ./tsconfig.json -c ./tests/tslint/tslint.json -e src/**/*.d.ts src/**/*.ts",
     "unit-test": "npm run coverage:exec",
     "unit-test:ci": "node ./node_modules/jasmine-node/bin/jasmine-node tests/unit/",
     "coverage": "run-s clean:coverage compile:ts coverage:exec",
@@ -87,7 +87,7 @@
     "convert-source-map": "^1.5.0",
     "del": "^3.0.0",
     "dts-bundle": "^0.7.3",
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "jasmine-node": "^2.0.0",
     "npm-run-all": "^4.1.1",
     "nyc": "^11.3.0",
@@ -98,7 +98,7 @@
     "typedoc": "^0.9.0",
     "typescript": "^2.5.3",
     "typescript-formatter": "^7.0.0",
-    "uglify-es": "^3.1.5",
+    "uglify-es": "^3.1.6",
     "webpack": "^3.8.1"
   }
 }
