@@ -164,6 +164,15 @@ export function execCommand(command: string, args: string[], options?: ExecComma
             stderr: (data: string): void => { /* noop */ },
         }, options);
 
+        // on win32, command and args need to be quoted if containing spaces
+        const quoteIfNeeded = (str: string): string => {
+            if ("win32" === os.platform() && str.includes(" ")) {
+                str = "\"" + str + "\"";
+                opt.shell = true;
+            }
+            return str;
+        };
+
         which(command, (error, resolvedCommand) => {
             if (error) {
                 handleError(JSON.stringify(error));
@@ -174,6 +183,8 @@ export function execCommand(command: string, args: string[], options?: ExecComma
                 spinner.start();
             }
 
+            resolvedCommand = quoteIfNeeded(resolvedCommand);
+            args = args.map(quoteIfNeeded);
             const child = spawn(resolvedCommand, args, opt)
                 .on("error", handleError)
                 .on("close", (code) => {
