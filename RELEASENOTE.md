@@ -1,5 +1,16 @@
 ﻿## Release Notes
 
+### Release 0.1.5 (February 2018)
+
+* Update Dependencies
+  - typescript ver 2.7.1
+    - disable emitBOM option
+  - updated dependencies
+    - jquery: 3.3.1
+    - loadsh: 4.17.5
+    - uuid:   3.2.1
+
+
 ### Release 0.1.4 (November 2017)
 
 * Bug fix
