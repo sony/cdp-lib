@@ -8,7 +8,7 @@ npm-debug.log
 *.csproj.user
 *.suo
 
-# project ignores
+# project ignores (common)
 !.gitkeep
 .vs/
 .sass-cache/
@@ -17,10 +17,14 @@ node_modules/
 bin/
 obj/
 temp/
-www/
-platforms/*/www/
-platforms/*/assets/www/
-platforms/*/{{structureConfig.porting}}/**/*.js
-{{structureConfig.built}}/**/*.js
-{{structureConfig.built}}/**/*.map
-{{structureConfig.test}}/unit/**/*.js
+
+# project ignores (under root directory)
+/www/
+/platforms/*/www/
+/platforms/*/assets/www/
+/platforms/*/{{structureConfig.porting}}/**/*.js
+!/platforms/android/cordova/node_modules/
+!/platforms/ios/cordova/node_modules/
+/{{structureConfig.built}}/**/*.js
+/{{structureConfig.built}}/**/*.map
+/{{structureConfig.test}}/unit/**/*.js
