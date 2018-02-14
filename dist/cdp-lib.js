@@ -1,7 +1,7 @@
 ﻿/*!
- * cdp-lib.js 0.1.6
+ * cdp-lib.js 0.1.7-dev
  *
- * Date: 2018-02-14T03:20:39.786Z
+ * Date: 2018-02-14T03:43:46.837Z
  */
 
 module.exports =
