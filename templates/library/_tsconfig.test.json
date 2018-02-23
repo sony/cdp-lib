@@ -4,7 +4,7 @@
     "target": "<% es %>",
     "allowJs": true,
     "declaration": false,
-    "emitBOM": true,
+    "emitBOM": false,
     "inlineSourceMap": true,
     "inlineSources": true
   }

@@ -3,7 +3,7 @@
     "module": "<% module %>",
     "moduleResolution": "node",
     "target": "<% es %>",
-    "emitBOM": true,
+    "emitBOM": false,
     "inlineSourceMap": true,
     "inlineSources": true,
     "pretty": true,
