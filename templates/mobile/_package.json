@@ -8,7 +8,7 @@
   "description": "",
   "author": "",
   "scripts": {
-    "postinstall": "npm run rearrange",
+    "postinstall": "run-s rearrange permission",
     "test": "run-s -l clean compile lint unit-test",
     "ci": "run-s -l clean compile lint unit-test metrics document build:release",
     "package": "cordova build --release",
@@ -64,7 +64,9 @@
     "rearrange": "node ./<% structureConfig.task %>/external-rearrange.js",
     "module": "node ./<% structureConfig.task %>/clean.js --pkg --temp && node ./<% structureConfig.task %>/compile-ts.js --pkg=release --lib && node ./<% structureConfig.task %>/copy.js --task=lib-types && node ./<% structureConfig.task %>/clean.js --temp",
     "document": "typedoc --out <% structureConfig.doc %>/typedoc/ --ignoreCompilerErrors <% structureConfig.src %>/",
-    "metrics": "npm run compile:dev && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js"
+    "metrics": "npm run compile:dev && plato -r -d <% structureConfig.doc %>/reports/metrics -e ./<% structureConfig.test %>/eslint/eslintrc.json -x <% structureConfig.src %>/<% structureConfig.external %>/ <% structureConfig.src %>/**/*.js",
+    "permission": "run-p permission:*",
+    "permission:chmod": "node ./tasks/permission.js --chmod"
   },
   <%# license %>
   "license": "<% license %>",
