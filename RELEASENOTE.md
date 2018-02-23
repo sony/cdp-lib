@@ -1,5 +1,13 @@
 ﻿## Release Notes
 
+### Release 0.1.7 (February 2018)
+
+* Change emitBOM to false
+  - __tsconfig.test.json and _tsconfig.base.json in template
+
+* Add to set permission with postinstall in template
+  - change mode js file under the hooks folder to '777'
+
 ### Release 0.1.6 (February 2018)
 
 * Bug fix
